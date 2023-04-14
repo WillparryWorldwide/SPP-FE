@@ -7,8 +7,6 @@ import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
 import PrimaryButton from '../components/PrimaryButton'
 
-import '../layout/assets/css/adminlte.min.css'
-
 const Login = () => {
 
     const { site_name } = useAppContext()
@@ -20,14 +18,16 @@ const Login = () => {
     const isAuthenticated = useIsAuthenticated()
 
     useEffect(() => {
+        // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
         SignIn({
             token: 'gscyuschsaclihsjcsciusacgusclusakjc',
             expiresIn: 1440,
             tokenType: "Bearer",
-            authState: {},
+            authState: {name: 'Daniel Michael', avatar: ''},
             refreshToken: 'hzucoiucasugcoiuscoiusclaszijcis',
             refreshTokenExpireIn: 1440
         })
+        // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
         if (isAuthenticated()) {
             navigate('/dashboard', { replace: true })
         }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FormInput = React.forwardRef(({ label, placeholder, required, type, icon, iconSize, ...rest }, ref) => {
+const FormInput = React.forwardRef(({ label, placeholder, required, type, action, icon, readonly, iconSize, ...rest }, ref) => {
     return (
         <div {...rest}>
             <label htmlFor="">{label}</label>
@@ -9,6 +9,8 @@ const FormInput = React.forwardRef(({ label, placeholder, required, type, icon, 
                 class="form-control"
                 ref={ref}
                 placeholder={placeholder}
+                onKeyUp={action}
+                readOnly={readonly}
             />
         </div>
     )

@@ -1,3 +1,7 @@
-export { default as Dashboard } from './Welcome'
+export { default as Dashboard } from './contractors/Welcome'
+export { default as ADashboard } from './administrator/Welcome'
+export { default as AddNew } from './administrator/project/AddNew'
 export { default as Signup } from './Signup'
 export { default as Login } from './Login'
+export { default as Profile } from './Profile'
+export { default as CProjectList } from './contractors/project/List'
