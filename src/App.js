@@ -1,6 +1,5 @@
 import { AuthProvider } from "react-auth-kit";
 import Router from "./Router";
-import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import Toastr from './components/Toast'
