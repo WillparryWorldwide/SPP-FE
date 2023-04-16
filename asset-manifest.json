@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/SPP-FE/static/css/main.776788ff.css",
+    "main.js": "/SPP-FE/static/js/main.db3c948a.js",
+    "index.html": "/SPP-FE/index.html",
+    "main.776788ff.css.map": "/SPP-FE/static/css/main.776788ff.css.map",
+    "main.db3c948a.js.map": "/SPP-FE/static/js/main.db3c948a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.776788ff.css",
+    "static/js/main.db3c948a.js"
+  ]
+}
