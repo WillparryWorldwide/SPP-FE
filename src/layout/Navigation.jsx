@@ -48,6 +48,29 @@ const Navigation = () => {
                         </Link>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+                                <Link class="nav-link">
+                                    <i class="nav-icon fas fa-list-check"></i>
+                                    <p>
+                                        Category
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </Link>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <Link to="/dashboard/category" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>List</p>
+                                        </Link>
+                                    </li>
+                                    <li class="nav-item">
+                                        <Link to="/dashboard/admin/category/add" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add New</p>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
                                 <Link to="/dashboard/project" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>List</p>
