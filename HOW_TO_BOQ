@@ -1,0 +1,23 @@
+
+
+
+
++[Preliminaries Sum] [DESCRIPTION  [Unit]  [QTY] [RATE] [AMOUNT]
+
+ +[Provisional Sums] [DESCRIPTION  [Unit]  [QTY] [RATE] [AMOUNT]
+
++[Measured Work]  [DESCRIPTION]  [Unit]  [QTY] [RATE] [AMOUNT]
+
+
+
+A ( Project Total )
+B (Supplimentary fund)
+
+A+B=C
+
+C-Ovarall total-
+
+
+NOTE
+Extra Fund Project [  note we have to add the detail of BOQ again.
+ADD A BUTTON, SO BOQ ADDED AND AMOUNT SHOULD EFFECT SUPPLIMENTARY FUND
