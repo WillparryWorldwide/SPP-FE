@@ -177,10 +177,8 @@ const AddNew = () => {
                                             </div>
                                         </div>
                                     ))}
-                                    <div className='input-group mt-3'>
-                                        <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
-                                    </div>
                                 </div>
+                                    <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
                                 <PrimaryButton type="button" title="Create" disabled={btnStatus} onClick={create} className="btn btn-primary btn-block btn-sm mb-3 mt-3" />
                             </form>
                         </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import avatar from '../layout/assets/images/avatar.png'
 import { useAuthContext } from '../context/AuthContext'
 import SectionModal from '../components/SectionModal'
+import CategoryModal from '../components/CategoryModal'
 
 const Navigation = () => {
 
@@ -12,6 +13,7 @@ const Navigation = () => {
     }
 
     const [sectionModalState, setSectionModalState] = useState(false)
+    const [categoryModalState, setCategoryModalState] = useState(false)
 
     return (
         <div className="sidebar">
@@ -45,6 +47,29 @@ const Navigation = () => {
                         <Link className="nav-link">
                             <i className="nav-icon fas fa-list-check"></i>
                             <p>
+                                SPP Users
+                                <i className="fas fa-angle-left right"></i>
+                            </p>
+                        </Link>
+                        <ul className="nav nav-treeview">
+                            <li className="nav-item">
+                                <Link to="/dashboard/admin/spp-users" className="nav-link">
+                                    <i className="far fa-circle nav-icon"></i>
+                                    <p>List</p>
+                                </Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/dashboard/admin/spp-users/create" className="nav-link">
+                                    <i className="far fa-circle nav-icon"></i>
+                                    <p>Create</p>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link">
+                            <i className="nav-icon fas fa-list-check"></i>
+                            <p>
                                 Projects
                                 <i className="fas fa-angle-left right"></i>
                             </p>
@@ -68,11 +93,18 @@ const Navigation = () => {
                                     <p>Create Section</p>
                                 </Link>
                             </li>
+                            <li className="nav-item">
+                                <Link onClick={() => setCategoryModalState(!categoryModalState)} className="nav-link">
+                                    <i className="far fa-circle nav-icon"></i>
+                                    <p>Create Category</p>
+                                </Link>
+                            </li>
                         </ul>
                     </li>
                 </ul>
             </nav>
             <SectionModal key={sectionModalState} status={sectionModalState} setStatus={setSectionModalState}/>
+            <CategoryModal key={categoryModalState} status={categoryModalState} setStatus={setCategoryModalState}/>
         </div>
     )
 }

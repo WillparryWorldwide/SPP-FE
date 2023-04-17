@@ -106,7 +106,7 @@ const List = () => {
                         </div>
                         <div className="card-body">
                             <Grid align="center" mb="md">
-                                <Grid.Col xs={8} sm={9}>
+                                <Grid.Col xs={12} sm={12}>
                                     <TextInput
                                         sx={{ flexBasis: '60%' }}
                                         placeholder="Search Projects..."

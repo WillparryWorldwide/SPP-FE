@@ -97,23 +97,31 @@ const Create = () => {
                 <div className="card">
                     <form method="POST" onSubmit="return false">
                         <div className="container">
-                            <div className="row">
-                                <h3 className='mt-3'>Head of Organization</h3>
+                            <h3 className='mt-3'>Head of Organization</h3>
+                            <div className='row'>
                                 <FormInput placeholder="Enter First Name" className="col-6 mb-3" ref={nameRef} />
                                 <FormInput placeholder="Enter Last Name" className="col-6 mb-3" ref={LastNameRef} />
+                            </div>
+                            <div className='row'>
                                 <FormInput placeholder="Enter Phone number" type="number" className="col-6 mb-3" ref={phoneRef} />
                                 <FormInput placeholder="Enter email address" type="text" className="col-6 mb-3" ref={emailRef} />
                                 <FormTextArea placeholder="Enter personal address" row="10" className="col-12 mb-3" ref={addressRef} />
-                                <h3>Secretary Details</h3>
+                            </div>
+                            <h3>Secretary Details</h3>
+                            <div className='row'>
                                 <FormInput placeholder="Enter First Name" className="col-6 mb-3" ref={SnameRef} />
                                 <FormInput placeholder="Enter Last Name" className="col-6 mb-3" ref={SLastNameRef} />
+                            </div>
+                            <div className='row'>
                                 <FormInput placeholder="Enter Phone number" type="number" className="col-6 mb-3" ref={SphoneRef} />
                                 <FormInput placeholder="Enter email address" type="text" className="col-6 mb-3" ref={SemailRef} />
                                 <FormTextArea placeholder="Enter address" row="10" className="col-12 mb-3" ref={SaddressRef} />
-                                <h3>SPP Details</h3>
+                            </div>
+                            <h3>SPP Details</h3>
+                            <div className='row'>
                                 <FormInput placeholder="Enter SPP Name" className="col-6 mb-3" ref={sppNameRef} />
                                 <FormInput placeholder="Enter SPP RC Number" className="col-6 mb-3" ref={rcNumberRef} />
-                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-6 mb-3" ref={sppAddressRef} />
+                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-12 mb-3" ref={sppAddressRef} />
                             </div>
                             <div className="row">
                                 <PrimaryButton className="btn btn-primary btn-block float-right mb-3" disabled={btnStatus ? 'disabled' : ''} title='Submit' type="submit" onClick={(e) => handleSubmit(e)} />
