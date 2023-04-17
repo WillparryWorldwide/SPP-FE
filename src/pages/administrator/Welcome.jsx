@@ -37,33 +37,33 @@ const Welcome = () => {
     return (
         <>
             <ContentHeader title="Dashboard" />
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
+            <section className="content">
+                <div className="container-fluid">
+                    <div className="row">
                         <SmallBox title="Total Number of Project(s)" number={10} bg="bg-warning" />
                         <SmallBox title="Total Number of Active SPP" number={10} bg="bg-success" />
                         <SmallBox title="Total Number of successful projects" number={10} bg="bg-danger" />
                         <SmallBox title="Pending Project(s)" number={10} bg="bg-info" />
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card card-danger">
-                                <div class="card-header">
-                                    <h3 class="card-title">Donut Chart</h3>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <div className="card card-danger">
+                                <div className="card-header">
+                                    <h3 className="card-title">Donut Chart</h3>
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
                                     <Doughnut
                                         data={data}
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card card-danger">
-                                <div class="card-header">
-                                    <h3 class="card-title">Pie Chart</h3>
+                        <div className="col-md-6">
+                            <div className="card card-danger">
+                                <div className="card-header">
+                                    <h3 className="card-title">Pie Chart</h3>
                                 </div>
-                                <div class="card-body">
+                                <div className="card-body">
                                     <Pie
                                         data={data}
                                     />

@@ -68,19 +68,19 @@ const Login = () => {
         }
     }
 
-    return (<div class="register-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header text-center">
-                <Link to="" class="h1">{site_name}</Link>
+    return (<div className="register-box">
+        <div className="card card-outline card-primary">
+            <div className="card-header text-center">
+                <Link to="" className="h1">{site_name}</Link>
             </div>
-            <div class="card-body">
-                <p class="login-box-msg">Login as a contractor</p>
+            <div className="card-body">
+                <p className="login-box-msg">Login as a contractor</p>
                 <form method="POST" onSubmit="return false">
                     <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
                     <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
                     <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
                 </form>
-                <Link to="/signup/" class="text-center">Don't have an account? Create one Here</Link>
+                <Link to="/signup/" className="text-center">Don't have an account? Create one Here</Link>
             </div>
         </div>
     </div>)

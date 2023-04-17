@@ -138,13 +138,13 @@ const Signup = () => {
     }
 
     return (
-        <div class="register-box">
-            <div class="card card-outline card-primary">
-                <div class="card-header text-center">
-                    <Link to="" class="h1">{site_name}</Link>
+        <div className="register-box">
+            <div className="card card-outline card-primary">
+                <div className="card-header text-center">
+                    <Link to="" className="h1">{site_name}</Link>
                 </div>
-                <div class="card-body">
-                    <p class="login-box-msg">Register as a contractor <br /> ({title})</p>
+                <div className="card-body">
+                    <p className="login-box-msg">Register as a contractor <br /> ({title})</p>
                     <form method="POST" onSubmit="return false">
                         <div className={show === 0 ? '' : 'd-none'}>
                             <FormInput placeholder="Enter Full Name" className="input-group mb-3" ref={nameRef} />
@@ -168,7 +168,7 @@ const Signup = () => {
                             <PrimaryButton className="btn btn-primary btn-block float-right" disabled={btnStatus ? 'disabled' : ''} title={btnText} type="submit" onClick={(e) => handleSubmit(e)} />
                         </div>
                     </form>
-                    <Link to="/login/" class="text-center">I already have an account</Link>
+                    <Link to="/login/" className="text-center">I already have an account</Link>
                 </div>
             </div>
         </div>

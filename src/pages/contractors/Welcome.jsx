@@ -6,9 +6,9 @@ const Welcome = () => {
     return (
         <>
             <ContentHeader title="Dashboard" />
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
+            <section className="content">
+                <div className="container-fluid">
+                    <div className="row">
                         <SmallBox title="Total Number of Project(s)" number={10} bg="bg-warning" />
                         <SmallBox title="Successful Project(s)" number={10} bg="bg-success" />
                         <SmallBox title="Unsuccessful of Project(s)" number={10} bg="bg-danger" />

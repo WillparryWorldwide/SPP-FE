@@ -6,6 +6,23 @@ import useAxiosClient from '../../../Hooks/useAxiosClient'
 
 const AddNew = () => {
 
+    const [milestones, setMileStones] = useState([{ id: 1, value: '' }]);
+
+    const handleAddMilestone = (e) => {
+        e.preventDefault()
+        const newMilestone = {
+            id: milestones.length + 1,
+            value: ''
+        };
+        setMileStones([...milestones, newMilestone]);
+    };
+
+    const handleRemoveMilestone = (e, idToRemove) => {
+        e.preventDefault()
+        const filteredSections = milestones.filter((section) => section.id !== idToRemove);
+        setMileStones(filteredSections);
+    };
+
     const sppCodeRef = useRef()
     const titleRef = useRef()
     const categoryRef = useRef()
@@ -17,21 +34,21 @@ const AddNew = () => {
     const amountRef = useRef()
     const descriptionRef = useRef()
     const [btnStatus, setBtnStatus] = useState('')
-    const [sppData, setSppData] = useState({})
+    const [sppData, setSppData] = useState([])
 
     const axios = useAxiosClient()
     const fetchSPPData = async e => {
-        axios.get(`/api/contractors/fetch-detals/${sppCodeRef.current.value}`).then(({ data }) => {
+        axios.get(`/api/contractors/fetch`).then(({ data }) => {
             setBtnStatus('')
             setSppData(data.contractor)
-        }).catch(({response}) => {
+        }).catch(({ response }) => {
             setBtnStatus('disabled')
             window.toastr.error(response.data.message)
         })
     }
 
     const create = () => {
-        if (sppCodeRef.current.value === '') {
+        if (sppCodeRef.current.value === 'Select SPP') {
             sppCodeRef.current.focus()
             window.toastr.error('SPP Code is required')
         } else if (titleRef.current.value === '') {
@@ -62,7 +79,29 @@ const AddNew = () => {
             window.toastr.error('Project description is required')
         } else {
             setBtnStatus('disabled');
-            // setBtnText()
+            let milestoneList = [];
+            for (let m = 0; m < milestones.length; m++) {
+                let description = document.getElementById(`milestone-description-${m}`);
+                let date = document.getElementById(`milestone-date-${m}`);
+                let amount = document.getElementById(`milestone-amount-${m}`);
+                if (description.value === '') {
+                    description.focus()
+                    window.toastr.error(`Milestone description ${m + 1} is required`)
+                } else if (date.value === '') {
+                    date.focus()
+                    window.toastr.error(`Milestone date ${m + 1} is required`)
+                } else if (amount.value === '') {
+                    amount.focus()
+                    window.toastr.error(`Milestone amount ${m + 1} is required else enter 0`)
+                } else {
+                    let milestaone = {
+                        description: description.value,
+                        date: date.value,
+                        amount: amount.value
+                    }
+                    milestoneList.push(milestaone)
+                }
+            }
             const formData = new FormData()
             formData.append('spp_code', sppCodeRef.current.value)
             formData.append('project_title', titleRef.current.value)
@@ -73,7 +112,8 @@ const AddNew = () => {
             formData.append('letter', letter.current.value)
             formData.append('award_date', awardDateRef.current.value)
             formData.append('amount', amountRef.current.value)
-            formData.append('amount', descriptionRef.current.value)
+            formData.append('description', descriptionRef.current.value)
+            formData.append('milestones', JSON.stringify(milestoneList))
 
             axios.post('/api/project', formData).then(({ data }) => {
                 setBtnStatus('');
@@ -89,13 +129,19 @@ const AddNew = () => {
     return (
         <>
             <ContentHeader title="Add New Project" />
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="card">
+            <section className="content">
+                <div className="container-fluid">
+                    <div className="card">
                         <div className='container'>
-                            <form id="project">
-                                <div className='row' enctype="multi-part/formData">
-                                    <FormInput className="col-6 form-group mt-3" label="Enter SPP Code" ref={sppCodeRef} action={() => fetchSPPData()} placeholder="SPP Code" />
+                            <form id="project"  encType="multipart/form-data">
+                                <div className='row'>
+                                    <div className='col-6 form-group mt-3'>
+                                        <label>Select SPP Code</label>
+                                        <select onChange={() => fetchSPPData()} ref={sppCodeRef} className='form-control'>
+                                            <option defaultValue>Select SPP</option>
+                                            {sppData.map(spp => <option key={spp.id} value={spp.id}>{spp.name}</option>)}
+                                        </select>
+                                    </div>
                                     <FormInput className="col-6 form-group mt-3" label="SPP Name" defaultValue={sppData?.name} readonly={true} placeholder="SPP Name" />
                                     <FormInput className="col-6 form-group mt-3" label="SPP Secretary Name" defaultValue={sppData?.secretary?.name} readonly={true} placeholder="SPP Code" />
                                     <FormInput className="col-6 form-group mt-3" label="SPP Secretary Phone" defaultValue={sppData?.secretary?.phone} readonly={true} placeholder="SPP Secretary Phone" />
@@ -107,16 +153,30 @@ const AddNew = () => {
                                     <FormInput className="col-6 form-group mt-3" label="State" ref={stateRef} placeholder="Enter State" />
                                     <FormInput className="col-6 form-group mt-3" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
                                     <div className='form-group mt-3 col-6'>
-                                        <label htmlFor='file'>Award Letter</label>
+                                        <label htmlFor='file'>Project Thumbnail</label>
                                         <div className='input-group'>
                                             <div className="custom-file">
                                                 <input className="custom-file-input" defaultValue={letter} onChange={(e) => setLetter(e.files[0])} type='file' id="file" />
-                                                <label class="custom-file-label" htmlFor="file">Upload Award Letter</label>
+                                                <label className="custom-file-label" htmlFor="file">Upload Project Thumbnail</label>
                                             </div>
                                         </div>
                                     </div>
                                     <FormInput className="col-6 form-group mt-3" label="Date Awarded" ref={awardDateRef} placeholder="Date Awarded" />
                                     <FormInput className="col-6 form-group mt-3" label="Funding Amount" ref={amountRef} placeholder="Amount" type="number" />
+                                    <div className='d-flex col-12 mt-3'>
+                                        <h3 className='col-7'>Milestone(s)</h3>
+                                        <PrimaryButton className='btn btn-primary btn-sm float-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone'/>
+                                    </div>
+                                    {milestones.map((milestone, index) => (
+                                        <div className='d-flex col-12' key={index}>
+                                            <FormInput className="col-md-4 form-group mt-3" id={`milestone-description-${index}`} label={`Description ${index + 1}`} placeholder="Enter Description" type="text" />
+                                            <FormInput className="col-md-3 form-group mt-3" id={`milestone-date-${index}`} label={`Date ${index + 1}`} placeholder="Select date" type="date" />
+                                            <FormInput className="col-md-4 form-group mt-3" id={`milestone-amount-${index}`} label={`Amount ${index + 1}`} placeholder="Enter Amount" type="number" />
+                                            <div className='form-group mt-5'>
+                                                <PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
+                                            </div>
+                                        </div>
+                                    ))}
                                     <div className='input-group mt-3'>
                                         <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
                                     </div>

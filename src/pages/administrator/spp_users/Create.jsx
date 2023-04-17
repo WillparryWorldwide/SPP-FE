@@ -93,10 +93,10 @@ const Create = () => {
     return (
         <>
             <ContentHeader title="Create New SPP User" />
-            <section class="content">
-                <div class="card">
+            <section className="content">
+                <div className="card">
                     <form method="POST" onSubmit="return false">
-                        <div class="container">
+                        <div className="container">
                             <div className="row">
                                 <h3 className='mt-3'>Head of Organization</h3>
                                 <FormInput placeholder="Enter First Name" className="col-6 mb-3" ref={nameRef} />

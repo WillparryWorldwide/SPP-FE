@@ -6,7 +6,7 @@ const FormInput = React.forwardRef(({ label, placeholder, required, type, action
             <label htmlFor="">{label}</label>
             <input
                 type={type}
-                class="form-control"
+                className="form-control"
                 ref={ref}
                 placeholder={placeholder}
                 onKeyUp={action}

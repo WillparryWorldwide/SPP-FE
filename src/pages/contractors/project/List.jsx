@@ -98,13 +98,13 @@ const List = () => {
     return (
         <>
             <ContentHeader title="Project List" />
-            <section class="content">
-                <div class="container-fluid">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">List of Projects</h3>
+            <section className="content">
+                <div className="container-fluid">
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className="card-title">List of Projects</h3>
                         </div>
-                        <div class="card-body">
+                        <div className="card-body">
                             <Grid align="center" mb="md">
                                 <Grid.Col xs={8} sm={9}>
                                     <TextInput
