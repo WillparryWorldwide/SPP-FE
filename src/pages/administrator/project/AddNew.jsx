@@ -178,7 +178,7 @@ const AddNew = () => {
                                         </div>
                                     ))}
                                 </div>
-                                    <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
+                                <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
                                 <PrimaryButton type="button" title="Create" disabled={btnStatus} onClick={create} className="btn btn-primary btn-block btn-sm mb-3 mt-3" />
                             </form>
                         </div>
