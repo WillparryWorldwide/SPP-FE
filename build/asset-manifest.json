@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/SPP-FE/static/css/main.776788ff.css",
-    "main.js": "/SPP-FE/static/js/main.16774961.js",
+    "main.css": "/SPP-FE/static/css/main.dd91723e.css",
+    "main.js": "/SPP-FE/static/js/main.f4f15df4.js",
     "index.html": "/SPP-FE/index.html",
-    "main.776788ff.css.map": "/SPP-FE/static/css/main.776788ff.css.map",
-    "main.16774961.js.map": "/SPP-FE/static/js/main.16774961.js.map"
+    "main.dd91723e.css.map": "/SPP-FE/static/css/main.dd91723e.css.map",
+    "main.f4f15df4.js.map": "/SPP-FE/static/js/main.f4f15df4.js.map"
   },
   "entrypoints": [
-    "static/css/main.776788ff.css",
-    "static/js/main.16774961.js"
+    "static/css/main.dd91723e.css",
+    "static/js/main.f4f15df4.js"
   ]
 }
