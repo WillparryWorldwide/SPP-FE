@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useReducer } from 'react'
 import ContentHeader from '../../../components/ContentHeader'
 import FormInput from '../../../components/FormInput'
 import PrimaryButton from '../../../components/PrimaryButton'
@@ -6,22 +6,73 @@ import useAxiosClient from '../../../Hooks/useAxiosClient'
 
 const AddNew = () => {
 
-    const [milestones, setMileStones] = useState([{ id: 1, value: '' }]);
+    const [milestones, setMileStones] = useState([{ id: 1, value: '', preliminaries: [{id: 1, value: ''}], provisions: [{id: 1, value: ''}], measured: [{id: 1, value: ''}] }]);
 
     const handleAddMilestone = (e) => {
         e.preventDefault()
         const newMilestone = {
             id: milestones.length + 1,
+            value: '',
+            preliminaries: [{id: 1, value: ''}],
+            provisions: [{id: 1, value: ''}],
+            measured: [{id: 1, value: ''}],
+        };
+        milestones.push(newMilestone)
+        setMileStones(milestones);
+        handleForceUpdate()
+    };
+
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+
+    const handleForceUpdate = () => {
+        forceUpdate()
+    }
+
+    const handleAddPreliminarySum = (e, milestone) => {
+        e.preventDefault()
+        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
+        const newPreliminary = {
+            id: milestones[index].preliminaries.length + 1,
             value: ''
         };
-        setMileStones([...milestones, newMilestone]);
-    };
+        milestones[index].preliminaries.push(newPreliminary)
+        setMileStones(milestones);
+        handleForceUpdate()
+    }
+    
+    const handleAddProvisionalSum = (e, milestone) => {
+        e.preventDefault()
+        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
+        const newProvision = {
+            id: milestones[index].provisions.length + 1,
+            value: ''
+        };
+        milestones[index].provisions.push(newProvision)
+        setMileStones(milestones);
+        handleForceUpdate()
+    }
+    
+    const handleAddMeasuredWorks = (e, milestone) => {
+        e.preventDefault()
+        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
+        const newMeasure = {
+            id: milestones[index].measured.length + 1,
+            value: '',
+        };
+        milestones[index].measured.push(newMeasure)
+        setMileStones(milestones);
+        handleForceUpdate()
+    }
 
     const handleRemoveMilestone = (e, idToRemove) => {
         e.preventDefault()
         const filteredSections = milestones.filter((section) => section.id !== idToRemove);
         setMileStones(filteredSections);
     };
+
+    useEffect(() => {
+        handleForceUpdate()
+    }, [])
 
     const sppCodeRef = useRef()
     const titleRef = useRef()
@@ -45,6 +96,15 @@ const AddNew = () => {
             setBtnStatus('disabled')
             window.toastr.error(response.data.message)
         })
+    }
+
+    const hideAddButtons = () => {
+        // const btns = document.querySelectorAll('.addBtn');
+        // for (let b = 0; b < btns.length; b++) {
+        //     if (!btns[b].classList.contains('first-0')) {
+        //         btns[b].classList.add('d-none')
+        //     }
+        // }
     }
 
     const create = () => {
@@ -163,19 +223,59 @@ const AddNew = () => {
                                     </div>
                                     <FormInput className="col-6 form-group mt-3" label="Date Awarded" ref={awardDateRef} placeholder="Date Awarded" />
                                     <FormInput className="col-6 form-group mt-3" label="Funding Amount" ref={amountRef} placeholder="Amount" type="number" />
-                                    <div className='d-flex col-12 mt-3'>
-                                        <h3 className='col-7'>Milestone(s)</h3>
-                                        <PrimaryButton className='btn btn-primary btn-sm float-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone'/>
+                                    <div className='col-12 mt-3'>
+                                        <PrimaryButton className='btn btn-primary btn-sm float-right pull-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone'/>
                                     </div>
                                     {milestones.map((milestone, index) => (
-                                        <div className='d-flex col-12' key={index}>
-                                            <FormInput className="col-md-4 form-group mt-3" id={`milestone-description-${index}`} label={`Description ${index + 1}`} placeholder="Enter Description" type="text" />
-                                            <FormInput className="col-md-3 form-group mt-3" id={`milestone-date-${index}`} label={`Date ${index + 1}`} placeholder="Select date" type="date" />
-                                            <FormInput className="col-md-4 form-group mt-3" id={`milestone-amount-${index}`} label={`Amount ${index + 1}`} placeholder="Enter Amount" type="number" />
-                                            <div className='form-group mt-5'>
-                                                <PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
+                                        <>
+                                            <h3 className='col-7'>Milestone {index + 1}</h3>
+                                            <div className='d-flex col-12' key={index}>
+                                                <div class="row">
+                                                    {milestone.preliminaries.map((preliminary, pre) => (
+                                                        <div class="preliminary" key={pre}>
+                                                            <h5 class="ml-3 mb-0">Milestone {index + 1} Preliminary Sum {pre + 1}</h5>
+                                                            <div class="d-flex">
+                                                                <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-description-${index}-${pre}`} placeholder="Enter Description" type="text" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-date-${index}-${pre}`} placeholder="Select date" type="date" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-quantity-${index}-${pre}`}  placeholder="Enter Quantity" type="number" />
+                                                                <FormInput className="col-md-1 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-rate-${index}-${pre}`} placeholder="Enter Rate" type="number" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-amount-${index}-${pre}`} placeholder="Enter Amount" type="number" />
+                                                                <PrimaryButton className={`btn btn-primary btn-sm mt-4 ${index}-${pre} addBtn`} onClick={(e) => handleAddPreliminarySum(e, milestone)} title='Add'/>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {milestone.provisions.map((provision, pro) => (
+                                                        <div class="provisional" key={pro}>
+                                                            <h5 class="ml-3 mb-0">Milestone {index + 1} Provisional Sum {pro + 1}</h5>
+                                                            <div class="d-flex">
+                                                                <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-description-${index}-${pro}`} placeholder="Enter Description" type="text" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-date-${index}-${pro}`} placeholder="Select date" type="date" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-quantity-${index}-${pro}`}  placeholder="Enter Quantity" type="number" />
+                                                                <FormInput className="col-md-1 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-rate-${index}-${pro}`} placeholder="Enter Rate" type="number" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-amount-${index}-${pro}`} placeholder="Enter Amount" type="number" />
+                                                                <PrimaryButton className={`btn btn-primary btn-sm mt-4 ${index}-${pro} addBtn`} onClick={(e) => handleAddProvisionalSum(e, milestone)} title='Add'/>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                    {milestone.measured.map((measure, mea) => (
+                                                        <div class="measured">
+                                                            <h5 class="ml-3 mb-0">Milestone {index + 1} Measured Works {mea + 1}</h5>
+                                                            <div className='d-flex'>
+                                                                <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-description-${index}-${mea}`} placeholder="Enter Description" type="text" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-date-${index}-${mea}`} placeholder="Select date" type="date" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-quantity-${index}-${mea}`}  placeholder="Enter Quantity" type="number" />
+                                                                <FormInput className="col-md-1 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-rate-${index}-${mea}`} placeholder="Enter Rate" type="number" />
+                                                                <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-amount-${index}-${mea}`} placeholder="Enter Amount" type="number" />
+                                                                <PrimaryButton className={`btn btn-primary btn-sm mt-4 ${index}-${mea} addBtn`} onClick={(e) => handleAddMeasuredWorks(e, milestone)} title='Add'/>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                {/* <div className='form-group mt-5'>
+                                                    <PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
+                                                </div> */}
                                             </div>
-                                        </div>
+                                        </>
                                     ))}
                                 </div>
                                 <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>

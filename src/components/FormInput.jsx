@@ -1,12 +1,12 @@
 import React from 'react'
 
-const FormInput = React.forwardRef(({ label, placeholder, required, type, action, icon, readonly, iconSize, ...rest }, ref) => {
+const FormInput = React.forwardRef(({ label, placeholder, required, type, action, icon, readonly, iconSize, inputClass, ...rest }, ref) => {
     return (
         <div {...rest}>
             <label htmlFor="">{label}</label>
             <input
                 type={type}
-                className="form-control"
+                className={inputClass}
                 ref={ref}
                 placeholder={placeholder}
                 onKeyUp={action}
@@ -17,3 +17,7 @@ const FormInput = React.forwardRef(({ label, placeholder, required, type, action
 })
 
 export default FormInput
+
+FormInput.defaultProps = {
+    inputClass: "form-control"
+}
