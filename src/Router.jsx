@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { RequireAuth } from 'react-auth-kit'
 
-import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser } from './pages'
+import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser } from './pages'
 import Layout from './layout'
 
 const Router = () => {
@@ -19,6 +19,7 @@ const Router = () => {
                         <Route path='add/' element={<AddNew />} />
                     </Route>
                     <Route path='spp-users/'>
+                        <Route index element={<ListSPPUser />} />
                         <Route path='create/' element={<CreateSPPUser />} />
                     </Route>
                 </Route>
