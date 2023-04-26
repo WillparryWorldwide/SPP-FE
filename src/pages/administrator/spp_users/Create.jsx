@@ -3,7 +3,7 @@ import ContentHeader from '../../../components/ContentHeader'
 import FormInput from '../../../components/FormInput'
 import FormTextArea from '../../../components/FormTextArea'
 import PrimaryButton from '../../../components/PrimaryButton'
-import useAxiosClient from '../../../Hooks/useAxiosClient'
+import axios from '../../../Helper/axiosClient'
 
 const Create = () => {
 
@@ -22,8 +22,6 @@ const Create = () => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const sppAddressRef = useRef()
     const [btnStatus, setBtnStatus] = useState(false);
-
-    const axios = useAxiosClient()
 
     // SUBMIT FORM DATA TO SERVER
     const handleSubmit = (e) => {
@@ -67,21 +65,22 @@ const Create = () => {
             sppAddressRef.current.focus()
             window.toastr.error('SPP Address is required')
         } else {
-            const formData = new FormData()
-            formData.append('fullname', `${nameRef.current.value} ${LastNameRef.current.value}`)
-            formData.append('phone_number', phoneRef.current.value)
-            formData.append('email_address', emailRef.current.value)
-            formData.append('semail_address', SemailRef.current.value)
-            formData.append('sfullname', `${SnameRef.current.value} ${SLastNameRef.current.value}`)
-            formData.append('sphone_number', SphoneRef.current.value)
-            formData.append('saddress', SaddressRef.current.value)
-            formData.append('address', addressRef.current.value)
-            formData.append('spp_name', sppNameRef.current.value)
-            formData.append('spp_rc_number', rcNumberRef.current.value)
-            formData.append('spp_address', sppAddressRef.current.value)
+            const data = {
+                hoo_fullname: `${nameRef.current.value} ${LastNameRef.current.value}`,
+                hoo_address: addressRef.current.value,
+                hoo_phone: phoneRef.current.value,
+                hoo_email: emailRef.current.value,
+                secretary_fullname: `${SnameRef.current.value} ${SLastNameRef.current.value}`,
+                secretary_address: SaddressRef.current.value,
+                secretary_phone: SphoneRef.current.value,
+                secretary_email: SemailRef.current.value,
+                rc_number: rcNumberRef.current.value,
+                spp_name: sppNameRef.current.value,
+                phone: phoneRef.current.value,
+                address: sppAddressRef.current.value
+            }
             setBtnStatus(true);
-
-            axios.post('/api/admin/create-spp', formData).then(({ data }) => {
+            axios.post('/auth/register-spp', data).then(({ data }) => {
                 window.toastr.error(data.message);
             }).catch(({ response }) => {
                 setBtnStatus(false)
@@ -97,6 +96,12 @@ const Create = () => {
                 <div className="card">
                     <form method="POST" onSubmit="return false">
                         <div className="container">
+                            <h3>SPP Details</h3>
+                            <div className='row'>
+                                <FormInput placeholder="Enter SPP Name" className="col-6 mb-3" ref={sppNameRef} />
+                                <FormInput placeholder="Enter SPP RC Number" className="col-6 mb-3" ref={rcNumberRef} />
+                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-12 mb-3" ref={sppAddressRef} />
+                            </div>
                             <h3 className='mt-3'>Head of Organization</h3>
                             <div className='row'>
                                 <FormInput placeholder="Enter First Name" className="col-6 mb-3" ref={nameRef} />
@@ -116,12 +121,6 @@ const Create = () => {
                                 <FormInput placeholder="Enter Phone number" type="number" className="col-6 mb-3" ref={SphoneRef} />
                                 <FormInput placeholder="Enter email address" type="text" className="col-6 mb-3" ref={SemailRef} />
                                 <FormTextArea placeholder="Enter address" row="10" className="col-12 mb-3" ref={SaddressRef} />
-                            </div>
-                            <h3>SPP Details</h3>
-                            <div className='row'>
-                                <FormInput placeholder="Enter SPP Name" className="col-6 mb-3" ref={sppNameRef} />
-                                <FormInput placeholder="Enter SPP RC Number" className="col-6 mb-3" ref={rcNumberRef} />
-                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-12 mb-3" ref={sppAddressRef} />
                             </div>
                             <div className="row">
                                 <PrimaryButton className="btn btn-primary btn-block float-right mb-3" disabled={btnStatus ? 'disabled' : ''} title='Submit' type="submit" onClick={(e) => handleSubmit(e)} />

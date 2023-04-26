@@ -4,9 +4,11 @@ import avatar from '../layout/assets/images/avatar.png'
 import { useAuthContext } from '../context/AuthContext'
 import SectionModal from '../components/SectionModal'
 import CategoryModal from '../components/CategoryModal'
+import {useAuthUser} from 'react-auth-kit'
 
 const Navigation = () => {
 
+    const userData = useAuthUser()
     const { auth } = useAuthContext()
     if (auth !== undefined) {
         avatar = auth?.avatar ?? avatar
@@ -43,29 +45,37 @@ const Navigation = () => {
                             <p>Home</p>
                         </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link className="nav-link">
-                            <i className="nav-icon fas fa-list-check"></i>
-                            <p>
-                                SPP Users
-                                <i className="fas fa-angle-left right"></i>
-                            </p>
-                        </Link>
-                        <ul className="nav nav-treeview">
-                            <li className="nav-item">
-                                <Link to="/dashboard/admin/spp-users" className="nav-link">
-                                    <i className="far fa-circle nav-icon"></i>
-                                    <p>List</p>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/dashboard/admin/spp-users/create" className="nav-link">
-                                    <i className="far fa-circle nav-icon"></i>
-                                    <p>Create</p>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
+                    {userData()?.role !== 'contractor' && <>
+                        <li className="nav-item">
+                            <Link className="nav-link">
+                                <i className="nav-icon fas fa-list-check"></i>
+                                <p>
+                                    SPP Users
+                                    <i className="fas fa-angle-left right"></i>
+                                </p>
+                            </Link>
+                            <ul className="nav nav-treeview">
+                                <li className="nav-item">
+                                    <Link to="/dashboard/admin/spp-users" className="nav-link">
+                                        <i className="far fa-circle nav-icon"></i>
+                                        <p>List</p>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/dashboard/admin/spp-users/create" className="nav-link">
+                                        <i className="far fa-circle nav-icon"></i>
+                                        <p>Create</p>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/dashboard/admin/create-user" className="nav-link">
+                                <i className="nav-icon fas fa-home-alt"></i>
+                                <p>Create Admin</p>
+                            </Link>
+                        </li>
+                    </>}
                     <li className="nav-item">
                         <Link className="nav-link">
                             <i className="nav-icon fas fa-list-check"></i>

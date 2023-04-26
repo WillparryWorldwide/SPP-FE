@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import FormInput from '../components/FormInput'
-import { axiosClient } from '../Helper/axiosClient'
+import axios from '../Helper/axiosClient'
+import {useAuthUser} from 'react-auth-kit'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
 import PrimaryButton from '../components/PrimaryButton'
@@ -16,20 +17,25 @@ const Login = () => {
     const navigate = useNavigate()
     const SignIn = useSignIn()
     const isAuthenticated = useIsAuthenticated()
+    const userData = useAuthUser()
 
     useEffect(() => {
         // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
-        SignIn({
-            token: 'gscyuschsaclihsjcsciusacgusclusakjc',
-            expiresIn: 1440,
-            tokenType: "Bearer",
-            authState: {name: 'Daniel Michael', avatar: ''},
-            refreshToken: 'hzucoiucasugcoiuscoiusclaszijcis',
-            refreshTokenExpireIn: 1440
-        })
+        // SignIn({
+        //     token: 'gscyuschsaclihsjcsciusacgusclusakjc',
+        //     expiresIn: 1440,
+        //     tokenType: "Bearer",
+        //     authState: {name: 'Daniel Michael', avatar: ''},
+        //     refreshToken: 'hzucoiucasugcoiuscoiusclaszijcis',
+        //     refreshTokenExpireIn: 1440
+        // })
         // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
         if (isAuthenticated()) {
-            navigate('/dashboard', { replace: true })
+            if (userData().role === 'contractor') {
+                navigate('/dashboard', { replace: true })
+            } else {
+                navigate('/dashboard/admin', {replace: true});
+            }
         }
     }, [])
 
@@ -45,25 +51,31 @@ const Login = () => {
             window.toastr.error('Password is required')
         } else {
             setBtnStatus(true)
-            const formData = new FormData();
-            formData.append('spp_code', sppCodeRef.current.value)
-            formData.append('password', passwordRef.current.value)
+            const data = {
+                username: sppCodeRef.current.value,
+                password: passwordRef.current.value
+            }
 
-            axiosClient.post('/', formData).then(({ data }) => {
-                window.toastr.success(data.message)
+            axios.post('/auth/login', data).then(({ data }) => {
+                const user = data.data
+                window.toastr.success(data.alert)
                 if (SignIn({
-                    token: data.token,
+                    token: user.hash,
                     expiresIn: 1440,
                     tokenType: "Bearer",
-                    authState: data.user,
-                    refreshToken: '',
-                    refreshTokenExpireIn: ''
+                    authState: user,
+                    refreshToken: user.hash,
+                    refreshTokenExpireIn: 1440
                 })) {
-                    navigate('/dashboard', { replace: true })
+                    if (user.role === 'contractor') {
+                        navigate('/dashboard', {replace: true})
+                    } else {
+                        navigate('/dashboard/admin', {replace: true});
+                    }
                 }
-            }).catch(({ response }) => {
+            }).catch((response) => {
                 setBtnStatus(false)
-                window.toastr.error(response.data.message)
+                window.toastr.error(response.message)
             })
         }
     }
@@ -80,7 +92,7 @@ const Login = () => {
                     <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
                     <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
                 </form>
-                <Link to="/signup/" className="text-center">Don't have an account? Create one Here</Link>
+                <Link to="/forgotten-password/" className="text-center">Forgotten Password? Click Here</Link>
             </div>
         </div>
     </div>)

@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { RequireAuth } from 'react-auth-kit'
 
-import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser } from './pages'
+import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup } from './pages'
 import Layout from './layout'
 
 const Router = () => {
@@ -14,6 +14,7 @@ const Router = () => {
             <Route path="dashboard/" element={<><RequireAuth loginPath="/" /><Layout/></>}>
                 <Route path='admin/'>
                     <Route index element={<ADashboard />} />
+                    <Route path='create-user/' element={<Signup />} />
                     <Route path='profile/' element={<Profile />} />
                     <Route path='project/'>
                         <Route path='add/' element={<AddNew />} />

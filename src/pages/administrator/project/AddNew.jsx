@@ -7,7 +7,14 @@ import axiosClient from '../../../Helper/axiosClient'
 
 const AddNew = () => {
 
-    const [milestones, setMileStones] = useState([{ id: 1, value: '', preliminaries: [{ id: 1, value: '' }], provisions: [{ id: 1, value: '' }], measured: [{ id: 1, value: '' }] }]);
+    const [milestones, setMileStones] = useState([
+        {
+            id: 1, value: '',
+            preliminaries: [{ id: 1, value: '' }],
+            provisions: [{ id: 1, value: '' }],
+            measured: [{ id: 1, value: '' }]
+        }
+    ]);
 
     const handleAddMilestone = (e) => {
         e.preventDefault()
@@ -84,7 +91,7 @@ const AddNew = () => {
     };
 
     const fetchCategories = () => {
-        axiosClient.get('/api/fetch-categories').then(({ data }) => {
+        axiosClient.get('/fetch-categories').then(({ data }) => {
             setCategories(data.categories)
         }).catch(({ response }) => {
             console.log(response.data.message);
@@ -112,7 +119,7 @@ const AddNew = () => {
 
     const axios = useAxiosClient()
     const fetchSPPData = async e => {
-        axios.get(`/api/contractors/fetch`).then(({ data }) => {
+        axios.get(`/contractors/fetch`).then(({ data }) => {
             setBtnStatus('')
             setSppData(data.contractor)
         }).catch(({ response }) => {
@@ -198,7 +205,7 @@ const AddNew = () => {
             formData.append('description', descriptionRef.current.value)
             formData.append('milestones', JSON.stringify(milestoneList))
 
-            axios.post('/api/project', formData).then(({ data }) => {
+            axios.post('/project', formData).then(({ data }) => {
                 setBtnStatus('');
                 document.querySelector('#project').reset()
                 window.toastr.success(data.message)

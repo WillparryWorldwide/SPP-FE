@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext'
 
 const Layout = () => {
     const { site_name } = useAppContext()
-    document.body.classList.remove('hold-transition', 'login-page')
+    document.body.classList.remove('hold-transition', 'login-page', 'register-page')
     document.body.classList.add('hold-transition', 'sidebar-mini', 'layout-fixed', 'layout-navbar-fixed', 'layout-footer-fixed')
     return (
         <div className="wrapper">

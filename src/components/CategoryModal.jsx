@@ -19,7 +19,7 @@ const CategoryModal = ({ status, setStatus }) => {
     }, [])
 
     const fetchSections = async () => {
-        await axios.get('/api/sections/fetch').then(({data}) => {
+        await axios.get('/sections/fetch').then(({data}) => {
             setSections(data.sections)
         }).catch(({response}) => {
             console.log(response.data.message);
@@ -37,7 +37,7 @@ const CategoryModal = ({ status, setStatus }) => {
             const formData = new FormData()
             formData.append('section', sectionRef.current.value)
             formData.append('category', categoryRef.current.value)
-            await axios.post('/api/section/create', formData).then(({ data }) => {
+            await axios.post('/section/create', formData).then(({ data }) => {
                 window.toastr.success(data.message)
             }).catch(({ response }) => {
                 window.toastr.error(response.data.message)

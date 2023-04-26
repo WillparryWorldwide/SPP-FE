@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import useAxiosClient from '../Hooks/useAxiosClient'
 import { Modal, Button } from "react-bootstrap";
 
-const SectionModal = ({ status, setStatus }) => {
+const ProjectModal = ({ status, setStatus }) => {
 
     const titleRef = useRef()
     const axios = useAxiosClient()
@@ -12,23 +12,10 @@ const SectionModal = ({ status, setStatus }) => {
         setStatus(false)
     };
 
-    const createSection = async () => {
-        if (titleRef.current.value === '') {
-            titleRef.current.focus();
-            window.toastr.error('Section title is required')
-        } else {
-            const formData = new FormData()
-            formData.append('title', titleRef.current.value)
-            await axios.post('/section/create', formData).then(({ data }) => {
-                window.toastr.success(data.message)
-            }).catch(({ response }) => {
-                window.toastr.error(response.data.message)
-            })
-        }
-    }
+    const createSection = () => {}
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} size="lg" centered>
             <Modal.Header closeButton>
                 <Modal.Title>Create Section</Modal.Title>
             </Modal.Header>
@@ -51,4 +38,4 @@ const SectionModal = ({ status, setStatus }) => {
     )
 }
 
-export default SectionModal
+export default ProjectModal

@@ -62,7 +62,7 @@ const List = () => {
     }, [debouncedQuery, veteransOnly]);
 
     const fetchProjects = async () => {
-        await axios.get('/api/users').then(({ data }) => {
+        await axios.get('/users').then(({ data }) => {
             setSppUsers(data.users)
         }).catch(({ response }) => {
             window.toastr.error(response.data.message)
