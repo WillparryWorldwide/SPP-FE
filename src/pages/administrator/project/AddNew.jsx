@@ -84,10 +84,28 @@ const AddNew = () => {
         handleForceUpdate()
     }
 
-    const handleRemoveMilestone = (e, idToRemove) => {
+    const handleRemoveMilestone = (e, milestone, path, id) => {
         e.preventDefault()
-        const filteredSections = milestones.filter((section) => section.id !== idToRemove);
-        setMileStones(filteredSections);
+        const allMilestones = [...milestones]
+        const indexMilestone = allMilestones.indexOf(milestone)
+        const actualMilestone = allMilestones[indexMilestone]
+        console.log(actualMilestone);
+        // eslint-disable-next-line default-case
+        switch (path) {
+            case 'preliminary':
+                // eslint-disable-next-line no-unused-expressions
+                actualMilestone['preliminaries'].length !== 1 ? actualMilestone['preliminaries'].splice(id, 1) : ''
+                break;
+            case 'provisional':
+                // eslint-disable-next-line no-unused-expressions
+                actualMilestone['provisions'].length !== 1 ? actualMilestone['provisions'].splice(id, 1) : ''
+                break;
+            case 'measured':
+                // eslint-disable-next-line no-unused-expressions
+                actualMilestone['measured'].length !== 1 ? actualMilestone['measured'].splice(id, 1) : ''
+                break;
+        }
+        setMileStones(allMilestones);
     };
 
     const fetchCategories = () => {
@@ -280,7 +298,7 @@ const AddNew = () => {
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-quantity-${index}-${pre}`} placeholder="Enter Quantity" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-rate-${index}-${pre}`} placeholder="Enter Rate" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-amount-${index}-${pre}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pre}`} onClick={(e) => handleRemoveMilestone(e, milestone)} title='Delete' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pre}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'preliminary', pre)} title='Delete' />
                                                                 </div>
                                                             </div>
                                                         </>
@@ -298,7 +316,7 @@ const AddNew = () => {
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-quantity-${index}-${pro}`} placeholder="Enter Quantity" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-rate-${index}-${pro}`} placeholder="Enter Rate" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-provisional-amount-${index}-${pro}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pro}`} onClick={(e) => handleRemoveMilestone(e, milestone)} title='Delete' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pro}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'provisional', pro)} title='Delete' />
                                                                 </div>
                                                             </div>
                                                         </>
@@ -316,7 +334,7 @@ const AddNew = () => {
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-quantity-${index}-${mea}`} placeholder="Enter Quantity" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-rate-${index}-${mea}`} placeholder="Enter Rate" type="number" />
                                                                     <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-measured-amount-${index}-${mea}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${mea}`} onClick={(e) => handleRemoveMilestone(e, milestone)} title='Delete' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${mea}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'measured', mea)} title='Delete' />
                                                                 </div>
                                                             </div>
                                                         </>
