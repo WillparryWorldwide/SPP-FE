@@ -76,7 +76,7 @@ const Signup = () => {
                                 <FormInput placeholder="Re-type password" type="password" className="col-6 mb-3" ref={reTypePasswordRef} />
                             </div>
                             <div className="row">
-                                <PrimaryButton className="btn btn-primary btn-block float-right" disabled={btnStatus ? 'disabled' : ''} title={btnText} type="submit" onClick={(e) => handleSubmit(e)} />
+                                <PrimaryButton className="btn btn-primary btn-end mb-3 ml-3 float-right" disabled={btnStatus ? 'disabled' : ''} title={btnText} type="submit" onClick={(e) => handleSubmit(e)} />
                             </div>
                         </div>
                     </form>

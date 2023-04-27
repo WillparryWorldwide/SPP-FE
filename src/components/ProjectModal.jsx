@@ -16,8 +16,9 @@ const ProjectModal = ({ status, setStatus }) => {
 
     return (
         <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} size="lg" centered>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>Create Section</Modal.Title>
+                <span className='btn' onClick={() => handleClose()}> X </span>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

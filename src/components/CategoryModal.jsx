@@ -47,8 +47,9 @@ const CategoryModal = ({ status, setStatus }) => {
 
     return (
         <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>Create Category</Modal.Title>
+                <span className='btn' onClick={() => handleClose()}> X </span>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

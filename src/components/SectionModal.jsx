@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import useAxiosClient from '../Hooks/useAxiosClient'
 import { Modal, Button } from "react-bootstrap";
+import CloseButton from 'react-bootstrap/CloseButton';
 
 const SectionModal = ({ status, setStatus }) => {
 
@@ -29,8 +30,9 @@ const SectionModal = ({ status, setStatus }) => {
 
     return (
         <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title>Create Section</Modal.Title>
+                <span className='btn' onClick={() => handleClose()}> X </span>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">

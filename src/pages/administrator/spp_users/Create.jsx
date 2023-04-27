@@ -123,7 +123,7 @@ const Create = () => {
                                 <FormTextArea placeholder="Enter address" row="10" className="col-12 mb-3" ref={SaddressRef} />
                             </div>
                             <div className="row">
-                                <PrimaryButton className="btn btn-primary btn-block float-right mb-3" disabled={btnStatus ? 'disabled' : ''} title='Submit' type="submit" onClick={(e) => handleSubmit(e)} />
+                                <PrimaryButton className="btn btn-primary btn-end ml-3 float-right mb-3" disabled={btnStatus ? 'disabled' : ''} title='Submit' type="submit" onClick={(e) => handleSubmit(e)} />
                             </div>
                         </div>
                     </form>
