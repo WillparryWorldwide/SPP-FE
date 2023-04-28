@@ -20,16 +20,6 @@ const Login = () => {
     const userData = useAuthUser()
 
     useEffect(() => {
-        // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
-        // SignIn({
-        //     token: 'gscyuschsaclihsjcsciusacgusclusakjc',
-        //     expiresIn: 1440,
-        //     tokenType: "Bearer",
-        //     authState: {name: 'Daniel Michael', avatar: ''},
-        //     refreshToken: 'hzucoiucasugcoiuscoiusclaszijcis',
-        //     refreshTokenExpireIn: 1440
-        // })
-        // REMOVE THIS FUNCTION FOR TEST PURPOSE ONLY
         if (isAuthenticated()) {
             if (userData().role === 'contractor') {
                 navigate('/dashboard', { replace: true })
