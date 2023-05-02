@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import avatar from '../layout/assets/images/avatar.png'
 import { useAuthContext } from '../context/AuthContext'
 import SectionModal from '../components/SectionModal'
-import CategoryModal from '../components/CategoryModal'
-import {useAuthUser} from 'react-auth-kit'
+import { useAuthUser } from 'react-auth-kit'
+import MdaModal from '../components/MdaModal'
 
 const Navigation = () => {
 
@@ -15,7 +15,7 @@ const Navigation = () => {
     }
 
     const [sectionModalState, setSectionModalState] = useState(false)
-    const [categoryModalState, setCategoryModalState] = useState(false)
+    const [MdaModalState, setMdaModalState] = useState(false)
 
     return (
         <div className="sidebar">
@@ -39,13 +39,21 @@ const Navigation = () => {
             </div>
             <nav className="mt-2">
                 <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <li className="nav-item">
-                        <Link to="/dashboard" className="nav-link active">
-                            <i className="nav-icon fas fa-home-alt"></i>
-                            <p>Home</p>
-                        </Link>
-                    </li>
+                    {userData()?.role === 'contractor' &&
+                        <li className="nav-item">
+                            <Link to="/dashboard" className="nav-link active">
+                                <i className="nav-icon fas fa-home-alt"></i>
+                                <p>Profile</p>
+                            </Link>
+                        </li>
+                    }
                     {userData()?.role !== 'contractor' && <>
+                        <li className="nav-item">
+                            <Link to="/dashboard/admin" className="nav-link active">
+                                <i className="nav-icon fas fa-home-alt"></i>
+                                <p>Home</p>
+                            </Link>
+                        </li>
                         <li className="nav-item">
                             <Link className="nav-link">
                                 <i className="nav-icon fas fa-list-check"></i>
@@ -100,21 +108,21 @@ const Navigation = () => {
                             <li className="nav-item">
                                 <Link onClick={() => setSectionModalState(!sectionModalState)} className="nav-link">
                                     <i className="far fa-circle nav-icon"></i>
-                                    <p>Create Section</p>
+                                    <p>Create Sector</p>
                                 </Link>
                             </li>
                             <li className="nav-item">
-                                <Link onClick={() => setCategoryModalState(!categoryModalState)} className="nav-link">
+                                <Link onClick={() => setMdaModalState(!MdaModalState)} className="nav-link">
                                     <i className="far fa-circle nav-icon"></i>
-                                    <p>Create Category</p>
+                                    <p>Create MDA</p>
                                 </Link>
                             </li>
                         </ul>
                     </li>
                 </ul>
             </nav>
-            <SectionModal key={sectionModalState} status={sectionModalState} setStatus={setSectionModalState}/>
-            <CategoryModal key={categoryModalState} status={categoryModalState} setStatus={setCategoryModalState}/>
+            <SectionModal key={sectionModalState} status={sectionModalState} setStatus={setSectionModalState} />
+            <MdaModal key={MdaModalState} status={MdaModalState} setStatus={setMdaModalState} />
         </div>
     )
 }

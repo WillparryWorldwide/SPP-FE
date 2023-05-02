@@ -9,7 +9,7 @@ const ProjectModal = ({ status, setStatus }) => {
     const [show, setShow] = useState(status);
     const handleClose = () => {
         setShow(false)
-        setStatus(false)
+        // setStatus(false)
     };
 
     const createSection = () => {}

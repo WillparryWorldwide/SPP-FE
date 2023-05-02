@@ -2,15 +2,17 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import FormInput from '../components/FormInput'
-import axios from '../Helper/axiosClient'
+// import axios from '../Helper/axiosClient'
 import {useAuthUser} from 'react-auth-kit'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
 import PrimaryButton from '../components/PrimaryButton'
+import AxiosClient from '../Helper/axiosClient'
 
 const Login = () => {
 
-    const { site_name } = useAppContext()
+    const axios = AxiosClient()
+    const { site_name, updateLoginStatus, login_status } = useAppContext()
     const sppCodeRef = useRef()
     const passwordRef = useRef()
     const [btnStatus, setBtnStatus] = useState(false);
@@ -46,19 +48,21 @@ const Login = () => {
                 password: passwordRef.current.value
             }
 
-            axios.post('/auth/login', data).then(({ data }) => {
+            axios.post('/auth/login', data).then(({data}) => {
+                console.log(data);
                 const user = data.data
                 window.toastr.success(data.alert)
                 if (SignIn({
-                    token: user.hash,
+                    token: user.token,
                     expiresIn: 1440,
                     tokenType: "Bearer",
                     authState: user,
-                    refreshToken: user.hash,
+                    refreshToken: user.token,
                     refreshTokenExpireIn: 1440
                 })) {
+                    updateLoginStatus(!login_status)
                     if (user.role === 'contractor') {
-                        navigate('/dashboard', {replace: true})
+                        navigate('/dashboard/profile', {replace: true})
                     } else {
                         navigate('/dashboard/admin', {replace: true});
                     }

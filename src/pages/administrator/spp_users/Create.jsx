@@ -3,7 +3,7 @@ import ContentHeader from '../../../components/ContentHeader'
 import FormInput from '../../../components/FormInput'
 import FormTextArea from '../../../components/FormTextArea'
 import PrimaryButton from '../../../components/PrimaryButton'
-import axios from '../../../Helper/axiosClient'
+import AxiosClient from '../../../Helper/axiosClient'
 
 const Create = () => {
 
@@ -22,6 +22,8 @@ const Create = () => {
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const sppAddressRef = useRef()
     const [btnStatus, setBtnStatus] = useState(false);
+
+    const axios = AxiosClient()
 
     // SUBMIT FORM DATA TO SERVER
     const handleSubmit = (e) => {
@@ -75,13 +77,14 @@ const Create = () => {
                 secretary_phone: SphoneRef.current.value,
                 secretary_email: SemailRef.current.value,
                 rc_number: rcNumberRef.current.value,
-                spp_name: sppNameRef.current.value,
+                name: sppNameRef.current.value,
                 phone: phoneRef.current.value,
                 address: sppAddressRef.current.value
             }
             setBtnStatus(true);
             axios.post('/auth/register-spp', data).then(({ data }) => {
-                window.toastr.error(data.message);
+                setBtnStatus(false)
+                window.toastr.success(data.message);
             }).catch(({ response }) => {
                 setBtnStatus(false)
                 window.toastr.error(response.data.message);
@@ -94,7 +97,7 @@ const Create = () => {
             <ContentHeader title="Create New SPP User" />
             <section className="content">
                 <div className="card">
-                    <form method="POST" onSubmit="return false">
+                    <form method="POST">
                         <div className="container">
                             <h3>SPP Details</h3>
                             <div className='row'>

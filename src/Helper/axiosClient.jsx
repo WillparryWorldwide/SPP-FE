@@ -1,12 +1,15 @@
 import axios from 'axios';
+import { useAuthUser } from 'react-auth-kit'
+
 const BASE_URL = `${process.env.REACT_APP_BASE_URL}`
 
-export default axios.create({
-    baseURL: BASE_URL
-});
+const AxiosClient = () => {
+    const userData = useAuthUser();
+    return axios.create({
+        baseURL: BASE_URL,
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userData()?.token}` },
+        // withCredentials: true
+    });
+}
 
-export const axiosClient = axios.create({
-    baseURL: BASE_URL,
-    headers: { 'Content-Type': 'application/json' },
-    withCredentials: true
-});
+export default AxiosClient

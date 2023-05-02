@@ -1,12 +1,11 @@
 import React, { useRef, useState } from 'react'
-import useAxiosClient from '../Hooks/useAxiosClient'
 import { Modal, Button } from "react-bootstrap";
-import CloseButton from 'react-bootstrap/CloseButton';
+import AxiosClient from '../Helper/axiosClient';
 
 const SectionModal = ({ status, setStatus }) => {
 
     const titleRef = useRef()
-    const axios = useAxiosClient()
+    const axios = AxiosClient()
     const [show, setShow] = useState(status);
     const handleClose = () => {
         setShow(false)
@@ -16,28 +15,32 @@ const SectionModal = ({ status, setStatus }) => {
     const createSection = async () => {
         if (titleRef.current.value === '') {
             titleRef.current.focus();
-            window.toastr.error('Section title is required')
+            window.toastr.error('Sector title is required')
         } else {
-            const formData = new FormData()
-            formData.append('title', titleRef.current.value)
-            await axios.post('/section/create', formData).then(({ data }) => {
-                window.toastr.success(data.message)
-            }).catch(({ response }) => {
+            const data = {
+                name: titleRef.current.value
+            }
+            await axios.post('/sector/register', data).then(({ data }) => {
+                console.log(data);
+                handleClose()
+                window.toastr.success(data.data.message)
+            }).catch(({response}) => {
+                handleClose()
                 window.toastr.error(response.data.message)
             })
         }
     }
 
     return (
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show} onHide={handleClose} centered>
             <Modal.Header>
-                <Modal.Title>Create Section</Modal.Title>
+                <Modal.Title>Create Sector</Modal.Title>
                 <span className='btn' onClick={() => handleClose()}> X </span>
             </Modal.Header>
             <Modal.Body>
                 <div className="row">
                     <div className="col-md-12">
-                        <input type="text" className='form-control' placeholder='Enter Section Title' ref={titleRef} />
+                        <input type="text" className='form-control' placeholder='Enter Sector Title' ref={titleRef} />
                     </div>
                 </div>
             </Modal.Body>

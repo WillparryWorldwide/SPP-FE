@@ -2,9 +2,9 @@ import React, { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAppContext } from '../../context/AppContext'
 import FormInput from '../../components/FormInput'
-import axios from '../../Helper/axiosClient'
 import PrimaryButton from '../../components/PrimaryButton'
 import ContentHeader from '../../components/ContentHeader'
+import AxiosClient from '../../Helper/axiosClient'
 
 const Signup = () => {
 
@@ -19,6 +19,8 @@ const Signup = () => {
     const [btnStatus, setBtnStatus] = useState(false);
     const [btnText, setBtnText] = useState('Submit')
     const navigate = useNavigate()
+
+    const axios = AxiosClient()
 
     // SUBMIT FORM DATA TO SERVER
     const handleSubmit = (e) => {
@@ -47,12 +49,12 @@ const Signup = () => {
             }
             setBtnStatus(true);
             axios.post('/auth/register-admin', data).then(({ data }) => {
+                console.log("Created", data);
                 window.toastr.success(data.alert);
                 document.getElementById('form').reset()
             }).catch(({response}) => {
                 setBtnStatus(false)
                 window.toastr.error(response.data.message);
-                window.toastr.error(response.data.error_message);
             })
         }
     }
