@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import FormInput from '../components/FormInput'
 // import axios from '../Helper/axiosClient'
-import {useAuthUser} from 'react-auth-kit'
+import { useAuthUser } from 'react-auth-kit'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
 import PrimaryButton from '../components/PrimaryButton'
@@ -26,7 +26,7 @@ const Login = () => {
             if (userData().role === 'contractor') {
                 navigate('/dashboard', { replace: true })
             } else {
-                navigate('/dashboard/admin', {replace: true});
+                navigate('/dashboard/admin', { replace: true });
             }
         }
     }, [])
@@ -48,7 +48,7 @@ const Login = () => {
                 password: passwordRef.current.value
             }
 
-            axios.post('/auth/login', data).then(({data}) => {
+            axios.post('/auth/login', data).then(({ data }) => {
                 console.log(data);
                 const user = data.data
                 window.toastr.success(data.alert)
@@ -62,9 +62,9 @@ const Login = () => {
                 })) {
                     updateLoginStatus(!login_status)
                     if (user.role === 'contractor') {
-                        navigate('/dashboard/profile', {replace: true})
+                        navigate('/dashboard/profile', { replace: true })
                     } else {
-                        navigate('/dashboard/admin', {replace: true});
+                        navigate('/dashboard/admin', { replace: true });
                     }
                 }
             }).catch((response) => {
@@ -74,22 +74,24 @@ const Login = () => {
         }
     }
 
-    return (<div className="register-box">
-        <div className="card card-outline card-primary">
-            <div className="card-header text-center">
-                <Link to="" className="h1">{site_name}</Link>
-            </div>
-            <div className="card-body">
-                <p className="login-box-msg">Login as a contractor</p>
-                <form method="POST" onSubmit="return false">
-                    <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
-                    <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
-                    <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
-                </form>
-                <Link to="/forgotten-password/" className="text-center">Forgotten Password? Click Here</Link>
+    return (
+        <div className="register-box">
+            <div className="card card-outline card-primary">
+                <div className="card-header text-center">
+                    <Link to="" className="h1">{site_name}</Link>
+                </div>
+                <div className="card-body">
+                    <p className="login-box-msg">Login as a contractor</p>
+                    <form method="POST">
+                        <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
+                        <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
+                        <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
+                    </form>
+                    <Link to="/forgotten-password/" className="text-center">Forgotten Password? Click Here</Link>
+                </div>
             </div>
         </div>
-    </div>)
+    )
 }
 
 export default Login

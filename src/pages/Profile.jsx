@@ -10,10 +10,11 @@ const Profile = () => {
     const [projects, setProjects] = useState([{id: 1}]);
     const [ProjectModalState, setprojectModalState] = useState(false)
 
-    const handleProjectEdit = (e) => {
-        e.preventDefault();
-        window.toastr.info('Project clicked')
-    }
+    // TODO: Find use or delete
+    // const handleProjectEdit = (e) => {
+    //     e.preventDefault();
+    //     window.toastr.info('Project clicked')
+    // }
 
     useEffect(() => {
 
@@ -45,7 +46,7 @@ const Profile = () => {
                                             <b>Friends</b> <a className="float-right">13,287</a>
                                         </li>
                                     </ul>
-                                    <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
+                                    <a href="#x" className="btn btn-primary btn-block"><b>Follow</b></a>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +93,7 @@ const Profile = () => {
                                                     <div class="timeline-item">
                                                         <span class="time"><i class="far fa-clock"></i> 12:05</span>
 
-                                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+                                                        <h3 class="timeline-header"><a href="#x">Support Team</a> sent you an email</h3>
 
                                                         <div class="timeline-body">
                                                             Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
@@ -101,8 +102,8 @@ const Profile = () => {
                                                             quora plaxo ideeli hulu weebly balihoo...
                                                         </div>
                                                         <div class="timeline-footer">
-                                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                            <a href="#x" class="btn btn-primary btn-sm">Read more</a>
+                                                            <a href="#x" class="btn btn-danger btn-sm">Delete</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,7 +113,7 @@ const Profile = () => {
                                                     <div class="timeline-item">
                                                         <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
 
-                                                        <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                                                        <h3 class="timeline-header border-0"><a href="#x">Sarah Young</a> accepted your friend request
                                                         </h3>
                                                     </div>
                                                 </div>
@@ -122,7 +123,7 @@ const Profile = () => {
                                                     <div class="timeline-item">
                                                         <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
 
-                                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+                                                        <h3 class="timeline-header"><a href="#x">Jay White</a> commented on your post</h3>
 
                                                         <div class="timeline-body">
                                                             Take me to your leader!
@@ -130,7 +131,7 @@ const Profile = () => {
                                                             We are more like Germany, ambitious and misunderstood!
                                                         </div>
                                                         <div class="timeline-footer">
-                                                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
+                                                            <a href="#x" class="btn btn-warning btn-flat btn-sm">View comment</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -145,7 +146,7 @@ const Profile = () => {
                                                     <div class="timeline-item">
                                                         <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
 
-                                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+                                                        <h3 class="timeline-header"><a href="#x">Mina Lee</a> uploaded new photos</h3>
 
                                                         <div class="timeline-body">
                                                             <img src="https://placehold.it/150x100" alt="..." />
@@ -197,7 +198,7 @@ const Profile = () => {
                                                     <div class="offset-sm-2 col-sm-10">
                                                         <div class="checkbox">
                                                             <label>
-                                                                <input type="checkbox" /> I agree to the <a href="#">terms and conditions</a>
+                                                                <input type="checkbox" /> I agree to the <a href="#x">terms and conditions</a>
                                                             </label>
                                                         </div>
                                                     </div>

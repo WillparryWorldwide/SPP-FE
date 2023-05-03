@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ContentHeader from '../../../components/ContentHeader'
-import useAxiosClient from '../../../Hooks/useAxiosClient'
 
-import { Box, Checkbox, Grid, TextInput } from '@mantine/core';
+import { Grid, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import dayjs from 'dayjs';
+import AxiosClient from '../../../Helper/axiosClient';
 
 const List = () => {
 
@@ -24,22 +24,30 @@ const List = () => {
         { id: '9', name: 'Hello world', email: 'example@demo.com', phone: 1234567890, number_of_projects: 10 },
         { id: '10', name: 'Hello world', email: 'example@demo.com', phone: 1234567890, number_of_projects: 10 }
     ]);
-    const axios = useAxiosClient()
+    const axios = AxiosClient();
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState(sppUsers.slice(0, PAGE_SIZE));
     const initialRecords = sppUsers.slice(0, PAGE_SIZE);
 
     const [query, setQuery] = useState('');
-    const [veteransOnly, setVeteransOnly] = useState(false);
+    const veteransOnly = useRef(false);
     const [debouncedQuery] = useDebouncedValue(query, 200);
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            await axios.get('/users').then(({ data }) => {
+                setSppUsers(data.users)
+            }).catch(({ response }) => {
+                window.toastr.error(response.data.message)
+            })
+        }
+
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(sppUsers.slice(from, to));
-        fetchProjects()
-    }, [page])
+        fetchProjects();
+    }, [page, initialRecords]);
 
     useEffect(() => {
         const now = dayjs();
@@ -61,17 +69,12 @@ const List = () => {
         );
     }, [debouncedQuery, veteransOnly]);
 
-    const fetchProjects = async () => {
-        await axios.get('/users').then(({ data }) => {
-            setSppUsers(data.users)
-        }).catch(({ response }) => {
-            window.toastr.error(response.data.message)
-        })
-    }
 
-    const handleEdit = (project) => {
-        const sppUsersList = [...sppUsers], index = sppUsersList.indexOf(project)
-    }
+
+    // TODO: Find use for this or delete
+    // const handleEdit = (project) => {
+    //     const sppUsersList = [...sppUsers], index = sppUsersList.indexOf(project)
+    // }
 
     return (
         <>

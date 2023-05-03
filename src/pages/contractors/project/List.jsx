@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ContentHeader from '../../../components/ContentHeader'
-import useAxiosClient from '../../../Hooks/useAxiosClient'
 
-import { Box, Checkbox, Grid, TextInput } from '@mantine/core';
+import { Grid, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import dayjs from 'dayjs';
+import AxiosClient from '../../../Helper/axiosClient';
 
 const List = () => {
 
@@ -46,22 +46,29 @@ const List = () => {
         { id: '31', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
         { id: '32', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
     ]);
-    const axios = useAxiosClient()
+    const axios = AxiosClient();
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState(projects.slice(0, PAGE_SIZE));
     const initialRecords = projects.slice(0, PAGE_SIZE);
 
     const [query, setQuery] = useState('');
-    const [veteransOnly, setVeteransOnly] = useState(false);
+    const veteransOnly = useRef(false);
     const [debouncedQuery] = useDebouncedValue(query, 200);
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            await axios.get('/contractor/projects').then(({ data }) => {
+                setProjects(data.projects)
+            }).catch(({ response }) => {
+                window.toastr.error(response.data.message);
+            });
+        }
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(projects.slice(from, to));
-        fetchProjects()
-    }, [page])
+        fetchProjects();
+    }, [page, initialRecords], projects);
 
     useEffect(() => {
         const now = dayjs();
@@ -83,17 +90,12 @@ const List = () => {
         );
     }, [debouncedQuery, veteransOnly]);
 
-    const fetchProjects = async () => {
-        await axios.get('/contractor/projects').then(({ data }) => {
-            setProjects(data.projects)
-        }).catch(({ response }) => {
-            window.toastr.error(response.data.message)
-        })
-    }
 
-    const handleEdit = (project) => {
-        const projectList = [...projects], index = projectList.indexOf(project)
-    }
+
+    // TODO: Find use for this or delete
+    // const handleEdit = (project) => {
+    //     const projectList = [...projects], index = projectList.indexOf(project)
+    // }
 
     return (
         <>

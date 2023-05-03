@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
-import useAxiosClient from '../Hooks/useAxiosClient'
 import { Modal, Button } from "react-bootstrap";
 import FormInput from './FormInput';
 import { useSignIn, useAuthUser } from 'react-auth-kit'
+import AxiosClient from '../Helper/axiosClient';
 
 const LoginPassword = ({ status, setStatus }) => {
 
     const auth = useAuthUser()
-    const axios = useAxiosClient()
+    const axios = AxiosClient()
     const passwordRef = useRef()
     const SignIn = useSignIn()
     const [show, setShow] = useState(status);

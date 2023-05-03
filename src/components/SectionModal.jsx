@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal, Button } from "react-bootstrap";
 import AxiosClient from '../Helper/axiosClient';
 
@@ -6,11 +6,15 @@ const SectionModal = ({ status, setStatus }) => {
 
     const titleRef = useRef()
     const axios = AxiosClient()
-    const [show, setShow] = useState(status);
+    const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false)
         setStatus(false)
     };
+
+    useEffect(()=> {
+        setShow(status);
+    }, [status]);
 
     const createSection = async () => {
         if (titleRef.current.value === '') {

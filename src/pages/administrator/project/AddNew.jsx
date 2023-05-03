@@ -3,10 +3,12 @@ import ContentHeader from '../../../components/ContentHeader'
 import FormInput from '../../../components/FormInput'
 import PrimaryButton from '../../../components/PrimaryButton'
 import AxiosClient from '../../../Helper/axiosClient'
+import FormTextArea from '../../../components/FormTextArea'
 
 const AddNew = () => {
+    const [imageText, setImageText] = useState("");
 
-    const axios = AxiosClient()
+    const axios = AxiosClient();
     const [milestones, setMileStones] = useState([
         {
             id: 1, value: '',
@@ -168,21 +170,22 @@ const AddNew = () => {
         // }
     }
 
-    const sppCodeRef = useRef('')
-    const titleRef = useRef('')
-    const categoryRef = useRef('')
-    const sectorRef = useRef('')
-    const mdaRef = useRef('')
-    const fundingRef = useRef('')
-    const stateRef = useRef('')
-    const lgaRef = useRef('')
-    const [images, setImages] = useState('')
-    const awardDateRef = useRef('')
-    const totalRef = useRef('')
-    const descriptionRef = useRef('')
-    const [btnStatus, setBtnStatus] = useState('')
-    const [sppData, setSppData] = useState([])
-    const [contractors, setContractors] = useState([])
+    const sppCodeRef = useRef('');
+    const titleRef = useRef('');
+    const categoryRef = useRef('');
+    const sectorRef = useRef('');
+    const mdaRef = useRef('');
+    const fundingRef = useRef('');
+    const stateRef = useRef('');
+    const locationRef = useRef('');
+    const lgaRef = useRef('');
+    const [images, setImages] = useState('');
+    const awardDateRef = useRef('');
+    const totalRef = useRef('');
+    const descriptionRef = useRef('');
+    const [btnStatus, setBtnStatus] = useState('');
+    const [sppData, setSppData] = useState([]);
+    const [contractors, setContractors] = useState([]);
 
     const fetchSPPData = async e => {
         axios.get(`/admin/all-spp/q?role=contractor`).then(({ data }) => {
@@ -340,10 +343,9 @@ const AddNew = () => {
         // upload
         const file = document.getElementById("file");
         const myFormData = new FormData();
-        console.log("what", file.files[0]);
 
-        myFormData.append("images", file.files[0]);
-
+        console.log("what", file.files);
+        Object.values(file.files).forEach((f, index) => myFormData.append("images", file.files[index]));
         myFormData.append("spp_code", sppCodeRef.current.value);
         myFormData.append("sector_code", sectorRef.current.value);
         myFormData.append("category", categoryRef.current.value);
@@ -351,7 +353,7 @@ const AddNew = () => {
         myFormData.append("grand_total", totalRef.current.value);
         myFormData.append("mda_code", mdaRef.current.value);
         myFormData.append("local_goverment", lgaRef.current.value);
-        myFormData.append("location", 'q');
+        myFormData.append("location", locationRef.current.value);
         myFormData.append("state", stateRef.current.value);
         myFormData.append("duration", '2023-05-13');
         myFormData.append("date_awarded", awardDateRef.current.value);
@@ -361,7 +363,11 @@ const AddNew = () => {
 
         console.log("The form Data", myFormData);
 
-        axios.post('/project/register', myFormData).then(({ data }) => {
+        axios.post('/project/register', myFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(({ data }) => {
             setBtnStatus('');
             document.querySelector('#project').reset()
             window.toastr.success(data.message)
@@ -381,115 +387,123 @@ const AddNew = () => {
                         <div className='container'>
                             <form id="project" encType="multipart/form-data">
                                 <div className='row'>
-                                    <FormInput className="col-12 form-group mt-3" label="Title" ref={titleRef} placeholder="Project Title" />
-                                    <div className='col-6 form-group mt-3'>
-                                        <label>Select SPP Code</label>
+                                    <FormInput className="col-12 form-group mt-3" value="something" label="Title" ref={titleRef} placeholder="Project Title" />
+                                    <div className='col-6 col-md-4 form-group mt-3'>
+                                        <label>Select SPP</label>
                                         <select onChange={() => fetchSPPData()} ref={sppCodeRef} className='form-control'>
                                             <option defaultValue>Select SPP</option>
                                             {contractors.map(contractor => <option key={contractor._id} value={contractor._id}>{contractor.SPP_name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Duration" type="date" ref={titleRef} placeholder="" />
-                                    <div className='col-4 form-group mt-3'>
+                                    <div className='col-6 col-md-4 form-group mt-3'>
                                         <label>Select Sector</label>
                                         <select ref={sectorRef} className='form-control'>
                                             <option defaultValue>Select Sector</option>
                                             {sectors.map(sector => <option key={sector._id} value={sector._id}>{sector.name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-4 form-group mt-3" label="Category" ref={categoryRef} placeholder="Enter Category" />
-                                    <div className='col-4 form-group mt-3'>
+                                    <div className='col-6 col-md-4 form-group mt-3'>
                                         <label>Select MDA</label>
                                         <select ref={mdaRef} className='form-control'>
                                             <option defaultValue>Select MDA</option>
                                             {mdas.map(mda => <option key={mda._id} value={mda._id}>{mda.name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Funding Amount" ref={fundingRef} placeholder="Project Funding Amount" />
-                                    <FormInput className="col-6 form-group mt-3" label="State" ref={stateRef} placeholder="Enter State" />
-                                    <FormInput className="col-6 form-group mt-3" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
-                                    <div className='form-group mt-3 col-6'>
+                                    <FormInput className="col-6 form-group mt-3" value="2023-05-18" label="Duration" type="date" ref={titleRef} placeholder="" />
+                                    <FormInput className="col-6 form-group mt-3" value="2023-05-18"  label="Date Awarded" type="date" ref={awardDateRef} placeholder="Date Awarded" />
+                                    <FormInput className="col-6 form-group mt-3" value="someehing" label="Category" ref={categoryRef} placeholder="Enter Category" />
+                                    <FormInput className="col-6 form-group mt-3" value="9000000" label="Funding" type="number" ref={fundingRef} placeholder="Funding Amount" />
+                                    <FormInput className="col-6 form-group mt-3" value="something" label="State" ref={stateRef} placeholder="Enter State" />
+                                    <FormInput className="col-6 form-group mt-3" value="something" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
+                                    <FormInput className="col-6 form-group mt-3" value="something" label="Location" ref={locationRef} placeholder="Enter the location for the project" />
+                                    <div className='form-group mt-3 col-12 col-md-6'>
                                         <label htmlFor='file'>Project Thumbnail</label>
                                         <div className='input-group'>
                                             <div className="custom-file">
-                                                <input className="custom-file-input" multiple defaultValue={images} type='file' id="file" />
-                                                <label className="custom-file-label" htmlFor="file">Upload Project Thumbnail</label>
+                                                <input className="custom-file-input" multiple defaultValue={images} onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
+                                                <label className="custom-file-label" htmlFor="file">{imageText || "Upload Project Thumbnail"}</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Date Awarded" ref={awardDateRef} placeholder="Date Awarded" />
-                                    <FormInput className="col-6 form-group mt-3" disabled value={amount} label="Grand Total" ref={totalRef} placeholder="Amount" type="number" />
+                                    <FormInput className="col-6 form-group mt-3" value={amount} label="Grand Total" ref={totalRef} placeholder="Amount" type="number" readonly />
                                     <div className='col-12 mt-3'>
                                         <PrimaryButton className='btn btn-primary btn-sm float-right pull-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone' />
                                     </div>
                                     {milestones.map((milestone, index) => (
-                                        <>
+                                        <div key={index}>
                                             <h3 className='col-7'>Milestone {index + 1}</h3>
-                                            <div className='d-flex col-12' key={index}>
-                                                <div class="row">
-                                                    <div className='col-12'>
-                                                        <PrimaryButton className={`btn btn-primary btn-sm mr-0 float-right pull-right`} onClick={(e) => handleAddPreliminarySum(e, milestone)} title='Add Preliminary Sum' />
-                                                    </div>
+                                            <div className='d-flex col-12'>
+                                                <div className="">
                                                     {milestone.preliminaries.map((preliminary, pre) => (
-                                                        <>
-                                                            <h5 class="ml-3 mb-0 col-4 float-left">Milestone {index + 1} Preliminary Sum {pre + 1}</h5>
-                                                            <div class="preliminary d-flex" key={pre}>
-                                                                <div class="d-flex">
-                                                                    <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-description-${index}-${pre}`} placeholder="Enter Description" type="text" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-date-${index}-${pre}`} placeholder="Select date" type="date" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-quantity-${index}-${pre}`} placeholder="Enter Quantity" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-preliminary-rate-${index}-${pre}`} placeholder="Enter Rate" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-preliminary-amount-${index}-${pre}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pre}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'preliminary', pre)} title='Delete' />
+                                                        <div key={"pre-" + pre} className="m-0 p-0">
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                <h5 className="ml-3 mb-0">Preliminary Sum {pre + 1}</h5>
+                                                                <div>
+                                                                    <PrimaryButton className={`btn btn-primary btn-sm pull-right mr-1`} onClick={(e) => handleAddPreliminarySum(e, milestone)} title='Add' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm ml-1 ${index}-${pre}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'preliminary', pre)} title='Delete' />
                                                                 </div>
                                                             </div>
-                                                        </>
+                                                            <div className="preliminary d-flex">
+                                                                <div className="row m-2">
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pre} inputClass="form-control form-control-sm" id={`milestone-preliminary-quantity-${index}-${pre}`} placeholder="Enter Quantity" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pre} inputClass="form-control form-control-sm" id={`milestone-preliminary-rate-${index}-${pre}`} placeholder="Enter Rate" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pre} inputClass="amount form-control form-control-sm" id={`milestone-preliminary-amount-${index}-${pre}`} placeholder="Enter Amount" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value="2023-05-18" inputClass="form-control form-control-sm" id={`milestone-preliminary-date-${index}-${pre}`} placeholder="Select date" type="date" />
+                                                                    <FormTextArea className="col-12 form-group" value={pre} inputClass="form-control form-control-sm" id={`milestone-preliminary-description-${index}-${pre}`} placeholder="Enter Description" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     ))}
-                                                    <div className='col-12'>
-                                                        <PrimaryButton className={`btn btn-primary btn-sm mr-0 float-right pull-right`} onClick={(e) => handleAddProvisionalSum(e, milestone)} title='Add Provisional Sum' />
-                                                    </div>
                                                     {milestone.provisions.map((provision, pro) => (
-                                                        <>
-                                                            <h5 class="ml-3 mb-0 col-4 float-left">Milestone {index + 1} Provisional Sum {pro + 1}</h5>
-                                                            <div class="provisional d-flex" key={pro}>
-                                                                <div class="d-flex">
-                                                                    <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-description-${index}-${pro}`} placeholder="Enter Description" type="text" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-date-${index}-${pro}`} placeholder="Select date" type="date" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-quantity-${index}-${pro}`} placeholder="Enter Quantity" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-provisional-rate-${index}-${pro}`} placeholder="Enter Rate" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-provisional-amount-${index}-${pro}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${pro}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'provisional', pro)} title='Delete' />
+                                                        <div key={"pro-" + pro} className="m-0 p-0">
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                <h5 className="ml-3 mb-0">Provisional Sum {pro + 1}</h5>
+                                                                <div>
+                                                                    <PrimaryButton className={`btn btn-primary btn-sm pull-right mr-1`} onClick={(e) => handleAddProvisionalSum(e, milestone)} title='Add' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm ml-1 ${index}-${pro}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'provisional', pro)} title='Delete' />
                                                                 </div>
                                                             </div>
-                                                        </>
+
+                                                            <div className="provisional d-flex">
+                                                                <div className="row m-2">
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pro} inputClass="form-control form-control-sm" id={`milestone-provisional-quantity-${index}-${pro}`} placeholder="Enter Quantity" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pro} inputClass="form-control form-control-sm" id={`milestone-provisional-rate-${index}-${pro}`} placeholder="Enter Rate" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={pro} inputClass="amount form-control form-control-sm" id={`milestone-provisional-amount-${index}-${pro}`} placeholder="Enter Amount" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value="2023-05-18" inputClass="form-control form-control-sm" id={`milestone-provisional-date-${index}-${pro}`} placeholder="Select date" type="date" />
+                                                                    <FormTextArea className="col-12 form-group" value={pro} inputClass="form-control form-control-sm" id={`milestone-provisional-description-${index}-${pro}`} placeholder="Enter Description" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     ))}
-                                                    <div className='col-12 '>
-                                                        <PrimaryButton className={`btn btn-primary btn-sm mr-0 float-right pull-right`} onClick={(e) => handleAddMeasuredWorks(e, milestone)} title='Add Measured Works' />
-                                                    </div>
                                                     {milestone.measured.map((measure, mea) => (
-                                                        <>
-                                                            <h5 class="ml-3 mb-0">Milestone {index + 1} Measured Works {mea + 1}</h5>
-                                                            <div class="measured d-flex">
-                                                                <div className='d-flex'>
-                                                                    <FormInput className="col-md-3 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-description-${index}-${mea}`} placeholder="Enter Description" type="text" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-date-${index}-${mea}`} placeholder="Select date" type="date" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-quantity-${index}-${mea}`} placeholder="Enter Quantity" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="form-control form-control-sm" id={`milestone-measured-rate-${index}-${mea}`} placeholder="Enter Rate" type="number" />
-                                                                    <FormInput className="col-md-2 form-group" inputClass="amount form-control form-control-sm" id={`milestone-measured-amount-${index}-${mea}`} placeholder="Enter Amount" type="number" />
-                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm mt-4 ${index}-${mea}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'measured', mea)} title='Delete' />
+                                                        <div key={"mea-" + mea} className="m-0 p-0">
+                                                            <div className="d-flex justify-content-between align-items-center">
+                                                                <h5 className="ml-3 mb-0">Measured Works {mea + 1}</h5>
+                                                                <div>
+                                                                    <PrimaryButton className={`btn btn-primary btn-sm mr-1 pull-right`} onClick={(e) => handleAddMeasuredWorks(e, milestone)} title='Add' />
+                                                                    <PrimaryButton className={`btn btn-danger form-control-sm btn-sm ml-1 ${index}-${mea}`} onClick={(e) => handleRemoveMilestone(e, milestone, 'measured', mea)} title='Delete' />
                                                                 </div>
                                                             </div>
-                                                        </>
+                                                            <div className="measured d-flex">
+                                                                <div className='row m-2'>
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={mea} inputClass="form-control form-control-sm" id={`milestone-measured-quantity-${index}-${mea}`} placeholder="Enter Quantity" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={mea} inputClass="form-control form-control-sm" id={`milestone-measured-rate-${index}-${mea}`} placeholder="Enter Rate" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value={mea} inputClass="amount form-control form-control-sm" id={`milestone-measured-amount-${index}-${mea}`} placeholder="Enter Amount" type="number" />
+                                                                    <FormInput className="col-6 col-md-3 form-group" value="2023-05-18" inputClass="form-control form-control-sm" id={`milestone-measured-date-${index}-${mea}`} placeholder="Select date" type="date" />
+                                                                    <FormTextArea className="col-12 form-group" value={mea} inputClass="form-control form-control-sm" id={`milestone-measured-description-${index}-${mea}`} placeholder="Enter Description" type="text" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     ))}
                                                 </div>
                                                 {/* <div className='form-group mt-5'>
                                                     <PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
                                                 </div> */}
                                             </div>
-                                        </>
+                                        </div>
                                     ))}
                                 </div>
-                                <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
+                                <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' value="somethibng" rows={3}></textarea>
                                 <PrimaryButton type="button" title="Create" disabled={btnStatus} onClick={create} className="btn btn-primary btn-end btn-sm mb-3 mt-3" />
                             </form>
                         </div>
