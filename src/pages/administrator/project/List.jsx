@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ContentHeader from '../../../components/ContentHeader'
+<<<<<<< HEAD:src/pages/administrator/project/List.jsx
 import AxiosClient from '../../../Helper/axiosClient'
+=======
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d:src/pages/contractors/project/List.jsx
 
-import { Box, Checkbox, Grid, TextInput } from '@mantine/core';
+import { Grid, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import dayjs from 'dayjs';
+import AxiosClient from '../../../Helper/axiosClient';
 
 const List = () => {
 
@@ -46,23 +50,38 @@ const List = () => {
         { id: '31', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
         { id: '32', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
     ]);
+<<<<<<< HEAD:src/pages/administrator/project/List.jsx
 
     const axios = AxiosClient()
+=======
+    const axios = AxiosClient();
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d:src/pages/contractors/project/List.jsx
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState(projects.slice(0, PAGE_SIZE));
     const initialRecords = projects.slice(0, PAGE_SIZE);
 
     const [query, setQuery] = useState('');
-    const [veteransOnly, setVeteransOnly] = useState(false);
+    const veteransOnly = useRef(false);
     const [debouncedQuery] = useDebouncedValue(query, 200);
 
     useEffect(() => {
+        const fetchProjects = async () => {
+            await axios.get('/contractor/projects').then(({ data }) => {
+                setProjects(data.projects)
+            }).catch(({ response }) => {
+                window.toastr.error(response.data.message);
+            });
+        }
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(projects.slice(from, to));
         fetchProjects();
+<<<<<<< HEAD:src/pages/administrator/project/List.jsx
     }, [page])
+=======
+    }, [page, initialRecords], projects);
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d:src/pages/contractors/project/List.jsx
 
     const fetchProjects = async () => {
         await axios.get('/project/all').then(({ data }) => {
@@ -91,12 +110,23 @@ const List = () => {
                 return true;
             })
         );
+<<<<<<< HEAD:src/pages/administrator/project/List.jsx
     }, [debouncedQuery, veteransOnly, initialRecords]);
 
     const handleEdit = (project) => {
         const projectList = [...projects], index = projectList.indexOf(project)
         alert(index);
     }
+=======
+    }, [debouncedQuery, veteransOnly]);
+
+
+
+    // TODO: Find use for this or delete
+    // const handleEdit = (project) => {
+    //     const projectList = [...projects], index = projectList.indexOf(project)
+    // }
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d:src/pages/contractors/project/List.jsx
 
     return (
         <>

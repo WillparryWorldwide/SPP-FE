@@ -10,10 +10,11 @@ const Welcome = () => {
     const [projects, setProjects] = useState([{id: 1}]);
     const [ProjectModalState, setprojectModalState] = useState(false)
 
-    const handleProjectEdit = (e) => {
-        e.preventDefault();
-        window.toastr.info('Project clicked')
-    }
+    // TODO: Find use or remove
+    // const handleProjectEdit = (e) => {
+    //     e.preventDefault();
+    //     window.toastr.info('Project clicked')
+    // }
 
     useEffect(() => {
 
@@ -45,7 +46,7 @@ const Welcome = () => {
                                             <b>Friends</b> <a className="float-right">13,287</a>
                                         </li>
                                     </ul>
-                                    <a href="#" className="btn btn-primary btn-block"><b>Follow</b></a>
+                                    <a href="#x" className="btn btn-primary btn-block"><b>Follow</b></a>
                                 </div>
                             </div>
                         </div>
@@ -92,7 +93,11 @@ const Welcome = () => {
                                                     <div className="timeline-item">
                                                         <span className="time"><i className="far fa-clock"></i> 12:05</span>
 
+<<<<<<< HEAD
                                                         <h3 className="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+=======
+                                                        <h3 class="timeline-header"><a href="#x">Support Team</a> sent you an email</h3>
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
 
                                                         <div className="timeline-body">
                                                             Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
@@ -100,9 +105,15 @@ const Welcome = () => {
                                                             jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
                                                             quora plaxo ideeli hulu weebly balihoo...
                                                         </div>
+<<<<<<< HEAD
                                                         <div className="timeline-footer">
                                                             <a href="#" className="btn btn-primary btn-sm">Read more</a>
                                                             <a href="#" className="btn btn-danger btn-sm">Delete</a>
+=======
+                                                        <div class="timeline-footer">
+                                                            <a href="#x" class="btn btn-primary btn-sm">Read more</a>
+                                                            <a href="#x" class="btn btn-danger btn-sm">Delete</a>
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
                                                         </div>
                                                     </div>
                                                 </div>
@@ -112,7 +123,11 @@ const Welcome = () => {
                                                     <div className="timeline-item">
                                                         <span className="time"><i className="far fa-clock"></i> 5 mins ago</span>
 
+<<<<<<< HEAD
                                                         <h3 className="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+=======
+                                                        <h3 class="timeline-header border-0"><a href="#x">Sarah Young</a> accepted your friend request
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
                                                         </h3>
                                                     </div>
                                                 </div>
@@ -122,15 +137,24 @@ const Welcome = () => {
                                                     <div className="timeline-item">
                                                         <span className="time"><i className="far fa-clock"></i> 27 mins ago</span>
 
+<<<<<<< HEAD
                                                         <h3 className="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+=======
+                                                        <h3 class="timeline-header"><a href="#x">Jay White</a> commented on your post</h3>
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
 
                                                         <div className="timeline-body">
                                                             Take me to your leader!
                                                             Switzerland is small and neutral!
                                                             We are more like Germany, ambitious and misunderstood!
                                                         </div>
+<<<<<<< HEAD
                                                         <div className="timeline-footer">
                                                             <a href="#" className="btn btn-warning btn-flat btn-sm">View comment</a>
+=======
+                                                        <div class="timeline-footer">
+                                                            <a href="#x" class="btn btn-warning btn-flat btn-sm">View comment</a>
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
                                                         </div>
                                                     </div>
                                                 </div>
@@ -145,7 +169,11 @@ const Welcome = () => {
                                                     <div className="timeline-item">
                                                         <span className="time"><i className="far fa-clock"></i> 2 days ago</span>
 
+<<<<<<< HEAD
                                                         <h3 className="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+=======
+                                                        <h3 class="timeline-header"><a href="#x">Mina Lee</a> uploaded new photos</h3>
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
 
                                                         <div className="timeline-body">
                                                             <img src="https://placehold.it/150x100" alt="..." />
@@ -197,7 +225,7 @@ const Welcome = () => {
                                                     <div className="offset-sm-2 col-sm-10">
                                                         <div className="checkbox">
                                                             <label>
-                                                                <input type="checkbox" /> I agree to the <a href="#">terms and conditions</a>
+                                                                <input type="checkbox" /> I agree to the <a href="#x">terms and conditions</a>
                                                             </label>
                                                         </div>
                                                     </div>

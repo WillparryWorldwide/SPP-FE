@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal, Button } from "react-bootstrap";
 import AxiosClient from '../Helper/axiosClient';
 
@@ -12,6 +12,10 @@ const MdaModal = ({ status, setStatus }) => {
         setStatus(false)
     };
 
+    useEffect(() => {
+        setShow(status);
+    }, [status]);   
+
     const createSection = async () => {
         if (titleRef.current.value === '') {
             titleRef.current.focus();
@@ -23,7 +27,7 @@ const MdaModal = ({ status, setStatus }) => {
             await axios.post('/mda/register', data).then(({ data }) => {
                 handleClose()
                 window.toastr.success(data.data.message)
-            }).catch(({response}) => {
+            }).catch(({ response }) => {
                 handleClose()
                 window.toastr.error(response.data.message)
             })

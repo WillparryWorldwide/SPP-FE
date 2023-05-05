@@ -121,8 +121,8 @@ const Navigation = () => {
                     </li>
                 </ul>
             </nav>
-            <SectionModal key={sectionModalState} status={sectionModalState} setStatus={setSectionModalState} />
-            <MdaModal key={MdaModalState} status={MdaModalState} setStatus={setMdaModalState} />
+            <SectionModal status={sectionModalState} setStatus={setSectionModalState} />
+            <MdaModal status={MdaModalState} setStatus={setMdaModalState} />
         </div>
     )
 }

@@ -1,198 +1,150 @@
-import React, { useEffect, useRef, useState, useReducer } from 'react'
-import ContentHeader from '../../../components/ContentHeader'
-import FormInput from '../../../components/FormInput'
-import PrimaryButton from '../../../components/PrimaryButton'
-import AxiosClient from '../../../Helper/axiosClient'
+import React, { useEffect, useRef, useState } from "react";
+import ContentHeader from "../../../components/ContentHeader";
+import FormInput from "../../../components/FormInput";
+import PrimaryButton from "../../../components/PrimaryButton";
+import AxiosClient from "../../../Helper/axiosClient";
+import FormTextArea from "../../../components/FormTextArea";
+import validateInput from "./functions/validateInput";
+import getFormData from "./functions/getFormData";
 
 const AddNew = () => {
-
-    const axios = AxiosClient()
+    const axios = AxiosClient();
+    const [imageText, setImageText] = useState("");
+    const [editedMilestone, setEditedMilestone] = useState(0);
+    const [sectors, setSectors] = useState([]);
+    const [mdas, setMdas] = useState([]);
+    const [grandTotal, setGrandTotal] = useState(0);
+    // useRef
+    const totalRef = useRef();
+    const lgaRef = useRef();
+    const mdaRef = useRef();
+    const fundingRef = useRef();
+    const titleRef = useRef();
+    const stateRef = useRef();
+    const sectorRef = useRef();
+    const locationRef = useRef();
+    const durationRef = useRef();
+    const categoryRef = useRef();
+    const descriptionRef = useRef();
+    const sppCodeRef = useRef();
+    const awardDateRef = useRef();
+    const [btnStatus, setBtnStatus] = useState(false);
+    const [contractors, setContractors] = useState([]);
+    const milestoneText = {
+        preliminary: "Preliminary Sum",
+        provision: "Provisional Sum",
+        measured: "Measured Work"
+    }
     const [milestones, setMileStones] = useState([
         {
-            id: 1, value: '',
-            preliminaries: [{ id: 1, value: '' }],
-            provisions: [{ id: 1, value: '' }],
-            measured: [{ id: 1, value: '' }]
+            id: 1,
+            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
+            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
+            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
         }
     ]);
 
+    // function
     const handleAddMilestone = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const newMilestone = {
             id: milestones.length + 1,
-            value: '',
-            preliminaries: [{ id: 1, value: '' }],
-            provisions: [{ id: 1, value: '' }],
-            measured: [{ id: 1, value: '' }],
-        };
-        milestones.push(newMilestone)
-        setMileStones(milestones);
-        handleForceUpdate()
+            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
+            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
+            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
+        }
+
+        setMileStones(prev => {
+            return [...prev, newMilestone];
+        });
     };
 
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-    const [sectors, setSectors] = useState([])
-    const [mdas, setMdas] = useState([])
-    const [amount, setAmount] = useState(0)
+    // function
+    const handelMilestoneChange = (e) => {
+        const k = e.target.parentElement;
+        const val = e.target.value;
+        const milestoneIndex = k.dataset.milestoneIndex;
+        const milestoneItem = k.dataset.milestoneItem;
+        const itemIndex = k.dataset.itemIndex;
+        const item = k.dataset.item;
 
-    const handleForceUpdate = () => {
-        forceUpdate()
-        hideAddButtons()
-        const amounts = document.querySelectorAll('.amount')
-        let _amount = 0;
-        for (let a = 0; a < amounts.length; a++) {
-            if (!isNaN(amounts[a].value) && amounts[a].value !== '') {
-                _amount += parseInt(amounts[a].value)
-            }
-        }
-        setAmount(_amount)
+        setMileStones(preVal => {
+            preVal[milestoneIndex][milestoneItem][itemIndex][item] = val;
+            return preVal;
+        });
+        setEditedMilestone(preVal => preVal + 1);
     }
 
-    const handleAddPreliminarySum = (e, milestone) => {
-        e.preventDefault()
-        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
-        const newPreliminary = {
-            id: milestones[index].preliminaries.length + 1,
-            value: ''
-        };
-        milestones[index].preliminaries.push(newPreliminary)
+    // function
+    const handleAddMileStoneItem = (e) => {
+        const k = e.target;
+        const milestoneIndex = k.dataset.milestoneIndex;
+        const milestoneItem = k.dataset.milestoneItem;
+        const newPreliminary = { id: 1, rate: 65, amount: 76, date: "2023-05-18", description: "Lol", quantity: 1862 };
+
+        milestones[milestoneIndex][milestoneItem].push(newPreliminary)
         setMileStones(milestones);
-        handleForceUpdate()
+        hideAddButtons();
+        setEditedMilestone(preVal => preVal + 1);
     }
 
-    const handleAddProvisionalSum = (e, milestone) => {
-        e.preventDefault()
-        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
-        const newProvision = {
-            id: milestones[index].provisions.length + 1,
-            value: ''
-        };
-        milestones[index].provisions.push(newProvision)
+    // function
+    const handleRemoveMilestone = (e) => {
+        const k = e.target;
+        const milestoneIndex = k.dataset.milestoneIndex;
+        const milestoneItem = k.dataset.milestoneItem;
+        const itemIndex = k.dataset.itemIndex;
+
+        milestones[milestoneIndex][milestoneItem].length > 1 && milestones[milestoneIndex][milestoneItem].splice(itemIndex, 1);
         setMileStones(milestones);
-        handleForceUpdate()
-    }
-
-    const handleAddMeasuredWorks = (e, milestone) => {
-        e.preventDefault()
-        const mileStone = [...milestones], index = mileStone.indexOf(milestone)
-        const newMeasure = {
-            id: milestones[index].measured.length + 1,
-            value: '',
-        };
-        milestones[index].measured.push(newMeasure)
-        setMileStones(milestones);
-        handleForceUpdate()
-    }
-
-    const handleRemoveMilestone = (e, milestone, path, id) => {
-        e.preventDefault()
-        const allMilestones = [...milestones]
-        const indexMilestone = allMilestones.indexOf(milestone)
-        const actualMilestone = allMilestones[indexMilestone]
-        console.log(actualMilestone);
-        // eslint-disable-next-line default-case
-        switch (path) {
-            case 'preliminary':
-                // eslint-disable-next-line no-unused-expressions
-                actualMilestone['preliminaries'].length !== 1 ? actualMilestone['preliminaries'].splice(id, 1) : ''
-                break;
-            case 'provisional':
-                // eslint-disable-next-line no-unused-expressions
-                actualMilestone['provisions'].length !== 1 ? actualMilestone['provisions'].splice(id, 1) : ''
-                break;
-            case 'measured':
-                // eslint-disable-next-line no-unused-expressions
-                actualMilestone['measured'].length !== 1 ? actualMilestone['measured'].splice(id, 1) : ''
-                break;
-        }
-        setMileStones(allMilestones);
+        setEditedMilestone(preVal => preVal + 1);
     };
-
-    const fetchSectors = () => {
-        axios.get('/sector/all').then(({ data }) => {
-            setSectors(data.data.result)
-        }).catch(({ response }) => {
-            console.log(response.data.message);
-        })
-    }
-
-    const fetchMdas = () => {
-        axios.get('/mda/all').then(({ data }) => {
-            setMdas(data.data.result)
-        }).catch(({ response }) => {
-            console.log(response.data.message);
-        })
-    }
-
-    const fetchContractors = async () => {
-        await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
-            setContractors(data.data.result)
-        }).catch(({ response }) => {
-            console.log(response.data);
-        })
-    }
 
     useEffect(() => {
-        fetchMdas()
-        fetchContractors()
-        fetchSectors()
-        handleForceUpdate()
-        hideAddButtons()
-    }, [])
+        const updateGrandTotal = () => {
+            let total = 0;
+            milestones.forEach(milestoneItem => {
+                Object.keys(milestoneItem).forEach(item => {
+                    if (item === "id") return;
+                    milestoneItem[item].forEach(item => {
+                        total += Number(item.amount);
+                    });
+                });
+            });
+            setGrandTotal(total);
+        }
 
-    const handleImageUpload = (event) => {
-        // const file = document.getElementById("project");
-        // console.log("my forme", file[9].files)
-        // const myFormData = new FormData();
+        const fetchSectors = () => {
+            axios.get('/sector/all').then(({ data }) => {
+                setSectors(data.data.result)
+            }).catch(({ response }) => {
+                console.log(response.data.message);
+            })
+        }
 
-        // myFormData.append("images", file[9].files);
-        // return
-        // const files = event.target.files;
-        // const newSelectedFiles = [];
+        const fetchMdas = () => {
+            axios.get('/mda/all').then(({ data }) => {
+                setMdas(data.data.result)
+            }).catch(({ response }) => {
+                console.log(response.data.message);
+            })
+        }
 
-        // for (let i = 0; i < files.length; i++) {
-        //     const file = files[i];
-        //     const reader = new FileReader();
-        //     reader.onload = (e) => {
-        //         const dataURL = e.target.result;
-        //         const newSelectedFile = {
-        //             name: file.name,
-        //             type: file.type,
-        //             size: file.size,
-        //             dataURL,
-        //         };
-        //         newSelectedFiles.push(dataURL);
-        //         setImages(newSelectedFiles);
-        //     };
-        //     reader.readAsDataURL(file);
-        // }
-    }
+        const fetchContractors = async () => {
+            await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
+                setContractors(data.data.result)
+            }).catch(({ response }) => {
+                console.log(response.data);
+            })
+        }
 
-    const sppCodeRef = useRef('')
-    const titleRef = useRef('')
-    const categoryRef = useRef('')
-    const sectorRef = useRef('')
-    const mdaRef = useRef('')
-    const fundingRef = useRef('')
-    const stateRef = useRef('')
-    const lgaRef = useRef('')
-    const [images, setImages] = useState('')
-    const awardDateRef = useRef('')
-    const totalRef = useRef('')
-    const descriptionRef = useRef('')
-    const [btnStatus, setBtnStatus] = useState('')
-    const [sppData, setSppData] = useState([])
-    const [contractors, setContractors] = useState([])
-
-    const fetchSPPData = async e => {
-        axios.get(`/admin/all-spp/q?role=contractor`).then(({ data }) => {
-            setBtnStatus('')
-            setSppData(data.contractor)
-        }).catch(({ response }) => {
-            setBtnStatus('disabled')
-            window.toastr.error(response.data.message)
-        })
-    }
+        fetchMdas();
+        fetchSectors();
+        hideAddButtons();
+        fetchContractors();
+        updateGrandTotal();
+        console.log("Rerendering...");
+    }, [editedMilestone, milestones]);
 
     const hideAddButtons = () => {
         const btns = document.querySelectorAll('.addBtn');
@@ -204,173 +156,51 @@ const AddNew = () => {
     }
 
     const create = () => {
-        // if (sppCodeRef.current.value === 'Select SPP') {
-        //     sppCodeRef.current.focus()
-        //     window.toastr.error('SPP Code is required')
-        // } else if (titleRef.current.value === '') {
-        //     titleRef.current.focus()
-        //     window.toastr.error('Project Title is required')
-        // } else if (categoryRef.current.value === '') {
-        //     categoryRef.current.focus()
-        //     window.toastr.error('Project Category is required')
-        // } else if (fundingRef.current.value === '') {
-        //     fundingRef.current.focus()
-        //     window.toastr.error('Total is required')
-        // } else if (stateRef.current.value === '') {
-        //     stateRef.current.focus()
-        //     window.toastr.error('State is required')
-        // } else if (lgaRef.current.value === '') {
-        //     lgaRef.current.focus()
-        //     window.toastr.error('Local government is required')
-        // } else if (images === '') {
-        //     window.toastr.error('Award images is required')
-        // } else if (awardDateRef.current.value === '') {
-        //     awardDateRef.current.focus()
-        //     window.toastr.error('Award date is required')
-        // } else if (totalRef.current.value === '') {
-        //     totalRef.current.focus()
-        //     window.toastr.error('Amount is required')
-        // } else if (descriptionRef.current.value === '') {
-        //     descriptionRef.current.focus()
-        //     window.toastr.error('Project description is required')
-        // } else {
-        // setBtnStatus('disabled');
-        let milestoneList = [];
-        for (let m = 0; m < milestones.length; m++) {
-            let preliminaries = [], provisionals = [], measured = []
-            for (let mPre = 0; mPre < milestones[m].preliminaries.length; mPre++) {
-                let description = document.getElementById(`milestone-preliminary-description-${m}-${mPre}`).children[1];
-                let date = document.getElementById(`milestone-preliminary-date-${m}-${mPre}`).children[1];
-                let quantity = document.getElementById(`milestone-preliminary-amount-${m}-${mPre}`).children[1];
-                let rate = document.getElementById(`milestone-preliminary-rate-${m}-${mPre}`).children[1];
-                let amount = document.getElementById(`milestone-preliminary-amount-${m}-${mPre}`).children[1];
+        let submit = true;
 
-                // console.log("mValues", description.children[1].value, date, quantity, rate, amount);
-                if (description.value === '') {
-                    description.focus()
-                    window.toastr.error(`Milestone ${m + 1} Preliminary sum description ${mPre + 1} is required`)
-                } else if (date.value === '') {
-                    date.focus()
-                    window.toastr.error(`Milestone ${m + 1} Preliminary sum date ${mPre + 1} is required`)
-                } else if (quantity.value === '') {
-                    quantity.focus()
-                    window.toastr.error(`Milestone ${m + 1} Preliminary sum quantity ${mPre + 1} is required`)
-                } else if (rate.value === '') {
-                    rate.focus()
-                    window.toastr.error(`Milestone ${m + 1} Preliminary sum rate ${mPre + 1} is required`)
-                } else if (amount.value === '') {
-                    amount.focus()
-                    window.toastr.error(`Milestone ${m + 1} Preliminary sum amount ${mPre + 1} is required`)
-                } else {
-                    preliminaries.push({
-                        unit: '',
-                        quantity: quantity.value,
-                        amount: amount.value,
-                        rate: rate.value,
-                        description: description.value
-                    })
-                }
-            }
-            for (let mPro = 0; mPro < milestones[m].preliminaries.length; mPro++) {
-                let description = document.getElementById(`milestone-provisional-description-${m}-${mPro}`).children[1];
-                let date = document.getElementById(`milestone-provisional-date-${m}-${mPro}`).children[1];
-                let quantity = document.getElementById(`milestone-provisional-amount-${m}-${mPro}`).children[1];
-                let rate = document.getElementById(`milestone-provisional-rate-${m}-${mPro}`).children[1];
-                let amount = document.getElementById(`milestone-provisional-amount-${m}-${mPro}`).children[1];
-                if (description.value === '') {
-                    description.focus()
-                    window.toastr.error(`Milestone ${m + 1} Provisional sum description ${mPro + 1} is required`)
-                } else if (date.value === '') {
-                    date.focus()
-                    window.toastr.error(`Milestone ${m + 1} Provisional sum date ${mPro + 1} is required`)
-                } else if (quantity.value === '') {
-                    quantity.focus()
-                    window.toastr.error(`Milestone ${m + 1} Provisional sum quantity ${mPro + 1} is required`)
-                } else if (rate.value === '') {
-                    rate.focus()
-                    window.toastr.error(`Milestone ${m + 1} Provisional sum rate ${mPro + 1} is required`)
-                } else if (amount.value === '') {
-                    amount.focus()
-                    window.toastr.error(`Milestone ${m + 1} Provisional sum amount ${mPro + 1} is required`)
-                } else {
-                    provisionals.push({
-                        unit: '',
-                        quantity: quantity.value,
-                        amount: amount.value,
-                        rate: rate.value,
-                        description: description.value
-                    })
-                }
-            }
-            for (let mMea = 0; mMea < milestones[m].measured.length; mMea++) {
-                let description = document.getElementById(`milestone-measured-description-${m}-${mMea}`).children[1];
-                let date = document.getElementById(`milestone-measured-date-${m}-${mMea}`).children[1];
-                let quantity = document.getElementById(`milestone-measured-amount-${m}-${mMea}`).children[1];
-                let rate = document.getElementById(`milestone-measured-rate-${m}-${mMea}`).children[1];
-                let amount = document.getElementById(`milestone-measured-amount-${m}-${mMea}`).children[1];
-                if (description.value === '') {
-                    description.focus()
-                    window.toastr.error(`Milestone ${m + 1} measured works description ${mMea + 1} is required`)
-                } else if (date.value === '') {
-                    date.focus()
-                    window.toastr.error(`Milestone ${m + 1} measured works date ${mMea + 1} is required`)
-                } else if (quantity.value === '') {
-                    quantity.focus()
-                    window.toastr.error(`Milestone ${m + 1} measured works quantity ${mMea + 1} is required`)
-                } else if (rate.value === '') {
-                    rate.focus()
-                    window.toastr.error(`Milestone ${m + 1} measured works rate ${mMea + 1} is required`)
-                } else if (amount.value === '') {
-                    amount.focus()
-                    window.toastr.error(`Milestone ${m + 1} measured works amount ${mMea + 1} is required`)
-                } else {
-                    measured.push({
-                        unit: '',
-                        quantity: quantity.value,
-                        amount: amount.value,
-                        rate: rate.value,
-                        description: description.value
-                    })
-                }
-            }
-            milestoneList.push({ preliminaries_sum: preliminaries, provisional_sums: provisionals, measured_work: measured })
-        }
+        submit = validateInput({sppCodeRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef})
 
+        let stopValidation = false;
+        // check if milestone items are  stil empty
+        milestones.forEach((milestoneItem, milestoneIndex) => {
+            if (stopValidation) return
+            Object.keys(milestoneItem).forEach((keys) => {
+                if (stopValidation) return
+                if (keys === "id") return;
+                milestoneItem[keys].forEach((item, itemIndex) => {
+                    if (stopValidation) return
+                    Object.keys(item).forEach(iKey => {
+                        if (stopValidation) return
+                        if (iKey === "id") return;
+                        if (item[iKey] === '') {
+                            submit = !submit;
+                            stopValidation = !stopValidation;
+                            window.toastr.error(`Milestone ${milestoneIndex + 1} ${keys} ${itemIndex + 1} ${iKey} is required`);
+                            return document.querySelector(`.milestone-${milestoneIndex}-${keys}-${itemIndex}-${iKey}`).focus();
+                        }
+                    });
+                });
+            });
+        });
 
+        // if false do not create project
+        if (!submit) return;
         // upload
-        const file = document.getElementById("file");
-        const myFormData = new FormData();
-        console.log("what", file.files[0]);
+        const myFormData = getFormData(milestones, durationRef, titleRef, stateRef, mdaRef, sppCodeRef, locationRef, totalRef, categoryRef, sectorRef, lgaRef, awardDateRef, fundingRef, descriptionRef);
 
-        myFormData.append("images", file.files[0]);
-
-        myFormData.append("spp_code", sppCodeRef.current.value);
-        myFormData.append("sector_code", sectorRef.current.value);
-        myFormData.append("category", categoryRef.current.value);
-        myFormData.append("name", titleRef.current.value);
-        myFormData.append("grand_total", totalRef.current.value);
-        myFormData.append("mda_code", mdaRef.current.value);
-        myFormData.append("local_goverment", lgaRef.current.value);
-        myFormData.append("location", 'q');
-        myFormData.append("state", stateRef.current.value);
-        myFormData.append("duration", '2023-05-13');
-        myFormData.append("date_awarded", awardDateRef.current.value);
-        myFormData.append("funding_amount", fundingRef.current.value);
-        myFormData.append("description", descriptionRef.current.value);
-        myFormData.append("milestones", JSON.stringify(milestoneList));
-
-        console.log("The form Data", myFormData);
-
-        axios.post('/project/register', myFormData).then(({ data }) => {
-            setBtnStatus('');
+        axios.post('/project/register', myFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(({ data }) => {
+            setBtnStatus(true);
             document.querySelector('#project').reset()
-            window.toastr.success(data.message)
+            window.toastr.success(data.data.message)
         }).catch(({ response }) => {
-            setBtnStatus('');
-            window.toastr.error(response.data.message)
+            setBtnStatus(false);
+            window.toastr.error(response.data.data.message)
         })
     }
-    // }
 
     return (
         <>
@@ -382,49 +212,51 @@ const AddNew = () => {
                             <form id="project" encType="multipart/form-data">
                                 <div className='row'>
                                     <FormInput className="col-12 form-group mt-3" label="Title" ref={titleRef} placeholder="Project Title" />
-                                    <div className='col-6 form-group mt-3'>
-                                        <label>Select SPP Code</label>
-                                        <select onChange={() => fetchSPPData()} ref={sppCodeRef} className='form-control'>
+                                    <div className='col-6 col-md-4 form-group mt-3'>
+                                        <label>Select SPP</label>
+                                        <select ref={sppCodeRef} className='form-control'>
                                             <option defaultValue>Select SPP</option>
                                             {contractors.map(contractor => <option key={contractor._id} value={contractor._id}>{contractor.SPP_name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Duration" type="date" ref={titleRef} placeholder="" />
-                                    <div className='col-4 form-group mt-3'>
+                                    <div className='col-6 col-md-4 form-group mt-3'>
                                         <label>Select Sector</label>
                                         <select ref={sectorRef} className='form-control'>
                                             <option defaultValue>Select Sector</option>
                                             {sectors.map(sector => <option key={sector._id} value={sector._id}>{sector.name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-4 form-group mt-3" label="Category" ref={categoryRef} placeholder="Enter Category" />
-                                    <div className='col-4 form-group mt-3'>
+                                    <div className='col-6 col-md-4 form-group mt-3'>
                                         <label>Select MDA</label>
                                         <select ref={mdaRef} className='form-control'>
                                             <option defaultValue>Select MDA</option>
                                             {mdas.map(mda => <option key={mda._id} value={mda._id}>{mda.name}</option>)}
                                         </select>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Funding Amount" ref={fundingRef} placeholder="Project Funding Amount" />
+                                    <FormInput className="col-6 form-group mt-3" label="Duration" type="date" ref={durationRef} placeholder="When will it finish" />
+                                    <FormInput className="col-6 form-group mt-3" label="Date Awarded" type="date" ref={awardDateRef} placeholder="Date Awarded" />
+                                    <FormInput className="col-6 form-group mt-3" label="Category" ref={categoryRef} placeholder="Enter Category" />
+                                    <FormInput className="col-6 form-group mt-3" label="Funding" type="number" ref={fundingRef} placeholder="Funding Amount" />
                                     <FormInput className="col-6 form-group mt-3" label="State" ref={stateRef} placeholder="Enter State" />
                                     <FormInput className="col-6 form-group mt-3" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
-                                    <div className='form-group mt-3 col-6'>
+                                    <FormInput className="col-6 form-group mt-3" label="Location" ref={locationRef} placeholder="Enter the location for the project" />
+                                    <div className='form-group mt-3 col-12 col-md-6'>
                                         <label htmlFor='file'>Project Thumbnail</label>
                                         <div className='input-group'>
                                             <div className="custom-file">
-                                                <input className="custom-file-input" multiple defaultValue={images} type='file' id="file" />
-                                                <label className="custom-file-label" htmlFor="file">Upload Project Thumbnail</label>
+                                                <input className="custom-file-input" multiple onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
+                                                <label className="custom-file-label" htmlFor="file">{imageText || "Upload Project Thumbnail"}</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <FormInput className="col-6 form-group mt-3" label="Date Awarded" ref={awardDateRef} placeholder="Date Awarded" />
-                                    <FormInput className="col-6 form-group mt-3" disabled value={amount} label="Grand Total" ref={totalRef} placeholder="Amount" type="number" />
+                                    <FormInput className="col-6 form-group mt-3" value={grandTotal} label="Grand Total" ref={totalRef} placeholder="Amount" type="number" readonly />
                                     <div className='col-12 mt-3'>
                                         <PrimaryButton className='btn btn-primary btn-sm float-right pull-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone' />
                                     </div>
                                     {milestones.map((milestone, index) => (
-                                        <>
+                                        <div key={index}>
                                             <h3 className='col-7'>Milestone {index + 1}</h3>
+<<<<<<< HEAD
                                             <div className='d-flex col-12' key={index}>
                                                 <div className="row">
                                                     <div className='col-12'>
@@ -481,15 +313,44 @@ const AddNew = () => {
                                                             </div>
                                                         </>
                                                     ))}
+=======
+                                            <div className='d-flex col-12'>
+                                                <div>
+                                                    {
+                                                        Object.keys(milestone).map(key => {
+                                                            if (key === "id") return null;
+                                                            return milestone[key].map((items, mIndex, mArr) => (
+                                                                <div key={key + '-' + mIndex} className="m-0 p-0">
+                                                                    <div className="d-flex justify-content-between align-items-center">
+                                                                        <h5 className="text-capitalize ml-3 mb-0">{milestoneText[key]} {mIndex + 1}</h5>
+                                                                        <div>
+                                                                            {mIndex === 0 && <PrimaryButton type="button" className={`btn btn-primary btn-sm pull-right mr-1`} onClick={handleAddMileStoneItem} data-milestone-index={index} data-milestone-item={key} title='Add' />}
+                                                                            {mArr.length - 1 ? <PrimaryButton type="button" className={`btn btn-danger form-control-sm btn-sm ml-1 ${index}-${mIndex}`} onClick={handleRemoveMilestone} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} title='Delete' /> : null}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className={`${key} d-flex`}>
+                                                                        <div className="row m-2">
+                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.quantity} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-quantity`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="quantity" placeholder="Enter Quantity" type="number" />
+                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.rate} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-rate`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="rate" placeholder="Enter Rate" type="number" />
+                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.amount} onChange={handelMilestoneChange} inputClass={`amount form-control form-control-sm milestone-${index}-${key}-${mIndex}-amount`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="amount" placeholder="Enter Amount" type="number" />
+                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.date} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-date`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="date" placeholder="Select date" type="date" />
+                                                                            <FormTextArea className="col-12 form-group" value={items.description} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-description`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="description" placeholder="Enter Description" type="text" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ));
+                                                        })
+                                                    }
+>>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
                                                 </div>
                                                 {/* <div className='form-group mt-5'>
                                                     <PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
                                                 </div> */}
                                             </div>
-                                        </>
+                                        </div>
                                     ))}
                                 </div>
-                                <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={10}></textarea>
+                                <textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={3}></textarea>
                                 <PrimaryButton type="button" title="Create" disabled={btnStatus} onClick={create} className="btn btn-primary btn-end btn-sm mb-3 mt-3" />
                             </form>
                         </div>
@@ -500,4 +361,4 @@ const AddNew = () => {
     )
 }
 
-export default AddNew
+export default AddNew;
