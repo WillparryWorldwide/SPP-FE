@@ -81,7 +81,7 @@ const Login = () => {
             </div>
             <div className="card-body">
                 <p className="login-box-msg">Login as a contractor</p>
-                <form method="POST" onSubmit="return false">
+                <form method="POST">
                     <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
                     <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
                     <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />

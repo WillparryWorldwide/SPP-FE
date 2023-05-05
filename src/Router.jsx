@@ -17,6 +17,7 @@ const Router = () => {
                     <Route path='create-user/' element={<Signup />} />
                     <Route path='profile/' element={<Profile />} />
                     <Route path='project/'>
+                        <Route index element={<CProjectList />} />
                         <Route path='add/' element={<AddNew />} />
                     </Route>
                     <Route path='spp-users/'>
@@ -27,7 +28,6 @@ const Router = () => {
                 <Route index element={<Dashboard />} />
                 <Route path='project/'>
                     <Route path='profile/' element={<Profile />} />
-                    <Route index element={<CProjectList />} />
                 </Route>
             </Route>
         </Routes>

@@ -84,7 +84,8 @@ const Create = () => {
             setBtnStatus(true);
             axios.post('/auth/register-spp', data).then(({ data }) => {
                 setBtnStatus(false)
-                window.toastr.success(data.message);
+                document.getElementById('form').reset()
+                window.toastr.success(data.data.alert);
             }).catch(({ response }) => {
                 setBtnStatus(false)
                 window.toastr.error(response.data.message);
@@ -97,7 +98,7 @@ const Create = () => {
             <ContentHeader title="Create New SPP User" />
             <section className="content">
                 <div className="card">
-                    <form method="POST">
+                    <form method="POST" id="form">
                         <div className="container">
                             <h3>SPP Details</h3>
                             <div className='row'>

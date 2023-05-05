@@ -54,7 +54,7 @@ const LoginPassword = ({ status, setStatus }) => {
             </Modal.Header>
             <Modal.Body>
                 <div className="row">
-                    <FormInput type="password" className="col-md-12" ref={passwordRef} inputClass="form-control" placeholder="Enter Password" />
+                    <FormInput type="password" className="col-md-12" ref={passwordRef} inputclassName="form-control" placeholder="Enter Password" />
                 </div>
             </Modal.Body>
             <Modal.Footer>

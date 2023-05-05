@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ContentHeader from '../../../components/ContentHeader'
-import useAxiosClient from '../../../Hooks/useAxiosClient'
+import AxiosClient from '../../../Helper/axiosClient'
 
 import { Box, Checkbox, Grid, TextInput } from '@mantine/core';
 import { useDebouncedValue } from '@mantine/hooks';
@@ -46,7 +46,8 @@ const List = () => {
         { id: '31', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
         { id: '32', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
     ]);
-    const axios = useAxiosClient()
+
+    const axios = AxiosClient()
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState(projects.slice(0, PAGE_SIZE));
@@ -60,8 +61,17 @@ const List = () => {
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(projects.slice(from, to));
-        fetchProjects()
+        fetchProjects();
     }, [page])
+
+    const fetchProjects = async () => {
+        await axios.get('/project/all').then(({ data }) => {
+            console.log(data.data.result);
+            setProjects(data.data.result)
+        }).catch(({ response }) => {
+            window.toastr.error(response.data.message)
+        })
+    }
 
     useEffect(() => {
         const now = dayjs();
@@ -81,18 +91,11 @@ const List = () => {
                 return true;
             })
         );
-    }, [debouncedQuery, veteransOnly]);
-
-    const fetchProjects = async () => {
-        await axios.get('/contractor/projects').then(({ data }) => {
-            setProjects(data.projects)
-        }).catch(({ response }) => {
-            window.toastr.error(response.data.message)
-        })
-    }
+    }, [debouncedQuery, veteransOnly, initialRecords]);
 
     const handleEdit = (project) => {
         const projectList = [...projects], index = projectList.indexOf(project)
+        alert(index);
     }
 
     return (
@@ -122,13 +125,13 @@ const List = () => {
                                 withColumnBorders
                                 striped
                                 highlightOnHover
-                                records={records}
+                                records={projects}
                                 columns={[
                                     {
-                                        accessor: 'id',
+                                        accessor: '_id',
                                     },
                                     {
-                                        accessor: 'title',
+                                        accessor: 'name',
                                         title: 'Project Title'
                                     },
                                     {
@@ -139,10 +142,10 @@ const List = () => {
                                         accessor: 'status'
                                     },
                                     {
-                                        accessor: 'date'
+                                        accessor: 'date_awarded'
                                     }
                                 ]}
-                                onRowClick={() => alert(records.id)}
+                                onRowClick={() => handleEdit(projects)}
                                 totalRecords={projects.length}
                                 recordsPerPage={PAGE_SIZE}
                                 page={page}

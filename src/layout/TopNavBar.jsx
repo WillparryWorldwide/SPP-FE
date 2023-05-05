@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSignOut } from 'react-auth-kit'
 import { useAppContext } from '../context/AppContext'
-// import axios from '../Helper/axiosClient'
-import LoginPassword from '../components/LoginPassword'
-import useAxiosClient from '../Hooks/useAxiosClient'
+import AxiosClient from '../Helper/axiosClient'
 
 const TopNavigation = () => {
-    const axios = useAxiosClient()
+    const axios = AxiosClient()
     const signOut = useSignOut()
     const { updateLoginModalStatus } = useAppContext()
     
@@ -57,7 +55,7 @@ const TopNavigation = () => {
                     </li>
                     <li className="nav-item">
                         <a className="nav-link" data-widget="control-sidebar" onClick={() => logOut()} data-slide="true" href="#!" role="button">
-                            <i class="fas fa-sign-out-alt"></i>
+                            <i className="fas fa-sign-out-alt"></i>
                         </a>
                     </li>
                 </ul>

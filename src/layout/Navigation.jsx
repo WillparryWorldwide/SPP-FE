@@ -24,7 +24,7 @@ const Navigation = () => {
                     <img src={avatar} className="img-circle elevation-2" alt="User Avatar" />
                 </div>
                 <div className="info">
-                    <Link to="/profile" className="d-block">Username</Link>
+                    <Link to={userData()?.role === 'contractor' ? '/dashboard/profile' : '/dashboard/admin/profile' } className="d-block">{`${userData()?.firstname} ${userData()?.lastname}`}</Link>
                 </div>
             </div>
             <div className="form-inline">
@@ -92,9 +92,9 @@ const Navigation = () => {
                                 <i className="fas fa-angle-left right"></i>
                             </p>
                         </Link>
-                        <ul className="nav nav-treeview">
+                        {userData()?.role === 'admin' && <ul className="nav nav-treeview">
                             <li className="nav-item">
-                                <Link to="/dashboard/project" className="nav-link">
+                                <Link to="/dashboard/admin/project" className="nav-link">
                                     <i className="far fa-circle nav-icon"></i>
                                     <p>List</p>
                                 </Link>
@@ -117,7 +117,7 @@ const Navigation = () => {
                                     <p>Create MDA</p>
                                 </Link>
                             </li>
-                        </ul>
+                        </ul>}
                     </li>
                 </ul>
             </nav>
