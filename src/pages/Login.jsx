@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppContext } from '../context/AppContext'
 import FormInput from '../components/FormInput'
-// import axios from '../Helper/axiosClient'
 import { useAuthUser } from 'react-auth-kit'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
@@ -74,21 +73,6 @@ const Login = () => {
         }
     }
 
-<<<<<<< HEAD
-    return (<div className="register-box">
-        <div className="card card-outline card-primary">
-            <div className="card-header text-center">
-                <Link to="" className="h1">{site_name}</Link>
-            </div>
-            <div className="card-body">
-                <p className="login-box-msg">Login as a contractor</p>
-                <form method="POST">
-                    <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
-                    <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
-                    <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
-                </form>
-                <Link to="/forgotten-password/" className="text-center">Forgotten Password? Click Here</Link>
-=======
     return (
         <div className="register-box">
             <div className="card card-outline card-primary">
@@ -96,7 +80,7 @@ const Login = () => {
                     <Link to="" className="h1">{site_name}</Link>
                 </div>
                 <div className="card-body">
-                    <p className="login-box-msg">Login as a contractor</p>
+                    <p className="login-box-msg">Login to access your account</p>
                     <form method="POST">
                         <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
                         <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
@@ -104,7 +88,6 @@ const Login = () => {
                     </form>
                     <Link to="/forgotten-password/" className="text-center">Forgotten Password? Click Here</Link>
                 </div>
->>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
             </div>
         </div>
     )
