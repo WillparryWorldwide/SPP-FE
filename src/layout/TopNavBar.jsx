@@ -2,11 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSignOut } from 'react-auth-kit'
 import { useAppContext } from '../context/AppContext'
-<<<<<<< HEAD
-=======
-// import axios from '../Helper/axiosClient'
-import LoginPassword from '../components/LoginPassword'
->>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
 import AxiosClient from '../Helper/axiosClient'
 
 const TopNavigation = () => {
@@ -59,11 +54,7 @@ const TopNavigation = () => {
                         </a>
                     </li>
                     <li className="nav-item">
-<<<<<<< HEAD
-                        <a className="nav-link" data-widget="control-sidebar" onClick={() => logOut()} data-slide="true" href="#!" role="button">
-=======
                         <a className="nav-link" data-widget="control-sidebar" onClick={() => logOut()} data-slide="true" href="#x" role="button">
->>>>>>> 8724d857cb3b6be7a29c80f5cf04bfa001179a6d
                             <i className="fas fa-sign-out-alt"></i>
                         </a>
                     </li>
