@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAppContext } from '../../context/AppContext'
+// import { useAppContext } from '../../context/AppContext'
 import FormInput from '../../components/FormInput'
 import PrimaryButton from '../../components/PrimaryButton'
 import ContentHeader from '../../components/ContentHeader'
@@ -8,18 +7,15 @@ import AxiosClient from '../../Helper/axiosClient'
 
 const Signup = () => {
 
-    const { site_name } = useAppContext()
+    // const { site_name } = useAppContext()
 
     const firstNameRef = useRef()
     const lastNameRef = useRef()
     const passwordRef = useRef();
     const reTypePasswordRef = useRef();
     const emailRef = useRef();
-    const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+    // const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     const [btnStatus, setBtnStatus] = useState(false);
-    const [btnText, setBtnText] = useState('Submit')
-    const navigate = useNavigate()
-
     const axios = AxiosClient()
 
     // SUBMIT FORM DATA TO SERVER
@@ -31,7 +27,7 @@ const Signup = () => {
         } else if (lastNameRef.current.value === '') {
             lastNameRef.current.focus()
             window.toastr.error('Last Name is required');
-        } else if (!emailRef.current.value.match(mailformat)) {
+        } else if (!emailRef.current.value === '') {
             emailRef.current.focus()
             window.toastr.error('provide a valid email address');
         } else if (passwordRef.current.value === '') {
@@ -64,7 +60,7 @@ const Signup = () => {
             <ContentHeader title="Create New Admin User" />
             <section className="content">
                 <div className="card">
-                    <form method="POST" id="form" onSubmit="return false">
+                    <form method="POST" id="form">
                         <div className="container">
                             <div className='row'>
                                 <FormInput placeholder="Enter First Name" className="col-6 mb-3" ref={firstNameRef} />
@@ -78,7 +74,7 @@ const Signup = () => {
                                 <FormInput placeholder="Re-type password" type="password" className="col-6 mb-3" ref={reTypePasswordRef} />
                             </div>
                             <div className="row">
-                                <PrimaryButton className="btn btn-primary btn-end mb-3 ml-3 float-right" disabled={btnStatus ? 'disabled' : ''} title={btnText} type="submit" onClick={(e) => handleSubmit(e)} />
+                                <PrimaryButton className="btn btn-primary btn-end mb-3 ml-3 float-right" disabled={btnStatus ? 'disabled' : ''} title={"Submit"} type="submit" onClick={(e) => handleSubmit(e)} />
                             </div>
                         </div>
                     </form>

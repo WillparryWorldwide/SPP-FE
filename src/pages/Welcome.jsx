@@ -4,7 +4,7 @@ import ContentHeader from '../components/ContentHeader'
 const Welcome = () => {
     return (
         <>
-            <ContentHeader />
+            <ContentHeader title={"HELLO"}/>
         </>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import avatar from '../layout/assets/images/avatar.png'
 import { useAuthContext } from '../context/AuthContext'
@@ -8,11 +8,13 @@ import MdaModal from '../components/MdaModal'
 
 const Navigation = () => {
 
-    const userData = useAuthUser()
-    const { auth } = useAuthContext()
-    if (auth !== undefined) {
-        avatar = auth?.avatar ?? avatar
-    }
+    const userData = useAuthUser()();
+    const { auth } = useAuthContext();
+    avatar = auth?.avatar ?? avatar;
+
+    useEffect(() => {
+        if (!userData) window.location.pathname = "/spp";
+    });
 
     const [sectionModalState, setSectionModalState] = useState(false)
     const [MdaModalState, setMdaModalState] = useState(false)
@@ -39,51 +41,45 @@ const Navigation = () => {
             </div>
             <nav className="mt-2">
                 <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    {userData()?.role === 'contractor' &&
-                        <li className="nav-item">
-                            <Link to="/dashboard" className="nav-link active">
-                                <i className="nav-icon fas fa-home-alt"></i>
-                                <p>Profile</p>
-                            </Link>
-                        </li>
-                    }
-                    {userData()?.role !== 'contractor' && <>
-                        <li className="nav-item">
-                            <Link to="/dashboard/admin" className="nav-link active">
-                                <i className="nav-icon fas fa-home-alt"></i>
-                                <p>Home</p>
-                            </Link>
-                        </li>
+                    <li className="nav-item">
+                        <Link to="/spp/dashboard" className="nav-link active">
+                            <i className="nav-icon fas fa-home-alt"></i>
+                            <p>Home</p>
+                        </Link>
+                    </li>
+
+                    {
+                        userData?.role === "admin" &&
                         <li className="nav-item">
                             <Link className="nav-link">
                                 <i className="nav-icon fas fa-list-check"></i>
                                 <p>
-                                    SPP Users
+                                    Users
                                     <i className="fas fa-angle-left right"></i>
                                 </p>
                             </Link>
                             <ul className="nav nav-treeview">
                                 <li className="nav-item">
-                                    <Link to="/dashboard/admin/spp-users" className="nav-link">
+                                    <Link to="/spp/dashboard/users" className="nav-link">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>List</p>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/dashboard/admin/spp-users/create" className="nav-link">
+                                    <Link to="/spp/dashboard/user/register/admin" className="nav-link">
                                         <i className="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
+                                        <p>Add Admin</p>
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/spp/dashboard/user/register/cotractor" className="nav-link">
+                                        <i className="far fa-circle nav-icon"></i>
+                                        <p>Add Contractor</p>
                                     </Link>
                                 </li>
                             </ul>
                         </li>
-                        <li className="nav-item">
-                            <Link to="/dashboard/admin/create-user" className="nav-link">
-                                <i className="nav-icon fas fa-home-alt"></i>
-                                <p>Create Admin</p>
-                            </Link>
-                        </li>
-                    </>}
+                    }
                     <li className="nav-item">
                         <Link className="nav-link">
                             <i className="nav-icon fas fa-list-check"></i>
@@ -94,29 +90,34 @@ const Navigation = () => {
                         </Link>
                         <ul className="nav nav-treeview">
                             <li className="nav-item">
-                                <Link to="/dashboard/project" className="nav-link">
+                                <Link to="/spp/dashboard/project" className="nav-link">
                                     <i className="far fa-circle nav-icon"></i>
-                                    <p>List</p>
+                                    <p>All Project</p>
                                 </Link>
                             </li>
-                            <li className="nav-item">
-                                <Link to="/dashboard/admin/project/add" className="nav-link">
-                                    <i className="far fa-circle nav-icon"></i>
-                                    <p>Add New</p>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link onClick={() => setSectionModalState(!sectionModalState)} className="nav-link">
-                                    <i className="far fa-circle nav-icon"></i>
-                                    <p>Create Sector</p>
-                                </Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link onClick={() => setMdaModalState(!MdaModalState)} className="nav-link">
-                                    <i className="far fa-circle nav-icon"></i>
-                                    <p>Create MDA</p>
-                                </Link>
-                            </li>
+                            {
+                                userData?.role === "admin" &&
+                                <>
+                                    <li className="nav-item">
+                                        <Link to="/spp/dashboard/project/register" className="nav-link">
+                                            <i className="far fa-circle nav-icon"></i>
+                                            <p>Register Project</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link onClick={() => setSectionModalState(!sectionModalState)} className="nav-link">
+                                            <i className="far fa-circle nav-icon"></i>
+                                            <p>Create Sector</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link onClick={() => setMdaModalState(!MdaModalState)} className="nav-link">
+                                            <i className="far fa-circle nav-icon"></i>
+                                            <p>Create MDA</p>
+                                        </Link>
+                                    </li>
+                                </>
+                            }
                         </ul>
                     </li>
                 </ul>
