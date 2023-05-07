@@ -61,21 +61,7 @@ const Navigation = () => {
                                     SPP Users
                                     <i className="fas fa-angle-left right"></i>
                                 </p>
-                            </Link>
-                            <ul className="nav nav-treeview">
-                                <li className="nav-item">
-                                    <Link to="/dashboard/admin/spp-users" className="nav-link">
-                                        <i className="far fa-circle nav-icon"></i>
-                                        <p>List</p>
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/dashboard/admin/spp-users/create" className="nav-link">
-                                        <i className="far fa-circle nav-icon"></i>
-                                        <p>Create</p>
-                                    </Link>
-                                </li>
-                            </ul>
+                            </Link>c
                         </li>
                         <li className="nav-item">
                             <Link to="/dashboard/admin/create-user" className="nav-link">

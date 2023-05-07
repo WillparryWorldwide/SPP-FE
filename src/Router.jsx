@@ -2,13 +2,14 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { RequireAuth } from 'react-auth-kit'
 
-import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup } from './pages'
+import { Login, Dashboard, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic } from './pages'
 import Layout from './layout'
 
 const Router = () => {
     return (
         <Routes>
             <Route path='/' element={<Login />} />
+            <Route path='general-public/' element={<GeneralPublic />} />
 
             {/* Authenticated Routes */}
             <Route path="dashboard/" element={<><RequireAuth loginPath="/" /><Layout/></>}>
