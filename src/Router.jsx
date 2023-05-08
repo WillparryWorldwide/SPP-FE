@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, WelcomePage } from './pages'
+import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic } from './pages'
 import Layout from './layout'
 
 const Router = () => {
@@ -9,7 +9,7 @@ const Router = () => {
         <Routes>
             <Route path='/' >
             {/* Landing page */}
-                <Route index element={<WelcomePage />} />
+                <Route index element={<GeneralPublic />} />
 
                 {/* Dashboard */}
                 <Route path="spp/">
