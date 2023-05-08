@@ -36,18 +36,20 @@ const List = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            await axios.get('/users').then(({ data }) => {
-                setSppUsers(data.users)
+            await axios.get('/admin/all-spp/contractor').then(({ data }) => {
+                setSppUsers(data.data.result);
+                console.log("user",     data)
             }).catch(({ response }) => {
                 window.toastr.error(response.data.message)
-            })
+            });
         }
 
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(sppUsers.slice(from, to));
         fetchProjects();
-    }, [page, initialRecords]);
+        console.log("Rendering...");
+    }, [page, initialRecords.length, sppUsers.length]);
 
     useEffect(() => {
         const now = dayjs();
