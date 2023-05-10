@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useAuthUser } from 'react-auth-kit'
 
-// const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
-const BASE_URL = "http://localhost:8080/api/spp";
+const BASE_URL = `${process.env.REACT_APP_BASE_URL}`;
+// const BASE_URL = "http://localhost:8080/api/spp";
 
 const AxiosClient = () => {
     const userData = useAuthUser();
