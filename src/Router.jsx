@@ -1,18 +1,18 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic } from './pages'
+import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic, ViewProject } from './pages'
 import Layout from './layout'
 
 const Router = () => {
     return (
         <Routes>
             <Route path='/' >
-            {/* Landing page */}
+                {/* Landing page */}
                 <Route index element={<GeneralPublic />} />
 
                 {/* Dashboard */}
-                <Route path="spp/">
+                <Route path="spp">
                     <Route index element={<Login />} />
 
                     {/* Routes */}
@@ -21,7 +21,8 @@ const Router = () => {
                         <Route path='profile' element={<Profile />} />
 
                         {/* This route is for SPP . For both contractor and admin */}
-                        <Route path="users" element={<ListSPPUser />}>
+                        <Route path="users">
+                            <Route index element={<ListSPPUser />} />
                             <Route path="register">
                                 <Route path="admin" element={<Signup />} />
                                 <Route path='contractor' element={<CreateSPPUser />} />
@@ -30,6 +31,7 @@ const Router = () => {
                         {/* Project route */}
                         <Route path="project">
                             <Route index element={<CProjectList />} />
+                            <Route path="view/:id" element={<ViewProject />} />
                             <Route path="register" element={<AddNew />} />
                         </Route>
                     </Route>

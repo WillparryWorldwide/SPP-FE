@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Modal, Button } from "react-bootstrap";
-import AxiosClient from '../Helper/axiosClient';
+// import AxiosClient from '../Helper/axiosClient';
 
 const ProjectModal = ({ status, setStatus }) => {
 
     const titleRef = useRef();
-    const axios = AxiosClient();
+    // const axios = AxiosClient();
     const [show, setShow] = useState(status);
     const handleClose = () => {
         setShow(false)

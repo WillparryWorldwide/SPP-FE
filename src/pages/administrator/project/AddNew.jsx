@@ -158,7 +158,7 @@ const AddNew = () => {
     const create = () => {
         let submit = true;
 
-        submit = validateInput({sppCodeRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef})
+        submit = validateInput({sppCodeRef, mdaRef, sectorRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef})
 
         let stopValidation = false;
         // check if milestone items are  stil empty
@@ -184,7 +184,7 @@ const AddNew = () => {
         });
 
         // if false do not create project
-        if (!submit) return;
+        // if (!submit) return;
         // upload
         const myFormData = getFormData(milestones, durationRef, titleRef, stateRef, mdaRef, sppCodeRef, locationRef, totalRef, categoryRef, sectorRef, lgaRef, awardDateRef, fundingRef, descriptionRef);
 
@@ -193,11 +193,11 @@ const AddNew = () => {
                 "Content-Type": "multipart/form-data"
             }
         }).then(({ data }) => {
-            setBtnStatus(true);
+            // setBtnStatus(true);
             document.querySelector('#project').reset()
             window.toastr.success(data.data.message)
         }).catch(({ response }) => {
-            setBtnStatus(false);
+            // setBtnStatus(false);
             window.toastr.error(response.data.data.message)
         })
     }
