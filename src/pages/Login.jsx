@@ -22,22 +22,17 @@ const Login = () => {
     const userData = useAuthUser()
 
     useEffect(() => {
-        if (isAuthenticated()) {
-            if (userData().role === 'contractor') {
-                navigate('/dashboard', { replace: true })
-            } else {
-                navigate('/dashboard/admin', { replace: true });
-            }
-        }
-    }, [])
+        if (isAuthenticated()) window.location.pathname = "/spp/dashboard";
+        console.log("Render...");
+    }, [isAuthenticated, navigate, userData]);
 
-    document.body.classList.add('hold-transition', 'login-page')
+    document.body.classList.add("hold-transition", "login-page")
 
     const handleSubmit = e => {
         e.preventDefault()
         if (sppCodeRef.current.value === '') {
             sppCodeRef.current.focus()
-            window.toastr.error('Enter your spp code')
+            window.toastr.error('Enter your user code')
         } else if (passwordRef.current.value === '') {
             passwordRef.current.focus()
             window.toastr.error('Password is required')
@@ -60,12 +55,8 @@ const Login = () => {
                     refreshToken: user.token,
                     refreshTokenExpireIn: 1440
                 })) {
-                    updateLoginStatus(!login_status)
-                    if (user.role === 'contractor') {
-                        navigate('/dashboard/profile', { replace: true })
-                    } else {
-                        navigate('/dashboard/admin', { replace: true });
-                    }
+                    updateLoginStatus(!login_status);
+                    window.location.pathname = "/spp/dashboard";
                 }
             }).catch((response) => {
                 setBtnStatus(false)
@@ -81,9 +72,9 @@ const Login = () => {
                     <Link to="" className="h1">{site_name}</Link>
                 </div>
                 <div className="card-body">
-                    <p className="login-box-msg">Login as a contractor</p>
+                    <p className="login-box-msg">Login</p>
                     <form method="POST">
-                        <FormInput placeholder="Enter SPP Code" className="input-group mb-3" ref={sppCodeRef} />
+                        <FormInput placeholder="Enter User Code or Email" className="input-group mb-3" ref={sppCodeRef} />
                         <FormInput placeholder="Enter Password" type="password" className="input-group mb-3" ref={passwordRef} />
                         <PrimaryButton className="btn btn-primary btn-block" disabled={btnStatus ? 'disabled' : ''} title="Submit" type="submit" onClick={(e) => handleSubmit(e)} />
                     </form>

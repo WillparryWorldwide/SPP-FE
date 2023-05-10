@@ -6,7 +6,7 @@ import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch } from '@tabler/icons-react';
 import { DataTable } from 'mantine-datatable';
 import dayjs from 'dayjs';
-import AxiosClient from '../../../Helper/axiosClient';
+// import AxiosClient from '../../../Helper/axiosClient';
 
 const List = () => {
 
@@ -46,7 +46,7 @@ const List = () => {
         { id: '31', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
         { id: '32', title: 'Hello world', duration: '20 weeks', status: 10, date: '21st February 2023' },
     ]);
-    const axios = AxiosClient();
+    // const axios = AxiosClient();
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState(projects.slice(0, PAGE_SIZE));
@@ -57,20 +57,18 @@ const List = () => {
     const [debouncedQuery] = useDebouncedValue(query, 200);
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            await axios.get('/contractor/projects').then(({ data }) => {
-                setProjects(data.projects)
-            }).catch(({ response }) => {
-                window.toastr.error(response.data.message);
-            });
-        }
+        // const fetchProjects = async () => {
+        //     await axios.get('/contractor/projects').then(({ data }) => {
+        //         setProjects(data.projects)
+        //     }).catch(({ response }) => {
+        //         window.toastr.error(response.data.message);
+        //     });
+        // }
+        setProjects(projects);
         const from = (page - 1) * PAGE_SIZE;
         const to = from + PAGE_SIZE;
         setRecords(projects.slice(from, to));
-        fetchProjects();
-    }, [page, initialRecords], projects);
-
-    useEffect(() => {
+        // fetchProjects();
         const now = dayjs();
         setRecords(
             initialRecords.filter(({ firstName, lastName, department, birthDate }) => {
@@ -88,9 +86,7 @@ const List = () => {
                 return true;
             })
         );
-    }, [debouncedQuery, veteransOnly]);
-
-
+    }, [page, initialRecords, projects, debouncedQuery, veteransOnly]);
 
     // TODO: Find use for this or delete
     // const handleEdit = (project) => {
