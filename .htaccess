@@ -1,21 +1,9 @@
-# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
-# PassengerAppRoot "/home/willqqpu/sppa.willparry.org"
-# PassengerBaseURI "/"
-# PassengerNodejs "/home/willqqpu/nodevenv/sppa.willparry.org/14/bin/node"
-# PassengerAppType node
-# PassengerStartupFile src/app.js
-# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
-# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
-# <IfModule Litespeed>
-# </IfModule>
-# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
-
 <IfModule mod_rewrite.c>
 
   RewriteEngine on
   RewriteCond %{HTTP_HOST} ^sppa.willparry.org$ [NC,OR]
   RewriteCond %{HTTP_HOST} ^www.sppa.willparry.org$
   RewriteCond %{REQUEST_URI} !build/
-  RewriteRule (.*) /build/$1 [L]
+  RewriteRule ^.* /build/$1 [L]
 
 </IfModule>
