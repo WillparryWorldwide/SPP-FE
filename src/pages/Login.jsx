@@ -58,10 +58,12 @@ const Login = () => {
                     updateLoginStatus(!login_status);
                     window.location.pathname = "/spp/dashboard";
                 }
-            }).catch((response) => {
-                setBtnStatus(false)
-                window.toastr.error(response.message)
-            })
+            }).catch((err) => {
+                setBtnStatus(false);
+                console.error("errrorr", err);
+                err.response? window.toastr.error(err.response.data.message):
+                window.toastr.error(err.message);
+            });
         }
     }
 

@@ -31,27 +31,23 @@ const AddNew = () => {
     const [btnStatus, setBtnStatus] = useState(false);
     const [contractors, setContractors] = useState([]);
     const milestoneText = {
-        preliminary: "Preliminary Sum",
-        provision: "Provisional Sum",
-        measured: "Measured Work"
+        preliminaries_sum: "Preliminary Sum",
+        provisional_sums: "Provisional Sum",
+        measured_work: "Measured Work"
     }
-    const [milestones, setMileStones] = useState([
-        {
-            id: 1,
-            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
-        }
-    ]);
+    const [milestones, setMileStones] = useState([{
+        preliminaries_sum: [{ rate: '', amount: '', date: '', description: '', quantity: '' }],
+        provisional_sums: [{ rate: '', amount: '', date: '', description: '', quantity: '' }],
+        measured_work: [{ rate: '', amount: '', date: '', description: '', quantity: '' }]
+    }]);
 
     // function
     const handleAddMilestone = (e) => {
         e.preventDefault();
         const newMilestone = {
-            id: milestones.length + 1,
-            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
+            preliminaries_sum: [{ rate: '', amount: '', date: '', description: '', quantity: '' }],
+            provisional_sums: [{ rate: '', amount: '', date: '', description: '', quantity: '' }],
+            measured_work: [{ rate: '', amount: '', date: '', description: '', quantity: '' }]
         }
 
         setMileStones(prev => {
@@ -80,7 +76,7 @@ const AddNew = () => {
         const k = e.target;
         const milestoneIndex = k.dataset.milestoneIndex;
         const milestoneItem = k.dataset.milestoneItem;
-        const newPreliminary = { id: 1, rate: 65, amount: 76, date: "2023-05-18", description: "Lol", quantity: 1862 };
+        const newPreliminary = { rate: 65, amount: 76, date: "2023-05-18", description: "Lol", quantity: 1862 };
 
         milestones[milestoneIndex][milestoneItem].push(newPreliminary)
         setMileStones(milestones);
@@ -158,7 +154,7 @@ const AddNew = () => {
     const create = () => {
         let submit = true;
 
-        submit = validateInput({sppCodeRef, mdaRef, sectorRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef})
+        submit = validateInput({ sppCodeRef, mdaRef, sectorRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef })
 
         let stopValidation = false;
         // check if milestone items are  stil empty
@@ -194,8 +190,9 @@ const AddNew = () => {
             }
         }).then(({ data }) => {
             // setBtnStatus(true);
-            document.querySelector('#project').reset()
-            window.toastr.success(data.data.message)
+            // document.querySelector('#project').reset()
+            console.log("data", data);
+            window.toastr.success(data.data.message);
         }).catch(({ response }) => {
             // setBtnStatus(false);
             window.toastr.error(response.data.data.message)
