@@ -1,4 +1,9 @@
-node_modules
-.env
-build
 .vscode
+node_modules
+public
+src
+.env
+.env
+HOW_TO_BOQ
+package-lock.json
+package.json
