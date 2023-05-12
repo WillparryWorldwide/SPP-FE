@@ -13,13 +13,13 @@ import useGetAllProject from "../../../Hooks/usegetallproject";
 import moment from "moment";
 
 const columns = [
-	{ id: "name", label: "Name", minWidth: 70, format: (val) => val},
-	{ id: "category", label: "Category", minWidth: 170, format: (val) => val },
-	{ id: "state", label: "State", minWidth: 170, format: (val) => val },
-	{ id: "code", label: "Code", minWidth: 170, format: (val) => val },
-	{ id: "grand_total", label: "Grand Total", minWidth: 170, format: (val) => val },
-	{ id: "duration", label: "Duration", minWidth: 170, format: (val) => moment(val, "YYYYMMDD").fromNow() },
-	{ id: "open", label: "Status", minWidth: 170, format: (val) => val }
+	{ id: "name", label: "Name", minWidth: 170, format: (val) => val},
+	{ id: "category", label: "Category", minWidth: 70, format: (val) => val },
+	{ id: "state", label: "State", minWidth: 70, format: (val) => val },
+	{ id: "code", label: "Code", minWidth: 70, format: (val) => val },
+	{ id: "grand_total", label: "Grand Total", minWidth: 70, format: (val) => val },
+	{ id: "duration", label: "Duration", minWidth: 70, format: (val) => moment(val, "YYYYMMDD").fromNow() },
+	{ id: "open", label: "Status", minWidth: 70, format: (val) => val }
 ];
 
 export default function AllProjects() {
