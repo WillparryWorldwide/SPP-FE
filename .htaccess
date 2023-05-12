@@ -10,16 +10,13 @@
 # </IfModule>
 # DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END
 
-DirectoryIndex build\index.html
-
 <IfModule mod_rewrite.c>
 
   RewriteEngine On
-  RewriteBase /
-  RewriteRule ^build\index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteBase ./build/
+  RewriteCond %{REQUEST_URI} !^/build/
+  RewriteRule ^build/$ /index.html [L]
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-l
-  RewriteRule . build\index.html [L]
 
 </IfModule>
