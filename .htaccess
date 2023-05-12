@@ -12,11 +12,10 @@
 
 <IfModule mod_rewrite.c>
 
-  RewriteEngine On
-  RewriteBase ./build/
-  RewriteCond %{REQUEST_URI} !^/build/
-  RewriteRule ^build/$ /index.html [L]
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteEngine on
+  RewriteCond %{HTTP_HOST} ^sppa.willparry.org$ [NC,OR]
+  RewriteCond %{HTTP_HOST} ^www.sppa.willparry.org$
+  RewriteCond %{REQUEST_URI} !build/
+  RewriteRule (.*) /build/$1 [L]
 
 </IfModule>
