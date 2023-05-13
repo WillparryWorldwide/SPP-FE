@@ -8,21 +8,20 @@ import { Fragment, useEffect, useState, useCallback } from 'react'
 // import image from '../../layout/assets/images/photo1.png'
 import useGetAllProject from '../../Hooks/usegetallproject'
 import useUpdateProject from '../../Hooks/useupdateproject'
-import Generalsidebar from '../../components/generalpublic/generalsidebar'
+// import Generalsidebar from '../../components/generalpublic/generalsidebar'
 import GeneralTopNavigation from '../../components/generalpublic/genaraltopnavbar'
 
 import './generalpublic.css'
 import Comment from '../../components/generalpublic/comment'
 import ViewComment from '../../components/generalpublic/viewcomment'
 const Layout = () => {
-    const url = process.env.REACT_APP_BASE_URL
     const [viewComment, setViewComment] = useState(false)
     const [viewListComment, setViewListComment] = useState(false)
-    const [comments, setComment] = useState(null)
+    const [comments, /*setComment */] = useState(null)
     const [nameOfProject, setNameOfProject] = useState('')
     const [idOfProject, setIdOfProject] = useState('')
     const [itemOfProject, setItemOfProject] = useState('')
-    const { fetchProject, data, /* loading */ } = useGetAllProject() /* NOTE: use it or remove loading -->*/
+    const { fetchProject, data, hostUrl,  /* loading */ } = useGetAllProject() /* NOTE: use it or remove loading -->*/
     const { upDAteProject, data: updateData, /* loading: upDateLoading */ } = useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
     const [filter, /* setFilter*/] = useState('') /* NOTE: use it or remove selFilter -->*/
     const [commentData, setCommentData] = useState({
@@ -40,11 +39,11 @@ const Layout = () => {
         setNameOfProject(name)
         setViewComment(true)
     }
-    const displayListComment = (item) => {
-        console.log(item.review.comments)
-        setComment(item.review.comments)
-        setViewListComment(true)
-    }
+    // const displayListComment = (item) => {
+    //     console.log(item.review.comments)
+    //     setComment(item.review.comments)
+    //     setViewListComment(true)
+    // }
     const submitComment = async (e) => {
         e.preventDefault()
         console.log(idOfProject)
@@ -75,6 +74,7 @@ const Layout = () => {
     useEffect(() => {
         getProject();
         console.log("Rendering...");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateData]);
 
     return (
@@ -83,8 +83,8 @@ const Layout = () => {
                 {/* Header Section  */}
                 <GeneralTopNavigation />
                 {/* Sidebar Section  */}
-                <Generalsidebar />
-                <div className="content-wrapper">
+                {/* <Generalsidebar /> */}
+                <div className="content-wrapper ml-0">
                     <>
                         {/* <ContentHeader title="Profile" /> */}
                         <div className="content-header">
@@ -118,7 +118,7 @@ const Layout = () => {
                                 <div className="row h-100">
                                     {/* Main section  */}
                                     <div className={`${(viewComment || viewListComment) ? ' col-lg-9 ' : " col-lg-12 "}  h-100 overflow-y-scroll client-overflow-scroll`}>
-                                        <div className="card">
+                                        <div className="card transparent">
                                             <div className="card-header p-2">
                                                 <ul className="nav nav-pills">
                                                     <li className="nav-item"><a className="nav-link active" href="#project" data-toggle="tab">All Project</a></li>
@@ -127,17 +127,17 @@ const Layout = () => {
                                                 </ul>
                                             </div>
                                             <div className="card-body">
-                                                <div className="tab-content">
+                                                {/* <div className="tab-content"> */}
                                                     {/* All projects tab  */}
-                                                    <div className="active tab-pane" id="project">
-                                                        <div className="row">
+                                                    {/* <div className="active tab-pane" id="project"> */}
+                                                        <div className=" body-item">
 
                                                             {
                                                                 data !== null && data.map((item, index) => {
                                                                     return (
                                                                         <Fragment key={item._id}>
-                                                                            <div className="tab-pane w-100 " >
-                                                                                <div className="timeline timeline-inverse">
+                                                                            {/* <div className="tab-pane w-100 " > */}
+                                                                                {/* <div className="timeline timeline-inverse">
                                                                                     <div className='w-100'>
 
                                                                                         <div className="timeline-item m-0">
@@ -166,16 +166,26 @@ const Layout = () => {
                                                                                         </div>
                                                                                     </div>
 
+                                                                                </div> */}
+                                                                                <div class="card" style={{width: '18rem'}}>
+                                                                                    <div className='w-100 card-image'>
+                                                                                        {item.images.length > 0 && <img src={ hostUrl + item.images[0].path} class="card-img-top" alt="..." />}
+                                                                                    </div>
+                                                                                    <div class="card-body">
+                                                                                        <h5 class="card-title">Card title</h5>
+                                                                                        <p class="card-text">{item.description}</p>
+                                                                                        <button onClick={() => displayComment(item.name, item._id, item)} class="btn btn-primary">Comment</button>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
+                                                                            {/* </div> */}
                                                                         </Fragment>
                                                                     )
                                                                 })
                                                             }
 
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    {/* </div> */}
+                                                {/* </div> */}
                                             </div>
                                         </div>
                                     </div>

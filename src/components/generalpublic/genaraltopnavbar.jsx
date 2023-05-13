@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import logo from '../../assets/logo/logo.png'
 
 const GeneralTopNavigation = () => {
     
@@ -8,11 +9,15 @@ const GeneralTopNavigation = () => {
 
     return (
         <>
-            <nav className="main-header navbar navbar-expand navbar-dark">
+            <nav className="main-header navbar navbar-expand navbar-dark ml-0">
                 <ul className="navbar-nav">
-                    <li className="nav-item">
+                    <Link to="/" className="brand-link">
+                        <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
+                        <span className="brand-text font-weight-light">SPPA</span>
+                    </Link>
+                    {/* <li className="nav-item">
                         <Link className="nav-link" data-widget="pushmenu" role="button"><i className="fas fa-bars"></i></Link>
-                    </li>
+                    </li> */}
                 </ul>
                 <ul className="navbar-nav ml-auto">
                     <li className="nav-item">
