@@ -1,6 +1,8 @@
 import moment from "moment/moment";
 import { useParams, Link } from "react-router-dom";
 import getFormData from "./functions/getFormData";
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import AxiosClient from "../../../Helper/axiosClient";
@@ -77,7 +79,7 @@ const ViewProject = () => {
             axios.get("/project/only/" + params.id).then((res) => {
                 setProject(res.data.data.result);
                 setInputData(initialInput);
-                setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api")));
+                setHostUrl(res.config.baseURL.slice(0, res.config.baseURL.search("api")));
                 setIsLoading(false);
             }).catch(error => {
                 // handle error
@@ -275,23 +277,28 @@ const ViewProject = () => {
                                             ))}
 
                                             {/* Images */}
-                                            {/*
                                             <div className="col-12 mt-5">
                                                 <h2>Media</h2>
                                             </div>
                                             <hr />
-                                                project.images?.length && project.images.map((img, index) => 
+                                            <div className="row">
+                                                {
+                                                    project.images?.length && project.images.map((img, index) =>
                                                     (
-                                                        <div key={index} className="card" style={{width: "500px"}}>
-                                                            <img className="card-img-top" src={hostUrl + img.path} alt={"Project image " + index} />
-                                                                <div className="card-img-overlay"> 
-                                                                    <h4 className="card-title">John Doe</h4>
-                                                                    <p className="card-text">Some example text.</p>
-                                                                    <a href="#x" className="btn btn-primary">See Profile</a>
+                                                        <div className="col-3">
+                                                            <div key={index} className="card">
+                                                                <img className="card-img-top" src={hostUrl + img.path} alt={"Project image " + index} />
+                                                                <div className="card-img-overlay">
+                                                                    <IconButton aria-label="delete" color="error">
+                                                                        <DeleteIcon />
+                                                                    </IconButton>
+
                                                                 </div>
+                                                            </div>
                                                         </div>
                                                     ))
-                                                    */  }
+                                                }
+                                            </div>
                                         </div>
                                     </form>
                                     : <h4>Loading...</h4>
