@@ -1,9 +1,11 @@
 import React from 'react'
 
-const Comment = ({nameOfProject, submitComment, commentData, setCommentData, handleRadioSelection}) => {
+const Comment = ({nameOfProject, submitComment, commentData, setCommentData, handleRadioSelection, setComment, noCancel}) => {
+ console.log(noCancel)
   return (
     <>
         <div className="card card-primary card-outline p-3 w-100">
+            {noCancel === null && <div onClick={() => setComment(false)} className='text-primary ml-auto'>X</div>}
             <h5 className="timeline-header">Comment on <a href="#x">{nameOfProject}</a> Project</h5>
             <form onSubmit={submitComment}>
                 <div className="input-group input-group-sm w-100 mb-3">

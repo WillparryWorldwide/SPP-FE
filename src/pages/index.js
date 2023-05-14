@@ -7,5 +7,6 @@ export { default as ListSPPUser } from "./administrator/spp_users/AllUsers";
 export { default as Login } from "./Login";
 export { default as Profile } from "./Profile";
 export { default as GeneralPublic } from "./general-public/generalpublic";
+export { default as PublicIndividualProject } from "./general-public/individualproject";
 export { default as CProjectList } from "./contractors/project/AllProject";
 export { default as ViewProject } from "./contractors/project/ViewProject";

@@ -9,9 +9,9 @@ const useGetProject = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const fetchProject = (filter) => {
+  const fetchProject = (id) => {
     setLoading(true)
-    axios.get(process.env.REACT_APP_BASE_URL + "/project/only/" + filter, {
+    axios.get(process.env.REACT_APP_BASE_URL + "/project/only/" + id, {
       // cancelToken: source.token,
       headers: {
         "Authorization": `Bearer ${userData()?.token}`
