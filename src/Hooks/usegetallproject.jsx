@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import AxiosClient from "../Helper/axiosClient";
 // import { useAuthUser } from "react-auth-kit";
 
 
@@ -9,20 +9,13 @@ const useGetAllProject = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
   const [hostUrl, setHostUrl] = useState('');
+  const axios = AxiosClient();
 
   const fetchProject = (filter) => {
     setLoading(true)
-    axios.get(process.env.REACT_APP_BASE_URL + '/project/all?q=' + filter, {
-      // cancelToken: source.token,
-      headers: {
-        "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNwcEB3aWxscGFycnkub3JnIiwidXNlcklkIjoiNjQ1ZGUxMzMwZTYzZjBjYmExMGUxMjEwIiwiaWF0IjoxNjgzOTgxNDM3LCJleHAiOjE3NjE5ODE0Mzd9.z9tUASm9wDxeYZYj2GFlQZPt8Fw3mzMfqr7_EKEB92M`
-      }
-    }).then((res) => {
+    axios.get('/project/all?q=' + filter).then((res) => {
       setData(res.data.data.result)
-      setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api")));
-      // if (res.headers.authorization) {
-      //   getAuthHeader(res.headers.authorization)
-      // }
+      setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
       setLoading(false)
       return true
     }).catch(error => {

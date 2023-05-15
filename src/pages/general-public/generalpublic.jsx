@@ -196,15 +196,16 @@ const GeneralPub = () => {
                                     className="card "
                                     style={{ width: "18rem" }}
                                   >
-                                    <div className="w-100 card-image">
                                       {item.images.length > 0 && (
-                                        <img
-                                          src={hostUrl + item.images[0].path}
-                                          className="card-img-top"
-                                          alt="..."
-                                        />
+                                        
+                                        <div className="w-100 card-image">
+                                            <img
+                                              src={hostUrl + item.images[0].path}
+                                              className="card-img-top"
+                                              alt="..."
+                                            />
+                                        </div>
                                       )}
-                                    </div>
                                     <div className="card-body">
                                       <p className="m-0 span">
                                         {new Date(
