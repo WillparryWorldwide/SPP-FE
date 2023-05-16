@@ -99,7 +99,7 @@ const GeneralPub = () => {
             {/* <ContentHeader title="Profile" /> */}
             <div className="content-header">
               <div className="container-fluid">
-                <div className="row mb-2 mt-2 filter-button">
+                <div className="row mb-2 mt-2 filter-button d-none">
                   <button type="button" class="btn btn-outline-primary">
                     Primary
                   </button>
@@ -193,7 +193,7 @@ const GeneralPub = () => {
                               return (
                                 <Fragment key={item._id}>
                                   <Link to={`/${item._id}`}
-                                    className="card "
+                                    className="card"
                                     style={{ width: "18rem" }}
                                   >
                                       {item.images.length > 0 && (
@@ -206,13 +206,13 @@ const GeneralPub = () => {
                                             />
                                         </div>
                                       )}
-                                    <div className="card-body">
-                                      <p className="m-0 span">
+                                    <div className="card-body text-dark">
+                                      <p className="m-0 span text-dark">
                                         {new Date(
                                           item.date_awarded
                                         ).toLocaleDateString("en-GB")}{" "}
                                       </p>
-                                      <h5 className="card-title mb-2">
+                                      <h5 className="card-title mb-2 text-dark">
                                         Name: {item.name}
                                       </h5>
                                       <h5 className="card-title mb-2">
