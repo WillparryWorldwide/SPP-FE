@@ -8,6 +8,7 @@ const useGetProject = () => {
   const userData = useAuthUser();
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [hostUrl, setHostUrl] = useState(false);
 
   const fetchProject = (id) => {
     setLoading(true)
@@ -19,6 +20,12 @@ const useGetProject = () => {
     }).then((res) => {
       console.log("setting data", data);
       setData(res.data.data.result);
+      console.log("heate is tint",  res.config?.baseURL? res.config.baseURL.slice(0,res.config.baseURL.search("api/")):
+      res.config.url.slice(0,res.config.url.search("api/")));
+      setHostUrl(
+        res.config?.baseURL? res.config.baseURL.slice(0,res.config.baseURL.search("api/")):
+        res.config.url.slice(0,res.config.url.search("api/"))
+        );
       console.log("set data", data, res.data.data.result);
       setLoading(false);
       return true;
@@ -28,7 +35,7 @@ const useGetProject = () => {
     });
   }
 
-  return { fetchProject, data, loading };
+  return { fetchProject, data, loading, hostUrl };
 }
 
 export default useGetProject;
