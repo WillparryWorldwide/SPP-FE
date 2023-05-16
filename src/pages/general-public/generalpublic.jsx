@@ -15,12 +15,9 @@ const GeneralPub = () => {
   const [nameOfProject, setNameOfProject] = useState("");
   const [idOfProject, setIdOfProject] = useState("");
   const [itemOfProject, setItemOfProject] = useState("");
-  const { fetchProject, data, hostUrl /* loading */ } =
-    useGetAllProject(); /* NOTE: use it or remove loading -->*/
-  const { upDAteProject, data: updateData /* loading: upDateLoading */ } =
-    useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
-  const [filter /* setFilter*/] =
-    useState(""); /* NOTE: use it or remove selFilter -->*/
+  const { fetchProject, data, hostUrl /* loading */ } = useGetAllProject(); /* NOTE: use it or remove loading -->*/
+  const { upDAteProject, data: updateData /* loading: upDateLoading */ } = useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
+  const [filter /* setFilter*/] = useState(""); /* NOTE: use it or remove selFilter -->*/
   const [commentData, setCommentData] = useState({
     description: "",
     radioValue: "",
@@ -99,7 +96,7 @@ const GeneralPub = () => {
             {/* <ContentHeader title="Profile" /> */}
             <div className="content-header">
               <div className="container-fluid">
-                <div className="row mb-2 mt-2 filter-button">
+                <div className="mb-2 mt-2 filter-button overflow-y-scroll-x client-overflow-scroll">
                   <button type="button" class="btn btn-outline-primary">
                     Primary
                   </button>

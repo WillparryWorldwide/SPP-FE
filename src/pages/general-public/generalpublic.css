@@ -4,6 +4,9 @@
 .overflow-y-scroll{
     overflow-y: scroll;
 }
+.overflow-y-scroll-x{
+    overflow-x: scroll;
+}
 
 .client-overflow-scroll::-webkit-scrollbar-track, .client-overflow-scroll::-webkit-scrollbar {
     display: none;
@@ -51,8 +54,10 @@
     gap: 5px;
     padding-left: 15px;
     padding-right: 15px;
+    display: flex;
+    flex-wrap: nowrap;
 }
-/* .filter-button > button{
-    border: 1px solid rgba(0,0,0,.35);
-    color: rgba(0,0,0,.35);;
-} */
+.filter-button > button{
+    border-radius: 50px;
+    
+}
