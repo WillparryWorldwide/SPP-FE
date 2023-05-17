@@ -1,9 +1,20 @@
-import { Fragment, useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useGetAllProject from "../../Hooks/usegetallproject";
 import useUpdateProject from "../../Hooks/useupdateproject";
 import { Link } from "react-router-dom"
-// import Generalsidebar from '../../components/generalpublic/generalsidebar'
 import GeneralTopNavigation from "../../components/generalpublic/genaraltopnavbar";
+import CommentIcon from '@mui/icons-material/Comment';
+import IconButton from '@mui/material/IconButton';
+import GeneralSideBar from "../../components/generalpublic/generalsidebar";
+import AgricultureIcon from '@mui/icons-material/Agriculture';
+import TrainIcon from '@mui/icons-material/Train';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AddRoadIcon from '@mui/icons-material/AddRoad';
+import PowerIcon from '@mui/icons-material/Power';
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import SchoolIcon from '@mui/icons-material/School';
+import Tooltip from '@mui/material/Tooltip';
 
 import "./generalpublic.css";
 import Comment from "../../components/generalpublic/comment";
@@ -17,7 +28,7 @@ const GeneralPub = () => {
   const [itemOfProject, setItemOfProject] = useState("");
   const { fetchProject, data, hostUrl /* loading */ } = useGetAllProject(); /* NOTE: use it or remove loading -->*/
   const { upDAteProject, data: updateData /* loading: upDateLoading */ } = useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
-  const [filter /* setFilter*/] = useState(""); /* NOTE: use it or remove selFilter -->*/
+  const [filter,  setFilter] = useState(""); /* NOTE: use it or remove selFilter -->*/
   const [commentData, setCommentData] = useState({
     description: "",
     radioValue: "",
@@ -37,7 +48,9 @@ const GeneralPub = () => {
     "layout-footer-fixed"
   );
 
-  const displayComment = (name, id, item) => {
+  const displayComment = (name, id, item, e) => {
+    e.stopPropagation();
+    e.preventDefault();
     setIdOfProject(id);
     setItemOfProject(item);
     setNameOfProject(name);
@@ -72,8 +85,10 @@ const GeneralPub = () => {
   const getProject = useCallback(async () => {
     console.log("i ran");
     fetchProject(filter);
-    console.log(data);
   }, [fetchProject, filter, data]);
+
+  
+  console.log(filter);
 
   useEffect(() => {
     const fetch = async () => {
@@ -90,51 +105,80 @@ const GeneralPub = () => {
         {/* Header Section  */}
         <GeneralTopNavigation />
         {/* Sidebar Section  */}
-        {/* <Generalsidebar /> */}
-        <div className="content-wrapper ml-0">
+        <GeneralSideBar 
+          setFilter={setFilter}
+          filter={filter}
+        />
+        <div className="content-wrapper  public-body">
           <>
             {/* <ContentHeader title="Profile" /> */}
             <div className="content-header">
               <div className="container-fluid">
-                <div className="row mb-2 mt-2 filter-button d-none">
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  <button type="button" class="btn btn-outline-primary">
-                    Primary
-                  </button>
-                  {/* <div className="col-sm-6">
-                    <div className="float-sm-right">
-                      <img
-                        src=""
-                        alt="logo"
-                        className="brand-image img-circle elevation-3"
-                        style={{ opacity: ".8" }}
-                      />
+                <div className="mb-2 mt-2 filter-button text-xs overflow-y-scroll-x client-overflow-scroll d-md-none">
+                      <Tooltip title="Agriculture">
+                        <button onClick={() => setFilter('agriculture')} type="button" className={`text-inherit sidebarbutton ${filter === 'agriculture' && 'sidebarbutton-active'}`}>
+                          <AgricultureIcon sx={{
+                          width: 20,                        
+                          }}/><p className='pl-1 md-hidden ' >Agriculture</p>
+                        </button>
+                      </Tooltip>
+                      <Tooltip title="Major Roads">
+                      <button onClick={() => setFilter('major roads')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'major roads' && 'sidebarbutton-active'}`}>
+                      <AddRoadIcon sx={{
+                        width: 20,
+                        }} /><p className='pl-1 md-hidden  '>Major Roads</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Railway">
+                      <button onClick={() => setFilter('railway')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'railway' && 'sidebarbutton-active'}`}>
+                        <TrainIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Railway</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Most Discussed">
+                      <button onClick={() => setFilter('most discussed')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'most discussed' && 'sidebarbutton-active'}`}>
+                        <GroupsIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Most Discussed</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Bridges">
+                      <button onClick={() => setFilter('bridges')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'bridges' && 'sidebarbutton-active'}`}>
+                        <AgricultureIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Bridges</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Power">
+                      <button onClick={() => setFilter('power')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'power' && 'sidebarbutton-active'}`}>
+                        <PowerIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Power</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Renewable Energy">
+                      <button onClick={() => setFilter('renewable energy')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'renewable energy' && 'sidebarbutton-active'}`}>
+                        <ElectricBoltIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Renewable Energy</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Health">
+                      <button onClick={() => setFilter('health')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'health' && 'sidebarbutton-active'}`}>
+                      <HealthAndSafetyIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Health</p>
+                      </button>
+                      </Tooltip>
+                      <Tooltip title="Schools">
+                      <button onClick={() => setFilter('schools')}  type="button"  className={`text-inherit sidebarbutton ${filter === 'schools' && 'sidebarbutton-active'}`}>
+                      <SchoolIcon sx={{
+                        width: 20,                        
+                        }} /><p className='pl-1 md-hidden  '>Schools</p>
+                      </button>
+                      </Tooltip>
                     </div>
-                  </div> */}
-                </div>
               </div>
             </div>
             <section className="content user-main">
@@ -188,10 +232,10 @@ const GeneralPub = () => {
                           {data !== null &&
                             data.map((item, index) => {
                               return (
-                                <Fragment key={item._id}>
+                                <div key={item._id} className='col-12 col-sm-6 col-md-4 col-xl-3'>
                                   <Link to={`/${item._id}`}
-                                    className="card"
-                                    style={{ width: "18rem" }}
+                                    className="card w-100 card-t-radius overflow-hidden"
+                                  
                                   >
                                       {item.images.length > 0 && (
                                         
@@ -201,45 +245,48 @@ const GeneralPub = () => {
                                               className="card-img-top"
                                               alt="..."
                                             />
+                                            <div className="stage">
+                                              <p className="mb-0">Ungoing</p>
+                                            </div>
                                         </div>
                                       )}
-                                    <div className="card-body text-dark">
-                                      <p className="m-0 span text-dark">
-                                        {new Date(
-                                          item.date_awarded
-                                        ).toLocaleDateString("en-GB")}{" "}
-                                      </p>
-                                      <h5 className="card-title mb-2 text-dark">
-                                        Name: {item.name}
-                                      </h5>
-                                      <h5 className="card-title mb-2">
-                                        Duration:{" "}
-                                        {`${new Date(
-                                          item.date_awarded
-                                        ).toLocaleDateString(
-                                          "en-GB"
-                                        )} - ${new Date(
-                                          item.duration
-                                        ).toLocaleDateString("en-GB")}`}
-                                      </h5>
-                                      <p className="card-text">
-                                        {item.description}
-                                      </p>
-                                      <button
-                                        onClick={() =>
-                                          displayComment(
-                                            item.name,
-                                            item._id,
-                                            item
-                                          )
-                                        }
-                                        className="btn btn-primary"
-                                      >
-                                        Comment
-                                      </button>
+                                    <div className="card-body text-dark pl-2 pr-2">
+                                      <div className="w-100 title-div">
+                                        <p className="word-break card-title mb-1 color-black font-semibold line-clamp-2">
+                                          {item.name}
+                                        </p>
+                                      </div>
+                                      <div className="flex w-100">
+                                        <div className="fill-available p-0 ">
+                                          <p className="mb-1 text-xs line-clamp">Total Project Cost</p>
+                                          <p className=" color-black font-mediumbold text-xlg mb-2 line-clamp">₦{item.funding_amount}</p>
+                                        </div>
+                                        <div className="col-4 p-0 ">
+                                          <p className="mb-1 text-xs line-clamp">State</p>
+                                          <p className=" color-black font-mediumbold text-xlg mb-2 line-clamp">{item.state}</p>
+                                        </div>
+                                      </div>
+                                        
+                                    <IconButton aria-label="comment" className="comment-button" sx={{
+                                        background: '#3878F4',
+                                      }}
+                                      onClick={(e) =>
+                                        displayComment(
+                                          item.name,
+                                          item._id,
+                                          item,
+                                          e
+                                        )
+                                      }>
+                                      <CommentIcon sx={{
+                                        width: 12,
+                                        color: '#fff',
+                                      }}/>
+                                      <p className="mb-0 ml-1 text-white text-xxs">Comment</p>
+                                    </IconButton>
                                     </div>
                                   </Link>
-                                </Fragment>
+                                </div>
                               );
                             })}
                         </div>

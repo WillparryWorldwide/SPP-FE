@@ -9,14 +9,14 @@ const GeneralTopNavigation = () => {
 
     return (
         <>
-            <nav className="main-header navbar navbar-expand navbar-dark ml-0">
+            <nav className="main-header navbar navbar-expand navbar-light public-nav">
                 <div className='w-100'>
                     <ul className="navbar-nav">
-                        <Link to="/" className="brand-link position-relative w-fit">
+                        {/* <Link to="/" className="brand-link position-relative w-fit">
                             <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
                             <span className="brand-text font-weight-light">SPPA</span>
-                        </Link>
-                    <div className="col-sm-6 h-search">
+                        </Link> */}
+                    <div className="col-12 h-search">
                         <form className="form-inline w-100">
                         <div className="input-group input-group-sm w-100">
                             <input
@@ -26,15 +26,8 @@ const GeneralTopNavigation = () => {
                             aria-label="Search"
                             />
                             <div className="input-group-append">
-                            <button className="btn btn-navbar" type="submit">
+                            <button className="btn btn-navbar search" type="submit">
                                 <i className="fas fa-search"></i>
-                            </button>
-                            <button
-                                className="btn btn-navbar"
-                                type="button"
-                                data-widget="navbar-search"
-                            >
-                                <i className="fas fa-times"></i>
                             </button>
                             </div>
                         </div>
