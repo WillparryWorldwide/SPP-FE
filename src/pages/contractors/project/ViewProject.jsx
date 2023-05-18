@@ -9,6 +9,7 @@ import FormTextArea from "../../../components/FormTextArea";
 import PrimaryButton from "../../../components/PrimaryButton";
 import ContentHeader from "../../../components/ContentHeader";
 import MilestoneModal from "../../../components/Milestone.modal";
+import HistoryAccordion from "../../../components/HistoryAccordion";
 
 const ViewProject = () => {
     const params = useParams();
@@ -273,6 +274,13 @@ const ViewProject = () => {
                                                     </div>
                                                 </div>
                                             ))}
+
+                                            {/* History */}
+                                            <hr />
+                                            <div className="col-12 mt-5">
+                                                <h2>History</h2>
+                                                <HistoryAccordion id={params.id} />
+                                            </div>
 
                                             {/* Images */}
                                             {/*

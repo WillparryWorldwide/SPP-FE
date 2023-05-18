@@ -16,6 +16,7 @@ const useGetAllContractors = () => {
                 "Authorization": `Bearer ${userData()?.token}`
             }
         }).then((res) => {
+            console.log("set", res.data.data.result);
             setData(res.data.data.result);
             setLoading(false);
             return true

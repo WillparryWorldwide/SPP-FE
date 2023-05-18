@@ -34,7 +34,7 @@ const GeneralTopNavigation = ({setDisplayMenu}) => {
 
 
 
-    const startSearch = useCallback(async (s) => {
+    const startSearch = useCallback((s) => {
         searchResource(s);
         setProjectState(data);
     });
