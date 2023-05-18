@@ -29,6 +29,7 @@ const GeneralPub = () => {
   const { fetchProject, data, hostUrl /* loading */ } = useGetAllProject(); /* NOTE: use it or remove loading -->*/
   const { upDAteProject, data: updateData /* loading: upDateLoading */ } = useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
   const [filter,  setFilter] = useState(""); /* NOTE: use it or remove selFilter -->*/
+  const [displayMenu, setDisplayMenu] = useState(false)
   const [commentData, setCommentData] = useState({
     description: "",
     radioValue: "",
@@ -103,18 +104,22 @@ const GeneralPub = () => {
     <>
       <div className="wrapper">
         {/* Header Section  */}
-        <GeneralTopNavigation />
+        <GeneralTopNavigation 
+          setDisplayMenu={setDisplayMenu}
+        />
         {/* Sidebar Section  */}
         <GeneralSideBar 
           setFilter={setFilter}
           filter={filter}
+          setDisplayMenu={setDisplayMenu}
+          displayMenu={displayMenu}
         />
         <div className="content-wrapper  public-body">
           <>
             {/* <ContentHeader title="Profile" /> */}
             <div className="content-header">
               <div className="container-fluid">
-                <div className="mb-2 mt-2 filter-button text-xs overflow-y-scroll-x client-overflow-scroll d-md-none">
+                <div className="mb-2 mt-2 filter-button text-xs overflow-y-scroll-x client-overflow-scroll d-none">
                       <Tooltip title="Agriculture">
                         <button onClick={() => setFilter('agriculture')} type="button" className={`text-inherit sidebarbutton ${filter === 'agriculture' && 'sidebarbutton-active'}`}>
                           <AgricultureIcon sx={{

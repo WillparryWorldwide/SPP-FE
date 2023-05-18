@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/logo/logo.png'
+import MenuIcon from '@mui/icons-material/Menu';
 
-const GeneralTopNavigation = () => {
+const GeneralTopNavigation = ({setDisplayMenu}) => {
     
 
 
@@ -16,7 +17,12 @@ const GeneralTopNavigation = () => {
                             <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
                             <span className="brand-text font-weight-light">SPPA</span>
                         </Link> */}
-                    <div className="col-12 h-search">
+                    <div onClick={()=> setDisplayMenu(prev => !prev)} className=''>
+                        <MenuIcon sx={{
+                            width: 20,
+                        }} />
+                    </div>
+                    <div className="search-nav col-md-12 h-search">
                         <form className="form-inline w-100">
                         <div className="input-group input-group-sm w-100">
                             <input

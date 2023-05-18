@@ -172,7 +172,15 @@
     margin-left: 3px;
     white-space: nowrap;
 }
-
+.relative{
+    position: relative;
+}
+.cancel{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
 @media (max-width: 767.9px){
     .public-nav, .public-body  {
         margin-left: 0;
@@ -181,11 +189,20 @@
         flex-direction: row;
         flex-wrap: nowrap;
     }
+    .search-nav{
+        width: -webkit-fill-available;;
+    }
     .sidebarbutton{
         margin: 0;
     }
     .sidebarbutton > p{
         font-size: 10px;
+    }
+    .public-sidebar-active {
+        transition: margin-left .3s ease-in-out;
+        width: 100vw !important;
+        right: 0;
+        left: inherit !important;
     }
 }
 @media ((min-width: 768px) and (max-width:991.98px) ){
