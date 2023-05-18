@@ -10,7 +10,7 @@ const Router = () => {
             <Route path='/' >
                 {/* Landing page */}
                 <Route index element={<GeneralPublic />} />
-                <Route path='/:id' element={<PublicIndividualProject />} />
+                <Route path='/project/:id' element={<PublicIndividualProject />} />
 
                 {/* Dashboard */}
                 <Route path="spp">

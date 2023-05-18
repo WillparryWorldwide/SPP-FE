@@ -1,12 +1,16 @@
-import { Fragment, useEffect, useState, useCallback } from "react";
+import moment from "moment";
+import Badge from '@mui/material/Badge';
+import { useParams } from "react-router-dom";
 import useGetProject from "../../Hooks/useGetProject";
 import useUpdateProject from "../../Hooks/useupdateproject";
-import { useParams } from "react-router-dom";
+import { Fragment, useEffect, useState, useCallback } from "react";
 import GeneralTopNavigation from "../../components/generalpublic/genaraltopnavbar";
 
 import "./generalpublic.css";
 import Comment from "../../components/generalpublic/comment";
 import ViewComment from "../../components/generalpublic/viewcomment";
+import { Doughnut } from "../../components/chart";
+
 const PublicIndividualProject = () => {
   const { id } = useParams();
   const [viewComment, setViewComment] = useState(false);
@@ -24,6 +28,34 @@ const PublicIndividualProject = () => {
     radioValue: "",
     name: "",
   });
+
+  const chartData = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Founded',
+        data: data.funding_amount,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
   // const { site_name, } = useAppContext()
   document.body.classList.remove(
     "hold-transition",
@@ -106,23 +138,78 @@ const PublicIndividualProject = () => {
                       <div className="card-body">
                         <div className=" body-item">
 
-                          <div className="w-100 card-image">
-                            {console.log("hostwww", hostUrl)}
-                            {
-                              data.images?.length && <img
-                                src={hostUrl + data?.images[0]?.path}
-                                className="card-img-top"
-                                alt="..."
-                              />
-                            }
+                          <div className="w-100 d-flex justify-content-center align-items-center card-image">
+                            <div className="p-2">
+                              <Badge color={data.open? "primary": "error"} badgeContent={data.open? "Ongoing": "Closed"}>
+                                {
+                                  data.images?.length && <img
+                                    src={hostUrl + data?.images[0]?.path}
+                                    className="card-img-top"
+                                    style={{ borderRadius: "2em" }}
+                                    alt="..."
+                                  />
+                                }
+                              </Badge>
+                            </div>
                           </div>
                           <div className="card-body">
-                            <p className="m-0 span">23/06/2023</p>
-                            <h5 className="mb-2">{data.name}</h5>
-                            <p className="card-title mb-2">23/062023 - 19/12/2023</p>
-                            <p className="card-text">
-                              Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                            </p>
+                            <div className="row">
+                              <div className="col-6">
+                                <p className="m-0 span"><span className="text-dark">Started</span> {moment(data.date_awarded).calendar()}</p>
+                                <h5 className="mb-2 text-dark">{data.name}</h5>
+                                <p className="m-0 span"><strong className="text-dark">Category</strong> {data.category}</p>
+                              </div>
+                              <div className="col-6">
+                                <p className="m-0 span"><strong className="text-dark">Total cost</strong> NGN {data.grand_total}</p>
+                                <p className="m-0 span"><strong className="text-dark">Code</strong> {data.code}</p>
+                                {/* add options here */}
+                              </div>
+                            </div>
+                            <hr />
+                            <p className="card-text">{data.description}</p>
+
+                            <hr />
+                            <div className="row">
+                              <div className="col-4">
+                                <Doughnut data={chartData} />
+                              </div>
+                              <div className="col-8">
+                                <h6 className="text-dark">Address</h6>
+                              <p className="m-0 span"><strong className="text-dark">Location</strong> {data.location}</p>
+                              <p className="m-0 span"><strong className="text-dark">LGA</strong> {data.local_goverment}</p>
+                              <p className="m-0 span"><strong className="text-dark">State</strong> {data.state}</p>
+                              </div>
+                            </div>
+
+                            <hr />
+                            <div className="row">
+                              {/* Sector */}
+                              {
+                                data.spp_code?._id && <div className="col-12 col-md-6 mt-3">
+                                  <h6 className="text-dark">Sector</h6>
+                                  <p className="span text-dark m-0"><strong className="text-dark">RC Number</strong> {data.spp_code.SPP_rc_number}</p>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Name</strong> {data.spp_code.SPP_name}</p>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Role</strong> {data.spp_code.role}</p>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Phone</strong> {data.spp_code.phone}</p>
+                                </div>
+                              }
+                              {/* Sector */}
+                              {
+                                data.sector_code?._id && <div className="col-12 col-md-6 mt-3">
+                                  <h6 className="text-dark">Sector</h6>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Code</strong> {data.sector_code.code}</p>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Name</strong> {data.sector_code.name}</p>
+                                </div>
+                              }
+                              {/* MDA */}
+                              {
+                                data.mda_code?._id && <div className="col-12 col-md-6 mt-3">
+                                  <h6 className="text-dark">MDA</h6>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Code</strong> {data.mda_code.code}</p>
+                                  <p className="span text-dark m-0"><strong className="text-dark">Name</strong> {data.mda_code.name}</p>
+                                </div>
+                              }
+                            </div>
                           </div>
 
                         </div>

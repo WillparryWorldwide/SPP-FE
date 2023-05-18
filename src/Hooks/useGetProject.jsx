@@ -12,7 +12,7 @@ const useGetProject = () => {
 
   const fetchProject = (id) => {
     setLoading(true)
-    axios.get(process.env.REACT_APP_BASE_URL + "/project/only/" + id, {
+    axios.get(process.env.REACT_APP_BASE_URL + "/project/milestone/populate-only/" + id, {
       // cancelToken: source.token,
       headers: {
         "Authorization": `Bearer ${userData()?.token}`

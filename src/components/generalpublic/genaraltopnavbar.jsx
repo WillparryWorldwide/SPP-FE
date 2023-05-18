@@ -1,11 +1,46 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import logo from '../../assets/logo/logo.png'
+import React, { useState, useCallback, useEffect } from 'react'
+import FormControl from "@mui/material/FormControl";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
+import LocationCity from '@mui/icons-material/LocationCity';
+import TextField from '@mui/material/TextField';
+import useSearch from '../../Hooks/useSearch';
+import List from '@mui/material/List';
+import { Link } from "react-router-dom";
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
 
 const GeneralTopNavigation = () => {
-    
+    const [searchText, setSearchText] = useState('');
+    const [showClearIcon, setShowClearIcon] = useState("none");
+    const { searchResource, data, hostUrl, loading } = useSearch();
+    const [projectState, setProjectState] = useState(!data.project);
+
+    const handleChangeInSearchText = (event) => {
+        setShowClearIcon(event.target.value === "" ? "none" : "flex");
+        setSearchText(event.target.value);
+        startSearch(event.target.value);
+    };
+
+    const handleClearSearchText = () => {
+        // TODO: Clear the search input
+        setSearchText('');
+        setShowClearIcon("none");
+        setProjectState(prev => !prev);
+    };
 
 
+
+    const startSearch = useCallback(async (s) => {
+        searchResource(s);
+        setProjectState(data);
+    });
+
+    useEffect(() => {
+        console.log("Rending...");
+    }, [searchText]);
 
     return (
         <>
@@ -16,23 +51,38 @@ const GeneralTopNavigation = () => {
                             <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
                             <span className="brand-text font-weight-light">SPPA</span>
                         </Link> */}
-                    <div className="col-12 h-search">
-                        <form className="form-inline w-100">
-                        <div className="input-group input-group-sm w-100">
-                            <input
-                            className="form-control form-control-navbar"
-                            type="search"
-                            placeholder="Search"
-                            aria-label="Search"
-                            />
-                            <div className="input-group-append">
-                            <button className="btn btn-navbar search" type="submit">
-                                <i className="fas fa-search"></i>
-                            </button>
-                            </div>
+                        <div className="col-12 h-search">
+
+                            <FormControl>
+                                <TextField
+                                    size="small"
+                                    variant="outlined"
+                                    onChange={handleChangeInSearchText}
+                                    placeholder="Search anything..."
+                                    value={searchText}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <SearchIcon />
+                                            </InputAdornment>
+                                        ),
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{ display: showClearIcon }}
+                                                onClick={handleClearSearchText}
+                                            >
+                                                <ClearIcon sx={{
+                                                    ":hover": {
+                                                        cursor: "pointer"
+                                                    }
+                                                }} />
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                            </FormControl>
                         </div>
-                        </form>
-                    </div>
                         {/* <li className="nav-item">
                             <Link className="nav-link" data-widget="pushmenu" role="button"><i className="fas fa-bars"></i></Link>
                         </li> */}
@@ -46,6 +96,27 @@ const GeneralTopNavigation = () => {
                     </li>
                 </ul>
             </nav>
+            {
+                projectState &&
+                <div className="wrapper position-fixed" style={{ width: "100%", top: 0, zIndex: 9 }}>
+                    <div className="content-wrapper public-body p-0" style={{ minHeight: "auto" }}>
+                        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                            {
+                                data.project?.items.map(item =>
+                                    <Link to={`/project/${item._id}`}className="text-decoration-none text-dark">
+                                        <ListItem>
+                                            <ListItemAvatar>
+                                                <LocationCity />
+                                            </ListItemAvatar>
+                                            <ListItemText primary={item.name} secondary={item.category} />
+                                        </ListItem>
+                                    </Link>
+                                )
+                            }
+                        </List>
+                    </div>
+                </div >
+            }
         </>
     )
 }
