@@ -15,10 +15,9 @@ import Tooltip from '@mui/material/Tooltip';
 const generalsidebar = ({setFilter, filter, setDisplayMenu, displayMenu}) => {
   return (
     <>
-    
         <aside className={`main-sidebar sidebar-light-primary elevation-4 public-sidebar relative ${displayMenu && 'public-sidebar-active'}`}>
             <Link to="/" className="brand-link brand-link-pub transparent ">
-                <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
+                <img src={logo} alt="logo" className="brand-image" style={{ opacity: '.8' }} />
                 <span className="brand-text font-weight-light">SPPA</span>
             </Link>
             <p onClick={() =>setDisplayMenu(prev => !prev)} className='cancel'>X</p>

@@ -105,7 +105,7 @@ const GeneralTopNavigation = ({setDisplayMenu}) => {
             {console.log("Project state", projectState, data.project)}
             {
                 projectState &&
-                <div className="wrapper position-fixed" style={{ width: "100%", top: 0, zIndex: 9 }}>
+                <div className={`wrapper position-fixed ${projectState? "d-block": "d-none"}`} style={{ width: "100%", top: 0, zIndex: 9 }}>
                     <div className="content-wrapper public-body p-0" style={{ minHeight: "auto" }}>
                         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                             {
