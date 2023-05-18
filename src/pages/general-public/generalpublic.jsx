@@ -29,6 +29,7 @@ const GeneralPub = () => {
 	const { fetchProject, data, hostUrl /* loading */ } = useGetAllProject(); /* NOTE: use it or remove loading -->*/
 	const { upDAteProject, data: updateData /* loading: upDateLoading */ } = useUpdateProject(); /* NOTE: use it or remove updateLoading -->*/
 	const [filter, setFilter] = useState(""); /* NOTE: use it or remove selFilter -->*/
+	const [displayMenu, setDisplayMenu] = useState(false)
 	const [commentData, setCommentData] = useState({
 		description: "",
 		radioValue: "",
@@ -103,11 +104,15 @@ const GeneralPub = () => {
 		<>
 			<div className="wrapper">
 				{/* Header Section  */}
-				<GeneralTopNavigation />
+				<GeneralTopNavigation
+					setDisplayMenu={setDisplayMenu}
+				/>
 				{/* Sidebar Section  */}
 				<GeneralSideBar
 					setFilter={setFilter}
 					filter={filter}
+					setDisplayMenu={setDisplayMenu}
+					displayMenu={displayMenu}
 				/>
 				<div className="content-wrapper  public-body">
 					<>
@@ -269,10 +274,11 @@ const GeneralPub = () => {
 																			<IconButton
 																				aria-label="comment"
 																				size="small"
-																				sx={{ background: '#3878F4', ":hover": {
-																					bgcolor: "#3878f47a"
-																				  }
-																			   }}																				
+																				sx={{
+																					background: '#3878F4', ":hover": {
+																						bgcolor: "#3878f47a"
+																					}
+																				}}
 																				onClick={(e) => displayComment(item.name, item._id, item, e)}>
 																				<CommentIcon sx={{ color: '#fff', width: "60%" }} />
 																			</IconButton>

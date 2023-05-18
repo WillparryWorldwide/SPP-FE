@@ -11,8 +11,9 @@ import { Link } from "react-router-dom";
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
+import MenuIcon from '@mui/icons-material/Menu';
 
-const GeneralTopNavigation = () => {
+const GeneralTopNavigation = ({setDisplayMenu}) => {
     const [searchText, setSearchText] = useState('');
     const [showClearIcon, setShowClearIcon] = useState("none");
     const { searchResource, data, hostUrl, loading } = useSearch();
@@ -51,7 +52,12 @@ const GeneralTopNavigation = () => {
                             <img src={logo} alt="logo" className="brand-image img-circle elevation-3" style={{ opacity: '.8' }} />
                             <span className="brand-text font-weight-light">SPPA</span>
                         </Link> */}
-                        <div className="col-12 h-search">
+                    <div onClick={()=> setDisplayMenu(prev => !prev)} className=''>
+                        <MenuIcon sx={{
+                            width: 20,
+                        }} />
+                    </div>
+                        <div className="search-nav col-md-12 h-search">
 
                             <FormControl>
                                 <TextField
