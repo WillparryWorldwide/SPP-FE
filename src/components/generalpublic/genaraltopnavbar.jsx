@@ -17,7 +17,7 @@ const GeneralTopNavigation = ({setDisplayMenu}) => {
     const [searchText, setSearchText] = useState('');
     const [showClearIcon, setShowClearIcon] = useState("none");
     const { searchResource, data, hostUrl, loading } = useSearch();
-    const [projectState, setProjectState] = useState(!data.project);
+    const [projectState, setProjectState] = useState(data.project);
 
     const handleChangeInSearchText = (event) => {
         setShowClearIcon(event.target.value === "" ? "none" : "flex");
@@ -102,6 +102,7 @@ const GeneralTopNavigation = ({setDisplayMenu}) => {
                     </li>
                 </ul>
             </nav>
+            {console.log("Project state", projectState, data.project)}
             {
                 projectState &&
                 <div className="wrapper position-fixed" style={{ width: "100%", top: 0, zIndex: 9 }}>

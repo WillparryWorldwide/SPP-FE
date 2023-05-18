@@ -11,7 +11,7 @@ const useSearch = () => {
   const axios = AxiosClient();
 
   const searchResource = (query) => {
-    setLoading(true)
+    setLoading(true);
     axios.get("/resource/search?q=" + query).then((res) => {
       setData(res.data.data.result);
       setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
