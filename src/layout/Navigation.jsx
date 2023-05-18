@@ -26,7 +26,7 @@ const Navigation = () => {
                     <img src={avatar} className="img-circle elevation-2" alt="User Avatar" />
                 </div>
                 <div className="info">
-                    <Link to="/profile" className="d-block">Username</Link>
+                    <Link to="/spp/dashboard/profile" className="d-block">Username</Link>
                 </div>
             </div>
             <div className="form-inline">
@@ -66,13 +66,13 @@ const Navigation = () => {
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/spp/dashboard/user/register/admin" className="nav-link">
+                                    <Link to="/spp/dashboard/users/register/admin" className="nav-link">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>Add Admin</p>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/spp/dashboard/user/register/cotractor" className="nav-link">
+                                    <Link to="/spp/dashboard/users/register/contractor" className="nav-link">
                                         <i className="far fa-circle nav-icon"></i>
                                         <p>Add Contractor</p>
                                     </Link>

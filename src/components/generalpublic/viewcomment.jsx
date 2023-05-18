@@ -1,15 +1,13 @@
 import React from 'react'
 
-const ViewComment = ({nameOfProject, setViewListComment, comments}) => {
-  console.log(comments)
+const ViewComment = ({nameOfProject, setViewListComment, comments, noCancel}) => {
   return (
     <>
       <div className="card card-primary card-outline p-3 w-100">
-            <div onClick={() => setViewListComment(false)} className='text-primary ml-auto'>X</div>
+            {noCancel === null && <div onClick={() => setViewListComment(false)} className='text-primary ml-auto'>X</div>}
             <p className="timeline-header">List of Comments on <a href="#x">{nameOfProject}</a> Project</p>
             {
               comments !== null && comments.map((item,index)=>{
-                console.log(comments.c_name)
                 return <>
                   
                   <div className="tab-pane w-100 " >

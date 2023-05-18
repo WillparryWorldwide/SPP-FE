@@ -84,7 +84,7 @@ const Create = () => {
             setBtnStatus(true);
             axios.post('/auth/register-spp', data).then(({ data }) => {
                 setBtnStatus(false)
-                window.toastr.success(data.message);
+                window.toastr.success(data.data.message);
             }).catch(({ response }) => {
                 setBtnStatus(false)
                 window.toastr.error(response.data.message);
@@ -103,7 +103,7 @@ const Create = () => {
                             <div className='row'>
                                 <FormInput placeholder="Enter SPP Name" className="col-6 mb-3" ref={sppNameRef} />
                                 <FormInput placeholder="Enter SPP RC Number" className="col-6 mb-3" ref={rcNumberRef} />
-                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-12 mb-3" ref={sppAddressRef} />
+                                <FormTextArea placeholder="Enter SPP address" row="10" className="col-12 form-group" inputClass={`form-control form-control-sm`} ref={sppAddressRef} />
                             </div>
                             <h3 className='mt-3'>Head of Organization</h3>
                             <div className='row'>
@@ -113,7 +113,7 @@ const Create = () => {
                             <div className='row'>
                                 <FormInput placeholder="Enter Phone number" type="number" className="col-6 mb-3" ref={phoneRef} />
                                 <FormInput placeholder="Enter email address" type="text" className="col-6 mb-3" ref={emailRef} />
-                                <FormTextArea placeholder="Enter personal address" row="10" className="col-12 mb-3" ref={addressRef} />
+                                <FormTextArea placeholder="Enter personal address" row="10" className="col-12 form-group" inputClass={`form-control form-control-sm`} ref={addressRef} />
                             </div>
                             <h3>Secretary Details</h3>
                             <div className='row'>
@@ -123,7 +123,7 @@ const Create = () => {
                             <div className='row'>
                                 <FormInput placeholder="Enter Phone number" type="number" className="col-6 mb-3" ref={SphoneRef} />
                                 <FormInput placeholder="Enter email address" type="text" className="col-6 mb-3" ref={SemailRef} />
-                                <FormTextArea placeholder="Enter address" row="10" className="col-12 mb-3" ref={SaddressRef} />
+                                <FormTextArea placeholder="Enter address" row="10" className="col-12 form-group" inputClass={`form-control form-control-sm`} ref={SaddressRef} />
                             </div>
                             <div className="row">
                                 <PrimaryButton className="btn btn-primary btn-end ml-3 float-right mb-3" disabled={btnStatus ? 'disabled' : ''} title='Submit' type="submit" onClick={(e) => handleSubmit(e)} />
@@ -136,4 +136,4 @@ const Create = () => {
     )
 }
 
-export default Create
+export default Create;

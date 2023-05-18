@@ -30,28 +30,27 @@ const AddNew = () => {
     const awardDateRef = useRef();
     const [btnStatus, setBtnStatus] = useState(false);
     const [contractors, setContractors] = useState([]);
+    const tagsExample = [
+        "Legacy", "childcare", "maternal motality", "mega project", "road", "technology", "school"
+    ]
     const milestoneText = {
-        preliminary: "Preliminary Sum",
-        provision: "Provisional Sum",
-        measured: "Measured Work"
+        preliminaries_sum: "Preliminary Sum",
+        provisional_sums: "Provisional Sum",
+        measured_work: "Measured Work"
     }
-    const [milestones, setMileStones] = useState([
-        {
-            id: 1,
-            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
-        }
-    ]);
+    const [milestones, setMileStones] = useState([{
+        preliminaries_sum: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }],
+        provisional_sums: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }],
+        measured_work: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }]
+    }]);
 
     // function
     const handleAddMilestone = (e) => {
         e.preventDefault();
         const newMilestone = {
-            id: milestones.length + 1,
-            preliminary: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            provision: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }],
-            measured: [{ id: 1, rate: '', amount: '', date: '', description: '', quantity: '' }]
+            preliminaries_sum: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }],
+            provisional_sums: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }],
+            measured_work: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }]
         }
 
         setMileStones(prev => {
@@ -80,7 +79,7 @@ const AddNew = () => {
         const k = e.target;
         const milestoneIndex = k.dataset.milestoneIndex;
         const milestoneItem = k.dataset.milestoneItem;
-        const newPreliminary = { id: 1, rate: 65, amount: 76, date: "2023-05-18", description: "Lol", quantity: 1862 };
+        const newPreliminary = { rate: 65, amount: 76, date: "2023-05-18", description: "Lol", quantity: 1862 };
 
         milestones[milestoneIndex][milestoneItem].push(newPreliminary)
         setMileStones(milestones);
@@ -158,7 +157,7 @@ const AddNew = () => {
     const create = () => {
         let submit = true;
 
-        submit = validateInput({sppCodeRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef})
+        submit = validateInput({ sppCodeRef, mdaRef, sectorRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef })
 
         let stopValidation = false;
         // check if milestone items are  stil empty
@@ -184,7 +183,7 @@ const AddNew = () => {
         });
 
         // if false do not create project
-        if (!submit) return;
+        // if (!submit) return;
         // upload
         const myFormData = getFormData(milestones, durationRef, titleRef, stateRef, mdaRef, sppCodeRef, locationRef, totalRef, categoryRef, sectorRef, lgaRef, awardDateRef, fundingRef, descriptionRef);
 
@@ -193,11 +192,12 @@ const AddNew = () => {
                 "Content-Type": "multipart/form-data"
             }
         }).then(({ data }) => {
-            setBtnStatus(true);
-            document.querySelector('#project').reset()
-            window.toastr.success(data.data.message)
+            // setBtnStatus(true);
+            // document.querySelector('#project').reset()
+            console.log("data", data);
+            window.toastr.success(data.data.message);
         }).catch(({ response }) => {
-            setBtnStatus(false);
+            // setBtnStatus(false);
             window.toastr.error(response.data.data.message)
         })
     }
@@ -235,7 +235,13 @@ const AddNew = () => {
                                     </div>
                                     <FormInput className="col-6 form-group mt-3" label="Duration" type="date" ref={durationRef} placeholder="When will it finish" />
                                     <FormInput className="col-6 form-group mt-3" label="Date Awarded" type="date" ref={awardDateRef} placeholder="Date Awarded" />
-                                    <FormInput className="col-6 form-group mt-3" label="Category" ref={categoryRef} placeholder="Enter Category" />
+                                    <div className='col-6 form-group mt-3'>
+                                        <label>Project Tag</label>
+                                        <select ref={categoryRef} className='form-control'>
+                                            <option defaultValue>Any</option>
+                                            {tagsExample.map((tag, index) => <option key={index} value={tag}>{tag}</option>)}
+                                        </select>
+                                    </div>
                                     <FormInput className="col-6 form-group mt-3" label="Funding" type="number" ref={fundingRef} placeholder="Funding Amount" />
                                     <FormInput className="col-6 form-group mt-3" label="State" ref={stateRef} placeholder="Enter State" />
                                     <FormInput className="col-6 form-group mt-3" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
@@ -244,7 +250,7 @@ const AddNew = () => {
                                         <label htmlFor='file'>Project Thumbnail</label>
                                         <div className='input-group'>
                                             <div className="custom-file">
-                                                <input className="custom-file-input" multiple onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
+                                                <input className="custom-file-input" accept="image/*" multiple onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
                                                 <label className="custom-file-label" htmlFor="file">{imageText || "Upload Project Thumbnail"}</label>
                                             </div>
                                         </div>
@@ -275,7 +281,7 @@ const AddNew = () => {
                                                                             <FormInput className="col-6 col-md-3 form-group" value={items.quantity} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-quantity`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="quantity" placeholder="Enter Quantity" type="number" />
                                                                             <FormInput className="col-6 col-md-3 form-group" value={items.rate} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-rate`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="rate" placeholder="Enter Rate" type="number" />
                                                                             <FormInput className="col-6 col-md-3 form-group" value={items.amount} onChange={handelMilestoneChange} inputClass={`amount form-control form-control-sm milestone-${index}-${key}-${mIndex}-amount`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="amount" placeholder="Enter Amount" type="number" />
-                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.date} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-date`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="date" placeholder="Select date" type="date" />
+                                                                            <FormInput className="col-6 col-md-3 form-group" value={items.duration} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-date`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="date" placeholder="Select duration" type="date" />
                                                                             <FormTextArea className="col-12 form-group" value={items.description} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-description`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="description" placeholder="Enter Description" type="text" />
                                                                         </div>
                                                                     </div>

@@ -10,16 +10,15 @@ import PrimaryButton from '../components/PrimaryButton'
 import AxiosClient from '../Helper/axiosClient'
 
 const Login = () => {
-
-    const axios = AxiosClient()
-    const { site_name, updateLoginStatus, login_status } = useAppContext()
-    const sppCodeRef = useRef()
-    const passwordRef = useRef()
-    const [btnStatus, setBtnStatus] = useState(false);
-    const navigate = useNavigate()
-    const SignIn = useSignIn()
-    const isAuthenticated = useIsAuthenticated()
-    const userData = useAuthUser()
+    const axios = AxiosClient();
+    const { site_name, updateLoginStatus, login_status } = useAppContext();
+    const sppCodeRef = useRef();
+    const passwordRef = useRef();
+    const [btnStatus, setBtnStatus] = useState(false);;
+    const navigate = useNavigate();
+    const SignIn = useSignIn();
+    const isAuthenticated = useIsAuthenticated();
+    const userData = useAuthUser();
 
     useEffect(() => {
         if (isAuthenticated()) window.location.pathname = "/spp/dashboard";
@@ -58,10 +57,12 @@ const Login = () => {
                     updateLoginStatus(!login_status);
                     window.location.pathname = "/spp/dashboard";
                 }
-            }).catch((response) => {
-                setBtnStatus(false)
-                window.toastr.error(response.message)
-            })
+            }).catch((err) => {
+                setBtnStatus(false);
+                console.error("errrorr", err);
+                err.response ? window.toastr.error(err.response.data.message) :
+                    window.toastr.error(err.message);
+            });
         }
     }
 

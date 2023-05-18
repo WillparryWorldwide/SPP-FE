@@ -11,7 +11,7 @@ const useUpdateProject = () => {
 
     const upDAteProject = async ( _id, data, prevData) => {
       setLoading(true)
-      console.log( {... prevData, rComment_name:data.name, rComment_description:data.description} )
+      console.log( {...prevData, rComment_name:data.name, rComment_description:data.description} )
       axios.patch(url + '/project/update/' + _id , { rComment_name:data.name, rComment_description:data.description}, {
         // cancelToken: source.token,
         headers: {

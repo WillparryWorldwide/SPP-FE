@@ -2,7 +2,7 @@ export default function getFormData(milestones, durationRef, titleRef, stateRef,
     const file = document.getElementById("file");
     const myFormData = new FormData();
 
-    console.log("okkk", milestones);
+    console.log("okkk", milestones,  JSON.stringify(milestones));
     console.log("what", file.files);
     myFormData.append("duration", durationRef.current.value);
     myFormData.append("name", titleRef.current.value);
