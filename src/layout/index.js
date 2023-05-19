@@ -6,19 +6,20 @@ import { useAppContext } from '../context/AppContext'
 import LoginPassword from '../components/LoginPassword'
 import { appendScript } from '../Utils/AppendScript'
 
-import '../assets/vendor/fontawesome/css/all.min.css'
-import '../assets/vendor/overlayScrollbars/css/OverlayScrollbars.min.css'
-import '../assets/vendor/datatables-bs4/css/dataTables.bootstrap4.min.css'
-import '../assets/vendor/datatables-responsive/css/responsive.bootstrap4.min.css'
-import '../assets/vendor/datatables-buttons/css/buttons.bootstrap4.min.css'
-import '../assets/css/adminlte.min.css'
-
 const Layout = () => {
     const { site_name, login_modal_state, updateLoginModalStatus } = useAppContext()
     document.body.classList.remove('hold-transition', 'login-page', 'register-page')
     document.body.classList.add('hold-transition', 'sidebar-mini', 'layout-fixed', 'layout-navbar-fixed', 'layout-footer-fixed')
 
     useEffect(() => {
+        import('../assets/vendor/fontawesome/css/all.min.css')
+        import('../assets/vendor/overlayScrollbars/css/OverlayScrollbars.min.css')
+        import('../assets/vendor/datatables-bs4/css/dataTables.bootstrap4.min.css')
+        import('../assets/vendor/datatables-responsive/css/responsive.bootstrap4.min.css')
+        import('../assets/css/adminlte.min.css')
+        import('bootstrap/dist/css/bootstrap.min.css');
+        import('bootstrap/dist/js/bootstrap.min.js');
+
         appendScript('../assets/vendor/jquery/jquery.min.js')
         appendScript('../assets/vendor/overlayScrollbars/js/jquery.overlayScrollbars.min.js')
         appendScript('../assets/vendor/datatables/jquery.dataTables.min.js')
@@ -40,7 +41,7 @@ const Layout = () => {
                     <Navigation />
                 </aside>
                 <div className="content-wrapper">
-                    <Outlet/>
+                    <Outlet />
                 </div>
             </div>
         </>

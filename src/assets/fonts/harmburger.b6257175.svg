@@ -1,0 +1,19 @@
+<svg width="16" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clip-path="url(#prefix__clip0_1_1025)">
+        <rect x="1" y=".5" width="14" height="14" rx="7" fill="#F0F5F3" />
+        <circle cx="8" cy="7.5" r="7" fill="#000" fill-opacity=".58" />
+        <g clip-path="url(#prefix__clip1_1_1025)" stroke="#F0F5F3" stroke-width=".75" stroke-miterlimit="10"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5.387 5.89h4.976M5.387 7.65h4.976M5.387 9.36h4.976" />
+        </g>
+    </g>
+    <rect x="1" y=".5" width="14" height="14" rx="7" stroke="#F0F5F3" stroke-width=".656" />
+    <defs>
+        <clipPath id="prefix__clip0_1_1025">
+            <rect x="1" y=".5" width="14" height="14" rx="7" fill="#fff" />
+        </clipPath>
+        <clipPath id="prefix__clip1_1_1025">
+            <path fill="#fff" transform="translate(5 5.5)" d="M0 0h5.75v4.25H0z" />
+        </clipPath>
+    </defs>
+</svg>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ContentHeader from '../components/ContentHeader'
-import avatar from '../layout/assets/images/avatar.png'
-import image from '../layout/assets/images/photo1.png'
+import avatar from '../assets/images/avatar.png'
+import image from '../assets/images/photo1.png'
 import { Link } from 'react-router-dom'
 import ProjectModal from '../components/ProjectModal'
 
