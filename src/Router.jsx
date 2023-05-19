@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic, ViewProject, PublicIndividualProject } from './pages'
+import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic, ViewProject, PublicIndividualProject, Welcome } from './pages'
 import Layout from './layout'
 
 const Router = () => {
@@ -9,7 +9,7 @@ const Router = () => {
         <Routes>
             <Route path='/' >
                 {/* Landing page */}
-                <Route index element={<GeneralPublic />} />
+                <Route index element={<Welcome />} />
                 <Route path='/:id' element={<PublicIndividualProject />} />
 
                 {/* Dashboard */}

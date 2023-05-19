@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import avatar from '../layout/assets/images/avatar.png'
+import avatar from '../assets/images/avatar.png'
 import { useAuthContext } from '../context/AuthContext'
 import SectionModal from '../components/SectionModal'
 import { useAuthUser } from 'react-auth-kit'
