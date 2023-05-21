@@ -46,7 +46,7 @@ const Discover = () => {
 			style: "currency",
 			currency: "NGN",
 		});
-		return formatted.split(' ')[1];
+		return formatted;
 	}
 
 	return (
@@ -110,7 +110,7 @@ const Discover = () => {
 												<div className="flex justify-between items-center sm:mt-4 mt-1">
 													<div className="">
 														<p className="uppercase text-2-xs text-input-border">Total Project Cost</p>
-														<p className="uppercase text-sm text-dark-grey medium mt-1">₦{format(project.funding_amount[0])}</p>
+														<p className="uppercase text-sm text-dark-grey medium mt-1">{format(project.funding_amount[0])}</p>
 													</div>
 													<div className="">
 														<p className="uppercase text-2-xs text-input-border">STATE</p>
