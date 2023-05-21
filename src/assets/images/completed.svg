@@ -1,0 +1,5 @@
+<svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar">
+    <path class="CircularProgressbar-trail" style="strokeDasharray: '295.3097094374406px 295.3097094374406px'; strokeDashoffset: '0px'" d="M 50,50m 0,-47a 47,47 0 1 1 0,94a 47,47 0 1 1 0,-94" stroke-width="6" fill-opacity="0"></path>
+    <path class="CircularProgressbar-path" style="{{ stroke: '#61B684', strokeDasharray: '295.3097094374406px 295.3097094374406px', strokeDashoffset: '0px' }} d=" M 50,50
+      m 0,-47 a 47,47 0 1 1 0,94 a 47,47 0 1 1 0,-94" stroke-width="6" fill-opacity="0"></path>
+</svg>
