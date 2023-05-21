@@ -87,7 +87,7 @@ const Discover = () => {
 							<div>
 								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
 									{projects.map((project, index) => (
-										<a key={index} className="3xl:w-2/12 xl:w-3/12 md:w-4/12 sm:w-6/12 flex-shrink-0 mb-6 w-full cursor-pointer sm:px-3 overflow-hidden" href="/project/second-niger-bridge-10111101">
+										<Link key={index} className="3xl:w-2/12 xl:w-3/12 md:w-4/12 sm:w-6/12 flex-shrink-0 mb-6 w-full cursor-pointer sm:px-3 overflow-hidden" to={`/project/${project._id}`}>
 											<div className="w-full aspect-[294/280] rounded-2xl">
 												<div className="relative h-full">
 													<div className="absolute medium transform transition duration-300 ease-in-out bg-white text-2-xs rounded-r-full bottom-4 px-3 py-1 left-0 uppercase z-10 text-ongoing"> Ongoing</div>
@@ -118,7 +118,7 @@ const Discover = () => {
 													</div>
 												</div>
 											</div>
-										</a>
+										</Link>
 									))}
 								</div>
 							</div>
