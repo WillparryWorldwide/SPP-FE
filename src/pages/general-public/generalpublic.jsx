@@ -40,6 +40,8 @@ const GeneralPub = () => {
     "layout-footer-fixed"
   );
 
+  console.log(hostUrl)
+
   const displayComment = (name, id, item) => {
     setIdOfProject(id);
     setItemOfProject(item);
