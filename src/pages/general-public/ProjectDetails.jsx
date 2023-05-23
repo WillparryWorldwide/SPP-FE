@@ -8,6 +8,7 @@ import folder from '../../assets/images/folder.svg'
 import '../../assets/css/d35beeb833360611.css'
 import '../../assets/css/4c4867adecdc883a.css'
 import '../../assets/css/3f1327110777dc38.css'
+import '../../assets/css/tailwind.css'
 
 const ProjectDetails = () => {
 
@@ -29,6 +30,7 @@ const ProjectDetails = () => {
 
     useEffect(() => {
         fetchProject()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
