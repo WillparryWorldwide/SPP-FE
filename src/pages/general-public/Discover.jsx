@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import search from '../../assets/images/search.svg'
 
+import '../../assets/css/9120b63ab911b239.css'
+
 const Discover = () => {
 
 	const [projects, setProjects] = useState([])
@@ -21,8 +23,6 @@ const Discover = () => {
 	}
 
 	useEffect(() => {
-		import('../../assets/css/9120b63ab911b239.css')
-		import('../../assets/css/tailwind.css')
 		fetchProjects()
 	}, [])
 

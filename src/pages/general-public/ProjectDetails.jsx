@@ -4,6 +4,11 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import folder from '../../assets/images/folder.svg'
 // import CircularProgressbar from '../../assets/images/completed.svg'
 
+
+import '../../assets/css/d35beeb833360611.css'
+import '../../assets/css/4c4867adecdc883a.css'
+import '../../assets/css/3f1327110777dc38.css'
+
 const ProjectDetails = () => {
 
     const { id } = useParams();
@@ -23,10 +28,6 @@ const ProjectDetails = () => {
     }
 
     useEffect(() => {
-        import('../../assets/css/d35beeb833360611.css')
-        import('../../assets/css/4c4867adecdc883a.css')
-        import('../../assets/css/3f1327110777dc38.css')
-        import('../../assets/css/tailwind.css')
         fetchProject()
     }, [])
 

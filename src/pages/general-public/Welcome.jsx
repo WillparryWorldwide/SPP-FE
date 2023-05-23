@@ -2,11 +2,10 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import heroMotif from '../../assets/fonts/heroMotif.36145ce0.svg'
 
+import '../../assets/css/143c6ce6ba741688.css'
+
 const Welcome = () => {
-    useEffect(() => {
-        import('../../assets/css/143c6ce6ba741688.css')
-        import('../../assets/css/tailwind.css')
-    })
+
     return (
         <>
             <div className="Toastify"></div>
