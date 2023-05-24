@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import '../../assets/css/9120b63ab911b239.css'
@@ -11,6 +10,7 @@ const Discover = () => {
 	const [projects, setProjects] = useState([])
 	const hostUrl = process.env.REACT_APP_BASE_URL.slice(0, process.env.REACT_APP_BASE_URL.search("api/"))
 	const [isLoading, setIsloading] = useState(false)
+	const [option, setOption] = useState(null)
 
 	const fetchProjects = async () => {
 		try {
@@ -25,6 +25,7 @@ const Discover = () => {
 
 	useEffect(() => {
 		fetchProjects()
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
@@ -50,12 +51,20 @@ const Discover = () => {
 		return formatted;
 	}
 
+	const handleOption = (value) =>{
+		setOption(value)
+	}
+
 	return (
 		<>
 			<div className="appLayout_dash-contents__f3VlW">
+				
 				<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 					<div className="sticky top-0 z-50">
-						<DiscoveryNavBar />
+						<DiscoveryNavBar
+							option={option}
+							handleOption={handleOption}
+						/>
 						{!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
 						<div className="h-full  p-6">
 							<div>

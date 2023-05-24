@@ -1,3 +1,12 @@
+/* @import url('../src/assets/fonts/FilsonPro-Bold.3470891d.ttf');
+@import url('../src/assets/fonts/FilsonPro-Medium.6cf6b78b.ttf');
+@import url('../src/assets/fonts/FilsonPro-MediumItalic.64e1b71c.ttf');
+@import url('../src/assets/fonts/FilsonPro-Regular.64852bfe.ttf'); */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    font-family: filsonPro-regular;
+}
