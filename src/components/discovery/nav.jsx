@@ -20,7 +20,7 @@ const DiscoveryNavBar = ({option, handleOption}) => {
                             <div className="w-full flex justify-between items-center relative">
                                 <div className="text-tiny px-5 rounded-full bg-gray-200 items-center flex flex-row justify-between relative w-full">
                                     <input type="text" className="border-transparent outline-none text-light-grey search-input flex-grow px-2 py-3 bg-gray-200 w-full" id="search" placeholder="Search for any Project, LGA, State or Contractor" autoComplete="off" />
-                                    <button className="bg-accepted rounded-r-full px-5 h-full items-center absolute right-0 top-0 flex">
+                                    <button className="bg-primary rounded-r-full px-5 h-full items-center absolute right-0 top-0 flex">
                                         <img alt="search" loading="lazy" width="16" height="15" style={{ color: 'transparent' }} src={search} />
                                     </button>
                                 </div>
@@ -38,9 +38,9 @@ const DiscoveryNavBar = ({option, handleOption}) => {
             </div>
            <div className='bg-white relative h-14 z-30 border-t border-EB md:px-6 px-3 flex justify-between items-center w-full'>
                 <div className="flex relative items-center space-x-2 h-full mr-2 md:ml-4 flex-shrink-0 " data-testid="set-project_view">
-                    <div className="lg:block fill-transparent cursor-pointer flex-shrink-0 hover:text-grey-white text-transparent block text-accepted-light">
-                            <Icon grid_menu='grid_menu' />
-                        </div>
+                    <div className="lg:block fill-primary cursor-pointer flex-shrink-0 hover:text-grey-white text-transparent block">
+                        <Icon grid_menu='grid_menu' />
+                    </div>
                     <div className='lg:block fill-transparent cursor-pointer flex-shrink-0 hover:text-grey-white text-transparent hidden text-white'>
                         <Icon list_menu='list_menu' />
                     </div>

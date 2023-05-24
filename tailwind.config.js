@@ -8,12 +8,12 @@ module.exports = {
       colors:{
         primary: '#007bff',
       },
-      // fontFamily: {
-      //   'filesonpro-regular': ['filesonpro-regular'],
-      //   'filesonpro-bold': ['filesonpro-bold'],
-      //   'filesonpro-medium': ['filesonpro-medium'],
-      //   'filesonpro-mediumitalic': ['filesonpro-MediumItalic'],
-      // },
+      fontFamily: {
+        'filesonpro-regular': ['filesonpro-regular'],
+        'filesonpro-bold': ['filesonpro-bold'],
+        'filesonpro-medium': ['filesonpro-medium'],
+        'filesonpro-mediumitalic': ['filesonpro-MediumItalic'],
+      },
     },
   },
   plugins: [],

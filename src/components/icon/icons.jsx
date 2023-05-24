@@ -116,7 +116,7 @@ const Icon = (props) => {
         }
         {props.grid_menu && <svg className="fill-inherit" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg" >
                         <rect width="28" height="28" rx="8.167" fill="currentColor"></rect>
-                        <path fill="#4BAA73" stroke="#4BAA73" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round" d="M8.105 8.105h4.421v4.421H8.105zM15.477 8.105h4.421v4.421h-4.421zM15.477 15.475h4.421v4.421h-4.421zM8.105 15.475h4.421v4.421H8.105z"></path>
+                        <path fill="inherit" stroke="inherit" stroke-width="1.167" stroke-linecap="round" stroke-linejoin="round" d="M8.105 8.105h4.421v4.421H8.105zM15.477 8.105h4.421v4.421h-4.421zM15.477 15.475h4.421v4.421h-4.421zM8.105 15.475h4.421v4.421H8.105z"></path>
                     </svg>
         }
         {props.drop_down && <svg className="fill-inherit" width="8" height="6" fill="none" xmlns="http://www.w3.org/2000/svg">
