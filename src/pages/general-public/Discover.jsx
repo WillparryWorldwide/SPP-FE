@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 import '../../assets/css/9120b63ab911b239.css'
-import DiscoveryNavBar from '../../components/discovery/nav';
-import ProjectCards from '../../components/discovery/cards';
+import DiscoveryNavBar from './components/discovery/nav';
+import ProjectCards from './components/discovery/cards';
+import SideBar from './components/discovery/sidebar';
 
 const Discover = () => {
 
@@ -58,7 +59,7 @@ const Discover = () => {
 	return (
 		<>
 			<div className="appLayout_dash-contents__f3VlW">
-				
+				<SideBar />
 				<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 					<div className="sticky top-0 z-50">
 						<DiscoveryNavBar

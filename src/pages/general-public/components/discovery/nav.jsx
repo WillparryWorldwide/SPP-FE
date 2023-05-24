@@ -1,8 +1,8 @@
 
-import search from '../../assets/images/search.svg'
-import logo from '../../assets/logo/logo.png'
+import search from '../../../../assets/images/search.svg'
+import logo from '../../../../assets/logo/logo.png'
 import { Link } from 'react-router-dom';
-import Icon from '../icon/icons';
+import Icon from '../../../../components/icon/icons';
 
 const DiscoveryNavBar = ({option, handleOption}) => {
     console.log(option)

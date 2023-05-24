@@ -6,7 +6,7 @@ export { default as CreateSPPUser } from "./administrator/spp_users/Create";
 export { default as ListSPPUser } from "./administrator/spp_users/AllUsers";
 export { default as Login } from "./Login";
 export { default as Profile } from "./Profile";
-export { default as Welcome } from "./general-public/Welcome";
+export { default as Welcome } from "./general-public/LandingPage/Welcome";
 export { default as Discover } from "./general-public/Discover";
 export { default as ProjectDetails } from "./general-public/ProjectDetails";
 export { default as GeneralPublic } from "./general-public/generalpublic";
