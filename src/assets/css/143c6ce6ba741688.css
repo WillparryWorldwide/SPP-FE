@@ -16,7 +16,7 @@
 .home_landing-hero__u3Jsj {
   background: linear-gradient(
       135.55deg,
-      #1a084fcc 47.98%,
+      #3878f4 47.98%,
       transparent 99.06%
     ),
     linear-gradient(315deg, rgba(37, 33, 23, 0.8), transparent), #fff;
@@ -254,7 +254,7 @@
 }
 .home_hyperlink__jqIJv {
   --tw-text-opacity: 1;
-  color: rgb(75 170 115 / var(--tw-text-opacity));
+  color: rgb(56 120 244 / var(--tw-text-opacity));
 }
 .home_hyperlink__jqIJv:hover {
   text-decoration-line: underline;
