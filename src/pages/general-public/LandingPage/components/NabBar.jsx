@@ -1,13 +1,13 @@
 // NavBar
 import { Link } from "react-router-dom";
-import logo from "../../../../assets/images/SPPA LOGO.jpg";
-import IconSVG from "../../components/svg";
+import IconSVG from "../../../../components/icon/svg";
+import SiteImages from "../../../../Utils/images";
 
 const NavBar = () => {
 	return <nav className="relative flex justify-between items-center xl:px-32 sm:px-20 px-7 py-7  bg-white">
 
 		<div className="flex items-center lg:hidden cursor-pointer">
-			<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={logo} style={{ width: "100%", color: "transparent" }} />
+			<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={SiteImages.logo} style={{ width: "100%", color: "transparent" }} />
 
 		</div>
 		<button className="lg:hidden relative z-20">
@@ -19,7 +19,7 @@ const NavBar = () => {
 
 				<Link to="/">
 					<div className="items-center hidden lg:flex cursor-pointer relative">
-						<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={logo} style={{ width: "100%", color: "transparent" }} />
+						<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={SiteImages.logo} style={{ width: "100%", color: "transparent" }} />
 					</div>
 				</Link>
 				<div className="flex flex-col lg:flex-row items-center w-full lg:w-auto">

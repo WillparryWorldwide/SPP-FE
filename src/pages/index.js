@@ -11,5 +11,5 @@ export { default as Discover } from "./general-public/Discover";
 export { default as ProjectDetails } from "./general-public/ProjectDetails";
 export { default as GeneralPublic } from "./general-public/generalpublic";
 export { default as PublicIndividualProject } from "./general-public/individualproject";
-export { default as CProjectList } from "./contractors/project/AllProject";
+export { default as CProjectList } from "./administrator/project/AllProject";
 export { default as ViewProject } from "./contractors/project/ViewProject";
