@@ -42,6 +42,9 @@
 .w-fit{
     width: fit-content !important;
 }
+.w-availablespace{
+    width: -webkit-fill-available;
+}
 .h-search{
     display: flex;
     align-items: center;

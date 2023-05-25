@@ -1,34 +1,75 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 
 import '../../assets/css/9120b63ab911b239.css'
 import DiscoveryNavBar from './components/discovery/nav';
 import ProjectCards from './components/discovery/cards';
 import SideBar from './components/discovery/sidebar';
+import useUpdateProject from "../../Hooks/useupdateproject";
+import Comment from '../../components/generalpublic/comment';
+import useGetAllProject from "../../Hooks/usegetallproject";
+import useSearchProject from '../../Hooks/usesearchproject';
+import BottomNav from './components/discovery/bottomnav';
 
 const Discover = () => {
 
-	const [projects, setProjects] = useState([])
-	const hostUrl = process.env.REACT_APP_BASE_URL.slice(0, process.env.REACT_APP_BASE_URL.search("api/"))
-	const [isLoading, setIsloading] = useState(false)
 	const [option, setOption] = useState(null)
+	const [nameOfProject, setNameOfProject] = useState("");
+	const [idOfProject, setIdOfProject] = useState("");
+	const [viewComment, setViewComment] = useState(false);
+	const { upDAteProject,  loading: upDateLoading  } = useUpdateProject();
+	const { fetchProject, data, hostUrl,  loading  } = useGetAllProject();
+	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
+	const [projects, setProjects] = useState(null)
+	const [commentData, setCommentData] = useState({
+	  description: "",
+	  radioValue: "",
+	  name: "",
+	});
 
-	const fetchProjects = async () => {
-		try {
-			const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/project/all`);
-			console.log(data);
-			setProjects(data.data.result)
-			setIsloading(true)
-		} catch (error) {
-			console.log(error);
-		}
-	}
 
+	// Make All Project Fetch Request
 	useEffect(() => {
-		fetchProjects()
+		const makeFetch = async () =>{
+			console.log('here1')
+			await fetchProject()
+		}
 
+		if(option === null){
+			makeFetch()
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
+
+	//  Set project to Fetch Request Data
+	useEffect(()=>{
+		if(option === null){
+			setProjects(data)
+			console.log(data)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [data])
+
+	//  Set project to Search Request Data
+	useEffect(()=>{
+		if(option !== null){
+			setProjects(searchData)
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchData])
+	
+	//  Make Search Request
+	useEffect(() => {
+		const makeSearchFetch = async () =>{
+			console.log('here')
+			await searchProject(option)
+			setProjects(searchData)
+		}
+
+		if(option !== null){
+			makeSearchFetch()
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [option])
 
 	// useEffect(() => {
 		// window.onscroll = function () { scroll() };
@@ -56,6 +97,30 @@ const Discover = () => {
 		setOption(value)
 	}
 
+	
+	const handleRadioSelection = (event) => {
+		setCommentData((prev) => ({ ...prev, radioValue: event.target.value }));
+	  };
+
+	  const displayComment = (name, id, item, e) => {
+		e.preventDefault()
+		setIdOfProject(id);
+		setNameOfProject(name);
+		setViewComment(true);
+	  };
+
+	const submitComment = async (e) => {
+		e.preventDefault();
+		await upDAteProject(idOfProject, commentData);
+		setNameOfProject("");
+		setCommentData({
+		  description: "",
+		  radioValue: "",
+		  name: "",
+		});
+		setViewComment(false)
+	}
+
 	return (
 		<>
 			<div className="appLayout_dash-contents__f3VlW">
@@ -65,24 +130,41 @@ const Discover = () => {
 						<DiscoveryNavBar
 							option={option}
 							handleOption={handleOption}
+							setOption={setOption}
 						/>
-						{!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
-						<div className="h-full  p-6">
+						{loading || searchLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+						<div className="h-full flex  p-6">
 							<div>
 								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
-									{projects.map((project, index) => (
+									{projects?.map((project, index) => (
 										<ProjectCards
 											project={project}
 											hostUrl={hostUrl}
 											format={format}
-											index={index}
+											displayComment={displayComment}
+											key={project._id}
 										/>
 									))}
 								</div>
 							</div>
+							{viewComment && (
+								<div className="hidden lg:flex">
+								<Comment
+									nameOfProject={nameOfProject}
+									submitComment={submitComment}
+									commentData={commentData}
+									setCommentData={setCommentData}
+									handleRadioSelection={handleRadioSelection}
+									setComment={setViewComment}
+									upDateLoading={upDateLoading}
+									noCancel={null}
+								/>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
+				<BottomNav />
 			</div>
 		</>
 	)

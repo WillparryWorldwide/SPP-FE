@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
 
-const ProjectCards = ({project, hostUrl, format, index}) => {
+const ProjectCards = ({project, hostUrl, format, displayComment}) => {
   return (
     <>
       
-      <Link key={index} className="3xl:w-2/12 xl:w-3/12 md:w-4/12 sm:w-6/12 flex-shrink-0 mb-6 w-full cursor-pointer sm:px-3 overflow-hidden" to={`/project/${project._id}`}>
+      <Link className="3xl:w-2/12 xl:w-3/12 md:w-4/12 sm:w-6/12 flex-shrink-0 mb-6 w-full cursor-pointer sm:px-3 overflow-hidden" to={`/project/${project._id}`}>
             <div className="w-full aspect-[294/280] rounded-2xl">
                 <div className="relative h-full">
                     <div className="absolute medium transform transition duration-300 ease-in-out bg-white text-2-xs rounded-r-full bottom-4 px-3 py-1 left-0 uppercase z-10 text-ongoing"> Ongoing</div>
@@ -33,7 +33,20 @@ const ProjectCards = ({project, hostUrl, format, index}) => {
                         <p className="uppercase text-2-xs text-input-border">STATE</p>
                         <p className="uppercase text-sm text-dark-grey medium truncate mt-1" >{project.state}</p>
                     </div>
-                </div>
+                </div>    
+                <button
+                    onClick={(event) =>
+                        displayComment(
+                        project.name,
+                        project._id,
+                        project,
+                        event
+                        )
+                    }
+                    className="border-2 mt-1 rounded-md text-dark-grey border-dark-grey w-24 py-1 hover:text-white hover:border-primary hover:bg-primary"
+                    >
+                    Comment
+                </button>
             </div>
         </Link>
     </>
