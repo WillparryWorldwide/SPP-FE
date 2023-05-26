@@ -1,10 +1,10 @@
 import moment from "moment/moment";
 import { useParams, Link } from "react-router-dom";
-import getFormData from "./functions/getFormData";
+import getFormData from "../../administrator/project/functions/getFormData";
 import React, { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import AxiosClient from "../../../Helper/axiosClient";
-import validateInput from "./functions/validateInput";
+import validateInput from "../../administrator/project/functions/validateInput";
 import FormTextArea from "../../../components/FormTextArea";
 import PrimaryButton from "../../../components/PrimaryButton";
 import ContentHeader from "../../../components/ContentHeader";

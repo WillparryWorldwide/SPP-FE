@@ -3,33 +3,45 @@ import ContentHeader from "../../../components/ContentHeader";
 import FormInput from "../../../components/FormInput";
 import PrimaryButton from "../../../components/PrimaryButton";
 import AxiosClient from "../../../Helper/axiosClient";
+import { TextField, Box, MenuItem, Button, Grid } from "@mui/material";
 import FormTextArea from "../../../components/FormTextArea";
 import validateInput from "./functions/validateInput";
 import getFormData from "./functions/getFormData";
 import { SearchNav, Title } from "../components";
 import IconSVG from "../../../components/icon/svg";
+import TextArea from "../components/inputs/TextArea";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import moment from "moment";
 
 const AddNew = () => {
 	const axios = AxiosClient();
-	const [imageText, setImageText] = useState("");
+	const [imageText, setImageText] = useState(null);
 	const [editedMilestone, setEditedMilestone] = useState(0);
 	const [sectors, setSectors] = useState([]);
 	const [mdas, setMdas] = useState([]);
 	const [grandTotal, setGrandTotal] = useState(0);
-	// useRef
-	const totalRef = useRef();
-	const lgaRef = useRef();
-	const mdaRef = useRef();
-	const fundingRef = useRef();
-	const titleRef = useRef();
-	const stateRef = useRef();
-	const sectorRef = useRef();
-	const locationRef = useRef();
-	const durationRef = useRef();
-	const categoryRef = useRef();
-	const descriptionRef = useRef();
-	const sppCodeRef = useRef();
-	const awardDateRef = useRef();
+	const initialInput = {
+		totalRef: { name: "totalRef", focus: () => { }, value: '' },
+		lgaRef: { name: "lgaRef", focus: () => { }, value: '' },
+		mdaRef: { name: "mdaRef", focus: () => { }, value: '' },
+		fundingRef: { name: "fundingRef", focus: () => { }, value: '' },
+		fundingRef_int: { name: "fundingRef_int", focus: () => { }, value: 0 },
+		titleRef: { name: "titleRef", focus: () => { }, value: '' },
+		stateRef: { name: "stateRef", focus: () => { }, value: '' },
+		sectorRef: { name: "sectorRef", focus: () => { }, value: '' },
+		locationRef: { name: "locationRef", focus: () => { }, value: '' },
+		categoryRef: { name: "categoryRef", focus: () => { }, value: '' },
+		durationRef: { name: "durationRef", focus: () => { }, value: '' },
+		awardDateRef: { name: "awardDateRef", focus: () => { }, value: '' },
+		descriptionRef: { name: "descriptionRef", focus: () => { }, value: '' },
+		sppCodeRef: { name: "sppCodeRef", focus: () => { }, value: '' }
+	}
+	const [inputDetails, setInputDetails] = useState(initialInput);
+
 	const [btnStatus, setBtnStatus] = useState(false);
 	const [contractors, setContractors] = useState([]);
 	const tagsExample = [
@@ -45,6 +57,23 @@ const AddNew = () => {
 		provisional_sums: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }],
 		measured_work: [{ rate: '', amount: '', duration: '', description: '', quantity: '' }]
 	}]);
+
+	// function
+	const handelInputChange = (e, dateName) => {
+		let { name, value, focus } = { ...e.target, name: e.target?.name || null };
+
+		if (name === null) name = dateName;
+		let innerHtml = '';
+
+		if (e.target?.TagName === "SELECT") innerHtml = e.target?.selectedOptions[0]?.innerHTML;
+
+		setInputDetails(prev => {
+			return {
+				...prev,
+				[name]: { name, focus, value, innerHtml }
+			}
+		});
+	}
 
 	// function
 	const handleAddMilestone = (e) => {
@@ -159,7 +188,7 @@ const AddNew = () => {
 	const create = () => {
 		let submit = true;
 
-		submit = validateInput({ sppCodeRef, mdaRef, sectorRef, submit, titleRef, categoryRef, durationRef, fundingRef, stateRef, lgaRef, awardDateRef, totalRef, descriptionRef, setBtnStatus, locationRef })
+		submit = validateInput({ submit, setBtnStatus, inputData: inputDetails });
 
 		let stopValidation = false;
 		// check if milestone items are  stil empty
@@ -187,7 +216,7 @@ const AddNew = () => {
 		// if false do not create project
 		// if (!submit) return;
 		// upload
-		const myFormData = getFormData(milestones, durationRef, titleRef, stateRef, mdaRef, sppCodeRef, locationRef, totalRef, categoryRef, sectorRef, lgaRef, awardDateRef, fundingRef, descriptionRef);
+		const myFormData = getFormData(inputDetails);
 
 		axios.post('/project/register', myFormData, {
 			headers: {
@@ -205,7 +234,7 @@ const AddNew = () => {
 	}
 
 	return (
-		<>
+		<LocalizationProvider dateAdapter={AdapterMoment}>
 			<div className="sticky top-0 z-50">
 				<SearchNav />
 				<Title headText="Welcome" icon={<span style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, position: 'relative', maxWidth: '100%' }}>
@@ -219,105 +248,297 @@ const AddNew = () => {
 			<div className="h-full  p-6">
 				<div>
 					<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
-						<div className="card">
+						<div className="card w-full">
 							<div className='container'>
-								<form id="project" encType="multipart/form-data">
-									<div className='row'>
-										<FormInput className="col-12 form-group mt-3" label="Title" ref={titleRef} placeholder="Project Title" />
-										<div className='col-6 col-md-4 form-group mt-3'>
-											<label>Select SPP</label>
-											<select ref={sppCodeRef} className='form-control'>
-												<option defaultValue>Select SPP</option>
-												{contractors.map(contractor => <option key={contractor._id} value={contractor._id}>{contractor.SPP_name}</option>)}
-											</select>
-										</div>
-										<div className='col-6 col-md-4 form-group mt-3'>
-											<label>Select Sector</label>
-											<select ref={sectorRef} className='form-control'>
-												<option defaultValue>Select Sector</option>
-												{sectors.map(sector => <option key={sector._id} value={sector._id}>{sector.name}</option>)}
-											</select>
-										</div>
-										<div className='col-6 col-md-4 form-group mt-3'>
-											<label>Select MDA</label>
-											<select ref={mdaRef} className='form-control'>
-												<option defaultValue>Select MDA</option>
-												{mdas.map(mda => <option key={mda._id} value={mda._id}>{mda.name}</option>)}
-											</select>
-										</div>
-										<FormInput className="col-6 form-group mt-3" label="Duration" type="date" ref={durationRef} placeholder="When will it finish" />
-										<FormInput className="col-6 form-group mt-3" label="Date Awarded" type="date" ref={awardDateRef} placeholder="Date Awarded" />
-										<div className='col-6 form-group mt-3'>
-											<label>Project Tag</label>
-											<select ref={categoryRef} className='form-control'>
-												<option defaultValue>Any</option>
-												{tagsExample.map((tag, index) => <option key={index} value={tag}>{tag}</option>)}
-											</select>
-										</div>
-										<FormInput className="col-6 form-group mt-3" label="Funding" type="number" ref={fundingRef} placeholder="Funding Amount" />
-										<FormInput className="col-6 form-group mt-3" label="State" ref={stateRef} placeholder="Enter State" />
-										<FormInput className="col-6 form-group mt-3" label="LGA" ref={lgaRef} placeholder="Local Government Area" />
-										<FormInput className="col-6 form-group mt-3" label="Location" ref={locationRef} placeholder="Enter the location for the project" />
-										<div className='form-group mt-3 col-12 col-md-6'>
-											<label htmlFor='file'>Project Thumbnail</label>
-											<div className='input-group'>
-												<div className="custom-file">
-													<input className="custom-file-input" accept="image/*" multiple onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
-													<label className="custom-file-label" htmlFor="file">{imageText || "Upload Project Thumbnail"}</label>
-												</div>
-											</div>
-										</div>
-										<FormInput className="col-6 form-group mt-3" value={grandTotal} label="Grand Total" ref={totalRef} placeholder="Amount" type="number" readonly />
-										<div className='col-12 mt-3'>
-											<PrimaryButton className='btn btn-primary btn-sm float-right pull-right mr-0' onClick={(e) => handleAddMilestone(e)} title='Add Milestone' />
-										</div>
-										{milestones.map((milestone, index) => (
-											<div key={index}>
-												<h3 className='col-7'>Milestone {index + 1}</h3>
-												<div className='d-flex col-12'>
-													<div>
-														{
-															Object.keys(milestone).map(key => {
-																if (key === "id") return null;
-																return milestone[key].map((items, mIndex, mArr) => (
-																	<div key={key + '-' + mIndex} className="m-0 p-0">
-																		<div className="d-flex justify-content-between align-items-center">
-																			<h5 className="text-capitalize ml-3 mb-0">{milestoneText[key]} {mIndex + 1}</h5>
-																			<div>
-																				{mIndex === 0 && <PrimaryButton type="button" className={`btn btn-primary btn-sm pull-right mr-1`} onClick={handleAddMileStoneItem} data-milestone-index={index} data-milestone-item={key} title='Add' />}
-																				{mArr.length - 1 ? <PrimaryButton type="button" className={`btn btn-danger form-control-sm btn-sm ml-1 ${index}-${mIndex}`} onClick={handleRemoveMilestone} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} title='Delete' /> : null}
-																			</div>
-																		</div>
-																		<div className={`${key} d-flex`}>
-																			<div className="row m-2">
-																				<FormInput className="col-6 col-md-3 form-group" value={items.quantity} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-quantity`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="quantity" placeholder="Enter Quantity" type="number" />
-																				<FormInput className="col-6 col-md-3 form-group" value={items.rate} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-rate`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="rate" placeholder="Enter Rate" type="number" />
-																				<FormInput className="col-6 col-md-3 form-group" value={items.amount} onChange={handelMilestoneChange} inputClass={`amount form-control form-control-sm milestone-${index}-${key}-${mIndex}-amount`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="amount" placeholder="Enter Amount" type="number" />
-																				<FormInput className="col-6 col-md-3 form-group" value={items.duration} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-date`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="date" placeholder="Select duration" type="date" />
-																				<FormTextArea className="col-12 form-group" value={items.description} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-description`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="description" placeholder="Enter Description" type="text" />
-																			</div>
-																		</div>
-																	</div>
-																));
-															})
-														}
-													</div>
-													{/* <div className='form-group mt-5'>
-							<PrimaryButton className='btn btn-danger btn-sm' onClick={(e) => handleRemoveMilestone(e, index)} title='Delete'/>
-						</div> */}
-												</div>
-											</div>
-										))}
-									</div>
-									<textarea className='form-control' ref={descriptionRef} placeholder='Project Description' rows={3}></textarea>
-									<PrimaryButton type="button" title="Create" disabled={btnStatus} onClick={create} className="btn btn-primary btn-end btn-sm mb-3 mt-3" />
-								</form>
+								<Box
+									component="form"
+									encType="multipart/form-data"
+									noValidate
+									autoComplete="off">
+									<Grid container spacing={1}>
+										<Grid item xs={12}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												type="text"
+												name={inputDetails.titleRef.name}
+												value={inputDetails.titleRef.value}
+												onChange={handelInputChange}
+												label="Title"
+											/>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<DemoContainer sx={{ width: "100%" }} components={['DatePicker']}>
+												<DatePicker
+													className="w-full"
+													label="Duration"
+													value={inputDetails.awardDateRef.value === '' && null}
+													onChange={(e) => handelInputChange(e, inputDetails.durationRef.name)}
+												/>
+											</DemoContainer>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<DemoContainer components={['DatePicker']}>
+												<DatePicker
+													className="w-full"
+													label="Date Awarded"
+													value={inputDetails.awardDateRef.value === '' && null}
+													onChange={(e) => handelInputChange(e, inputDetails.awardDateRef.name)}
+												/>
+											</DemoContainer>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<DemoContainer components={["TextField"]}>
+												<TextField
+													sx={{ width: "100%!important" }}
+													type="number"
+													name={inputDetails.fundingRef.name}
+													value={inputDetails.fundingRef.value}
+													onChange={handelInputChange}
+													label="Funding"
+												/>
+											</DemoContainer>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												type="text"
+												name={inputDetails.stateRef.name}
+												value={inputDetails.stateRef.value}
+												onChange={handelInputChange}
+												label="State"
+											/>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												type="text"
+												name={inputDetails.lgaRef.name}
+												value={inputDetails.lgaRef.value}
+												onChange={handelInputChange}
+												label="LGA"
+												placeholder="Local Government Area"
+											/>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												type="text"
+												name={inputDetails.locationRef.name}
+												value={inputDetails.locationRef.value}
+												onChange={handelInputChange}
+												label="Location"
+											/>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												select
+												defaultValue=""
+												label="Contractor">
+												{contractors.map((option) => (
+													<MenuItem key={option._id} value={option._id}>
+														{option.SPP_name}
+													</MenuItem>
+												))}
+											</TextField>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												select
+												defaultValue=""
+												label="Sector">
+												{sectors.map((option) => (
+													<MenuItem key={option._id} value={option._id}>
+														{option.name}
+													</MenuItem>
+												))}
+											</TextField>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												select
+												defaultValue=""
+												label="MDA">
+												{mdas.map((option) => (
+													<MenuItem key={option._id} value={option._id}>
+														{option.name}
+													</MenuItem>
+												))}
+											</TextField>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												select
+												defaultValue={tagsExample[0]}
+												value={inputDetails.categoryRef.value}
+												onChange={handelInputChange}
+												label="Category">
+												{tagsExample.map((option) => (
+													<MenuItem key={option} value={option}>
+														{option}
+													</MenuItem>
+												))}
+											</TextField>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<TextField
+												sx={{ width: "100%!important" }}
+												type="number"
+												name={inputDetails.totalRef.name}
+												value={inputDetails.totalRef.value}
+												onChange={handelInputChange}
+												label="Total"
+												placeholder="Total"
+											/>
+										</Grid>
+										<Grid item xs={12} md={6} lg={4}>
+											<input
+												accept="image/*"
+												className=""
+												style={{ display: 'none' }}
+												id="raised-button-file"
+												multiple
+												type="file"
+												onChange={(e) => setImageText(e.target.files.length)}
+											/>
+											<label htmlFor="raised-button-file">
+												<button
+													data-testid="login-button"
+													type="button"
+													className="w-full rounded-full bg-primary text-white py-3 text-center">
+													<p className="medium">
+														{imageText ? `Uploading ${imageText}` : "Upload Images"}
+													</p>
+												</button>
+											</label>
+										</Grid>
+										<Grid item xs={12}>
+											<TextArea />
+										</Grid>
+									</Grid>
+								</Box>
+								<Grid container spacing={1}>
+									{milestones.map((milestone, index) => (
+										<Grid key={index} item xs={12}>
+											<h3 className="flex justify-start items-center text-lg">
+												<span>Milestone {index + 1}</span>
+												<IconPlus
+													onClick={handleAddMilestone}
+													className="text-accepted ml-5 text-2xl bg-cream rounded-full cursor-pointer"
+												/>
+											</h3>
+											{
+												Object.keys(milestone).map(key => {
+													if (key === "id") return null;
+													return milestone[key].map((items, mIndex, mArr) => (
+														<div key={key + '-' + mIndex} className="m-0 p-0">
+															<div className="flex justify-between items-center">
+																<h5 className="text-sm">{milestoneText[key]} {mIndex + 1}</h5>
+																<div className="flex justify-around items-center">
+																	{mIndex === 0 && <IconPlus type="button" className="text-accepted cursor-pointer mx-1" onClick={handleAddMileStoneItem} data-milestone-index={index} data-milestone-item={key} />}
+																	{mArr.length - 1 ? <IconTrash type="button" className={`text-abandoned cursor-pointer mx-1 ${index}-${mIndex}`} onClick={handleRemoveMilestone} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} /> : null}
+																</div>
+															</div>
+															<div className={`${key} flex`}>
+																<Grid container spacing={1}>
+																	<Grid item xs={12} md={6} lg={3}>
+																		<TextField
+																			className={`milestone-${index}-${key}-${mIndex}-quantity`}
+																			sx={{ width: "100%!important" }}
+																			type="number"
+																			name="quantity"
+																			value={items.quantity}
+																			onChange={handelMilestoneChange}
+																			label="Quantity"
+																			placeholder="Enter quantity"
+																			inputProps={{
+																				"data-milestone-index": index,
+																				"data-milestone-item": key,
+																				"data-item-index": mIndex,
+																				"data-item": "quantity"
+																			}}
+																		/>
+																	</Grid>
+																	<Grid item xs={12} md={6} lg={3}>
+																		<TextField
+																			className={`milestone-${index}-${key}-${mIndex}-rate`}
+																			sx={{ width: "100%!important" }}
+																			type="number"
+																			name="rate"
+																			value={items.rate}
+																			onChange={handelMilestoneChange}
+																			label="Rate"
+																			placeholder="Enter rate"
+																			inputProps={{
+																				"data-milestone-index": index,
+																				"data-milestone-item": key,
+																				"data-item-index": mIndex,
+																				"data-item": "rate"
+																			}}
+																		/>
+																	</Grid>
+																	<Grid item xs={12} md={6} lg={3}>
+																		<TextField
+																			className={`milestone-${index}-${key}-${mIndex}-amount`}
+																			sx={{ width: "100%!important" }}
+																			type="number"
+																			name="amount"
+																			value={items.amount}
+																			onChange={handelMilestoneChange}
+																			label="Amount"
+																			placeholder="Enter amount"
+																			inputProps={{
+																				"data-milestone-index": index,
+																				"data-milestone-item": key,
+																				"data-item-index": mIndex,
+																				"data-item": "amount"
+																			}}
+																		/>
+																	</Grid>
+																	<Grid item xs={12} md={6} lg={3}>
+																		<DatePicker
+																			className={`w-full milestone-${index}-${key}-${mIndex}-date`}
+																			label="Duration"
+																			value={inputDetails.awardDateRef.value === '' && null}
+																			onChange={(e) => handelMilestoneChange(e, {
+																				milestoneIndex: index,
+																				milestoneItem: key,
+																				itemIndex: mIndex,
+																				item: "duration"
+																			})}
+																			data-milestone-index={index}
+																			data-milestone-item={key}
+																			data-item-index={mIndex}
+																			data-item="duration"
+																		/>
+																	</Grid>
+																	<Grid item xs={12}>
+																		<TextArea value={items.description} onChange={handelMilestoneChange} inputClass={`form-control form-control-sm milestone-${index}-${key}-${mIndex}-description`} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} data-item="description" placeholder="Enter Description" />
+																	</Grid>
+																</Grid>
+															</div>
+														</div>
+													));
+												})
+											}
+										</Grid>
+									))}
+								</Grid>
+								<button
+									type="button"
+									onClick={create}
+									className="w-full rounded-full bg-primary text-white mt-12 py-3 text-center">
+									<p className="medium">Register</p>
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</>
+		</LocalizationProvider>
 	)
 }
 

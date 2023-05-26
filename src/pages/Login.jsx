@@ -1,8 +1,7 @@
 import "./Login.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import FormInput from "../components/FormInput";
 // import axios from '../Helper/axiosClient'
 import { useAuthUser } from "react-auth-kit";
 import { useSignIn, useIsAuthenticated } from "react-auth-kit";
@@ -23,14 +22,13 @@ import SiteImages from "../Utils/images";
 
 const Login = () => {
 	const axios = AxiosClient();
-	const { site_name, updateLoginStatus, login_status } = useAppContext();
+	const { updateLoginStatus, login_status } = useAppContext();
 	const [loginDetails, setLoginDetails] = useState({
 		username: '',
 		password: '',
 		usernameErr: false,
 		passwordErr: false
 	});
-	const [btnStatus, setBtnStatus] = useState(false);
 	const navigate = useNavigate();
 	const SignIn = useSignIn();
 	const isAuthenticated = useIsAuthenticated();
@@ -80,7 +78,6 @@ const Login = () => {
 			});
 			window.toastr.error("Password is required");
 		} else {
-			setBtnStatus(true);
 			const data = {
 				username: loginDetails.username,
 				password: loginDetails.password,
@@ -104,7 +101,6 @@ const Login = () => {
 					window.location.pathname = "/spp/dashboard";
 				}
 			}).catch((err) => {
-				setBtnStatus(false);
 				console.error("errrorr", err);
 				err.response
 					? window.toastr.error(err.response.data.message)
