@@ -1,6 +1,5 @@
 import moment from "moment/moment";
-import { useParams, Link } from "react-router-dom";
-import getFormData from "../../administrator/project/functions/getFormData";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import AxiosClient from "../../../Helper/axiosClient";
@@ -9,303 +8,1221 @@ import FormTextArea from "../../../components/FormTextArea";
 import PrimaryButton from "../../../components/PrimaryButton";
 import ContentHeader from "../../../components/ContentHeader";
 import MilestoneModal from "../../../components/Milestone.modal";
+import IconSVG from "../../../components/icon/svg";
+import SiteImages from "../../../Utils/images";
 
 const ViewProject = () => {
-    const params = useParams();
-    const [hostUrl, setHostUrl] = useState('');
-    const axios = AxiosClient();
-    const [imageText, setImageText] = useState("");
-    const [project, setProject] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [sectors, setSectors] = useState([]);
-    const [mdas, setMdas] = useState([]);
-    const [contractors, setContractors] = useState([]);
-    const [btnStatus, setBtnStatus] = useState(false);
-    const [milestoneModalState, setMilestoneModalState] = useState({
-        state: false,
-        item: '',
-        title: ''
-    });
-    const initialInput = {
-        totalRef: { focus: () => { }, value: project.grand_total || '' },
-        lgaRef: { focus: () => { }, value: project.local_goverment || '' },
-        mdaRef: { focus: () => { }, value: project.mda_code || '' },
-        fundingRef: { focus: () => { }, value: project.funding_amount || '' },
-        fundingRef_int: { focus: () => { }, value: 0 },
-        titleRef: { focus: () => { }, value: project.name || '' },
-        stateRef: { focus: () => { }, value: project.state || '' },
-        sectorRef: { focus: () => { }, value: project.sector_code || '' },
-        locationRef: { focus: () => { }, value: project.location || '' },
-        durationRef: { focus: () => { }, value: project.duration || '' },
-        categoryRef: { focus: () => { }, value: project.category || '' },
-        awardDateRef: { focus: () => { }, value: project.date_awarded || '' },
-        descriptionRef: { focus: () => { }, value: project.description || '' },
-        sppCodeRef: { focus: () => { }, value: project.spp_code || '' }
-    }
-    // inputs
-    const [inputData, setInputData] = useState(initialInput);
-    const tagsExample = [
-        "Legacy", "childcare", "maternal motality", "mega project", "road", "technology", "school"
-    ]
-    const milestoneText = {
-        preliminaries_sum: "Preliminary Sum",
-        provisional_sums: "Provisional Sum",
-        measured_work: "Measured Work"
-    }
+	const params = useParams();
+	const navigate = useNavigate();
+	const [hostUrl, setHostUrl] = useState('');
+	const axios = AxiosClient();
+	const [tab, setTab] = useState(1);
+	const [imageText, setImageText] = useState("");
+	const [project, setProject] = useState({});
+	const [isLoading, setIsLoading] = useState(true);
+	const [sectors, setSectors] = useState([]);
+	const [mdas, setMdas] = useState([]);
+	const [contractors, setContractors] = useState([]);
+	const [btnStatus, setBtnStatus] = useState(false);
+	const [milestoneModalState, setMilestoneModalState] = useState({
+		state: false,
+		item: '',
+		title: ''
+	});
 
-    // function
-    const handelInputChange = (e) => {
-        let { name, value, focus } = e.target;
-        let innerHtml = '';
+	const milestoneText = {
+		preliminaries_sum: "Preliminary Sum",
+		provisional_sums: "Provisional Sum",
+		measured_work: "Measured Work"
+	}
 
-        if (e.target.TagName === "SELECT") innerHtml = e.target?.selectedOptions[0]?.innerHTML;
+	useEffect(() => {
+		const fetchProject = () => {
+			axios.get("/project/only/" + params.id).then((res) => {
+				setProject(res.data.data.result);
+				setHostUrl(res.config.baseURL.slice(0, res.config.baseURL.search("api")));
+				setIsLoading(false);
+			}).catch(error => {
+				// handle error
+				console.error("Error", error);
+				window.toastr.error("Failed to get project");
+				if (error?.response) window.toastr.error(error.response.data.message);
+			});
+		}
 
-        setInputData(prev => {
-            if (name === "fundingRef") {
-                prev.fundingRef.value.push(value);
-                return prev;
-            }
-            return {
-                ...prev,
-                [name]: { focus, value, innerHtml }
-            }
-        });
-    }
+		const fetchSectors = () => {
+			axios.get('/sector/all').then(({ data }) => {
+				setSectors(data.data.result)
+			}).catch(error => {
+				// handle error
+				console.error("Error", error);
+				window.toastr.error("Failed to get Sector");
+				if (error?.response) window.toastr.error(error.response.data.message);
+			});
+		}
 
-    useEffect(() => {
-        const fetchProject = () => {
-            axios.get("/project/only/" + params.id).then((res) => {
-                setProject(res.data.data.result);
-                setInputData(initialInput);
-                setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api")));
-                setIsLoading(false);
-            }).catch(error => {
-                // handle error
-                console.error("Error", error);
-                window.toastr.error("Failed to get project");
-                if (error?.response) window.toastr.error(error.response.data.message);
-            });
-        }
+		const fetchMdas = () => {
+			axios.get('/mda/all').then(({ data }) => {
+				setMdas(data.data.result)
+			}).catch(error => {
+				// handle error
+				console.error("Error", error);
+				window.toastr.error("Failed to get MDA");
+				if (error?.response) window.toastr.error(error.response.data.message);
+			})
+		}
 
-        const fetchSectors = () => {
-            axios.get('/sector/all').then(({ data }) => {
-                setSectors(data.data.result)
-            }).catch(error => {
-                // handle error
-                console.error("Error", error);
-                window.toastr.error("Failed to get Sector");
-                if (error?.response) window.toastr.error(error.response.data.message);
-            });
-        }
+		const fetchContractors = async () => {
+			await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
+				setContractors(data.data.result)
+			}).catch(error => {
+				// handle error
+				console.error("Error", error);
+				window.toastr.error("Failed to get Contractor");
+				if (error?.response) window.toastr.error(error.response.data.message);
+			});
+		}
 
-        const fetchMdas = () => {
-            axios.get('/mda/all').then(({ data }) => {
-                setMdas(data.data.result)
-            }).catch(error => {
-                // handle error
-                console.error("Error", error);
-                window.toastr.error("Failed to get MDA");
-                if (error?.response) window.toastr.error(error.response.data.message);
-            })
-        }
+		fetchMdas();
 
-        const fetchContractors = async () => {
-            await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
-                setContractors(data.data.result)
-            }).catch(error => {
-                // handle error
-                console.error("Error", error);
-                window.toastr.error("Failed to get Contractor");
-                if (error?.response) window.toastr.error(error.response.data.message);
-            });
-        }
+		fetchProject();
 
-        fetchMdas();
+		fetchSectors();
 
-        fetchProject();
+		hideAddButtons();
 
-        fetchSectors();
+		fetchContractors();
 
-        hideAddButtons();
+		console.log("Rending...");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [params.id, project._id]);
 
-        fetchContractors();
+	const hideAddButtons = () => {
+		const btns = document.querySelectorAll('.addBtn');
+		for (let b = 0; b < btns.length; b++) {
+			if (!btns[b].classList.contains('0-0')) {
+				btns[b].classList.add('d-none')
+			}
+		}
+	}
 
-        console.log("Rending...");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [params.id, project._id]);
+	return <div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
+		<div className="projectPage_project-container__R1YM1 " id="project-cont">
+			{/* Top Title */}
+			<div className="projectPage_header-section___pCZK fixed w-full lg:w-[calc(100%-8rem)] z-50 ">
+				<div className="hidden lg:block mr-5 cursor-pointer ">
+					<Link onClick={() => navigate(-1)}>
+						<img alt="back" loading="lazy" width="20" height="16" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://eyemark.ng/_next/static/media/arrowBack.7d6d5eda.svg" />
+					</Link>
+				</div>
+				<div className="lg:hidden mr-5 cursor-pointer h-4">
+					<Link onClick={() => navigate(-1)}>
+						<img alt="back" loading="lazy" width="14" height="24" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://eyemark.ng/_next/static/media/backCaret.d64bb240.svg" />
+					</Link>
+				</div>
+				<p className="projectPage_header-text__Dzdkw">{project?.name}</p>
+			</div>
+			{/*  */}
+			<div className="sm:hidden px-6">
+				<div className="mt-20 flex flex-col items-center">
+					<div className="w-full flex justify-between">
+						<img alt="folder" loading="lazy" width="60" height="60" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src={IconSVG.folder} />
+						<p className="medium w-9/12">{project?.name}</p>
+					</div>
+					<div className="mt-6 w-full flex justify-between medium">
+						<div>
+							<p className="text-sm text-dark-grey">25</p>
+							<p className="mt-1 text-3-xs text-input-border uppercase">Verified</p>
+						</div>
+						<div>
+							<p className="text-sm text-dark-grey">{project?.review?.comments?.length}</p>
+							<p className="mt-1 text-3-xs text-input-border uppercase">REVIEWS</p>
+						</div>
+						<div>
+							<p className="text-sm text-dark-grey capitalize">positive</p>
+							<p className="mt-1 text-3-xs text-input-border uppercase">AVG. SENTIMENT</p>
+						</div>
+					</div>
+					<p className="text-sub-text text-2-xs mt-5 text-center">{project?.description}</p>
+					<div className="mt-4 w-4/12"><button data-testid="project-btn_eyemark"
+						className="undefined font-bold text-center w-full border py-2 text-xs sm:text-sm rounded-md tracking-wider flex-shrink-0 bg-accepted-light border-accepted text-accepted hover:bg-accepted hover:text-accepted-light transition ease-in-out duration-300">
+						<p className="medium text-base">Eyemark</p>
+					</button></div>
+				</div>
+			</div>
+			{/* Tab */}
+			<div className="sticky top-12 z-30 bg-grey-white">
+				<div className="bg-grey-white w-full sticky top-0 z-30 pt-2">
+					<div className="nav_search-navbar__B_TGY">
+						<div onClick={() => setTab(1)} className="nav_nav__fL7mg nav_search-nav-active__00eqb cursor-pointer"
+							data-testid="project-tab_Overview">
+							<p className={`${tab === 1 && 'text-primary'}`}>Overview</p>
+							<div className={`${tab === 1 && 'nav_active-bar__FGbx_'}`} ></div>
+						</div>
+						<div onClick={() => setTab(2)} className="nav_nav__fL7mg false nav_search-nav-active__00eqb cursor-pointer" data-testid="project-tab_Activity">
+							<p className={`${tab === 2 && 'text-primary'}`}>Activity</p>
+							<div className={`${tab === 2 && 'nav_active-bar__FGbx_'}`}></div>
+						</div>
+						<div onClick={() => setTab(3)} className="nav_nav__fL7mg false nav_search-nav-active__00eqb cursor-pointer" data-testid="project-tab_Media">
+							<p className={`${tab === 3 && 'text-primary'}`}>Media</p>
+							<div className={`${tab === 3 && 'nav_active-bar__FGbx_'}`}></div>
+						</div>
+						<div onClick={() => setTab(4)} className="nav_nav__fL7mg false nav_search-nav-active__00eqb cursor-pointer" data-testid="project-tab_Reviews">
+							<p className={`${tab === 4 && 'text-primary'}`}>Reviews</p>
+							<div className={`${tab === 4 && 'nav_active-bar__FGbx_'}`}></div>
+						</div>
+					</div>
+					<div className="nav_nav-base__wypU6"></div>
+				</div>
+			</div>
+			{/*  */}
+			{tab === 1 &&
+				<div className="mt-10 sm:mt-20 h-full">
+					<div className="flex-shrink-0">
+						<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">{project.name}</p>
+						<div className="flex items-start flex-wrap lg:flex-nowrap justify-between mb-7 px-6 mt-5">
+							<div className="w-full lg:w-9/12">
+								<div className="">
+									<p className="text-2-xs text-light-grey-2"></p>
+									<div className="mt-1">
+										<p className="text-2-xs uppercase text-input-border">SUPERVISING MDA</p>
+										<div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer">
+											<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
+												<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src="" />
+											</div>
+											<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF TRANSPORT </p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="w-full sm:w-7/12 lg:w-3/12 flex-shrink-0 mt-4 lg:mt-0">
+								<div className="projectPage_project-location-card__f7FjG">
+									<div className="flex items-center text-xs space-x-1">
+										<p className="text-dark-grey medium">
+											<span className=""><span className="capitalize">FCT-ABUJA</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
+									</div>
+									<div className="flex items-center justify-between mt-4 text-2-xs">
+										<p className="uppercase medium text-input-border">STATES</p>
+										<div className="relative group-seeall" data-testid="project-geo_location_see_all"><button
+											className="flex items-center space-x-1 cursor-pointer focus:outline-none">
+											<p className="text-dark-grey medium mr-1">See All</p><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
+												<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
+													<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
+												</span>
+												<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
+										</button>
+											<div className="w-40 lg:w-52 p-4 right-2 top-5 absolute rounded-lg bg-white z-40 hidden"
+												style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}>
+												<p className="text-sm medium text-accepted mb-5">All States</p>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Municipal Area Council, FCT-ABUJA</p>
+												</div>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Igabi, KADUNA</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="lg:hidden px-6 mb-5">
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs uppercase">{project.code}</p>
+									<p className="text-input-border text-2-xs uppercase">project CODE</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">CONSTRUCTION</p>
+									<p className="text-input-border text-2-xs uppercase">SECTOR</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">-</p>
+									<p className="text-input-border text-2-xs uppercase">DEPARTMENT</p>
+								</div>
+							</div>
+						</div>
+						<div className="projectPage_project-info-cards__3SQz7">
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="bg-white rounded-lg p-4 mb-2 flex justify-between items-center w-full lg:w-6/12">
+									<div className="flex flex-col justify-between w-5/12">
+										<div>
+											<p className="text-2xl capitalize medium">Completed</p>
+											<p className="projectPage_project-info-card-title__qwoK4">PROJECT STATUS</p>
+										</div>
+									</div>
+									<div className="w-6/12 flex flex-col justify-center">
+										<div data-test-id="CircularProgressbarWithChildren">
+											<div style={{ position: 'relative', width: '100%', height: '100%' }}>
+												<svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 0px' }}></path><path class="CircularProgressbar-path" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ stroke: 'rgb(97, 182, 132)', strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 88.5929px', }}></path></svg>
+												<div data-test-id="CircularProgressbarWithChildren__children"
+													style={{ position: 'absolute', width: '100%', height: '100%', marginTop: '-100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+													<p className="" data-testid="project-percentage_completed">50%</p>
+													<p className="text-2-xs text-input-border uppercase">completed</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="w-full lg:w-6/12 mb-2">
+									<div className="flex space-x-2 h-1/2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw uppercase"
+														data-testid="project-total_project_cost">₦291.71B</p>
+													<p className="projectPage_project-info-card-title__qwoK4">TOTAL PROJECT COST</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-timeline">5
+														Years</p>
+													<p className="projectPage_project-info-card-title__qwoK4">PROJECT TIMELINE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="flex space-x-2 h-1/2 pt-2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-start_date">
+														1st Oct 2009</p>
+													<p className="projectPage_project-info-card-title__qwoK4">START DATE</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-end_date">30th
+														Dec 2014</p>
+													<p className="projectPage_project-info-card-title__qwoK4">END DATE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v relative">
+											<div className="mb-6 flex justify-between items-center w-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div className="relative group-appro">
+													<div className="" data-testid="project-appropriated_more_info"><button className=""><span
+														style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span></button>
+													</div>
+													<div
+														className="w-52 lg:w-72 p-4 z-10 false absolute rounded-lg bg-white -left-20 sm:left-0 hidden"
+														style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}
+														data-testid="project-appropriated_more_info_dropdown">
+														<div className="lg:hidden absolute top-4 right-4 h-4"><span
+															style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+														</div>
+														<p className="text-sm medium text-accepted ">Appropriation Breakdown</p>
+														<p className="text-xs text-light-grey-2 mt-2 medium">Total</p>
+														<p className="mt-0.5 pb-2 border-b border-light-grey-4 medium">_</p>
+														<div className="mt-2"></div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-total_appropriated">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">TOTAL APPROPRIATED</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-amount_spent_so_far">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">AMOUNT SPENT SO FAR</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw"
+													data-testid="project-shildren_project">None</p>
+												<p className="projectPage_project-info-card-title__qwoK4">CHILDREN PROJECT</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-page_views">
+													31.38K</p>
+												<p className="projectPage_project-info-card-title__qwoK4">PAGE VIEWS</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="px-6 text-dark-grey">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<h2 className="medium">Project Description</h2>
+								<p className="text-input-border text-sm">Below explains what this project is all about.</p>
+								<div className="mt-6 text-sm"><span className="" data-testid="project-description">The Idu – Kaduna railway is
+									part of the Nigerian Railway Modernization Project, consisting of the realization of a new
+									standard gauge railway line from Lagos to Kano with connections to Abuja, via Minna and Kaduna, a
+									total length of 1315 km. Estimated project cost is US$876 million</span></div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Contractors</p>
+								<p className="text-input-border text-sm">Below are the contractors working on this project.</p>
+								<div className="mt-6 flex items-center flex-wrap space-x-5 overflow-x-auto"
+									data-testid="project-contractors">
+									<div className="bg-grey-white space-x-3 px-3 py-2 flex items-center rounded"><img
+										alt="contractor-avatar" loading="lazy" width="32" height="32" decoding="async" data-nimg="1"
+										className="h-8"
+										style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} />
+										<p className="text-sm medium">Ccecc Nigeria Limited</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Sustainable Development Goal<span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<p className="text-input-border text-sm">Below are the Sustainable Development Goals this project targets.
+								</p>
+								<div className="mt-3 flex flex-wrap items-center" data-testid="project-sustainable_development_goals">
+								</div>
+							</div>
+						</div>
+						<div>
+							<div className="mt-4 px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<p className="medium mb-4">Project Location <span className="text-2-xs text-light-grey-5">2</span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4">
+							<div className="px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<div className="flex justify-between">
+										<p className="medium">Project Reviews </p>
+										<div className="projectPage_see-all__FjyO9" data-testid="project-review_view_all">view all</div>
+									</div>
+									<div className="mt-8 flex flex-col lg:flex-row lg:items-center">
+										<div className="lg:w-5/12">
+											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
+											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
+												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
+												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												<p className="text-xl medium capitalize">positive</p>
+											</div>
+											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
+										</div>
+										<div className="w-full lg:w-7/12 flex flex-col space-y-2 mt-3 lg:mt-0">
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">4</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="pt-8 w-full">
+							<div className="flex justify-between px-6">
+								<p className="medium">Project Updates <span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<div className="projectPage_see-all__FjyO9" data-testid="project-see_all">see all</div>
+							</div>
+							<div className="projectPage_project-update-list__ChjQW"></div>
+						</div>
+					</div>
+				</div>
+			}
+			{tab === 2 &&
+				<div className="mt-10 sm:mt-20 p-10 h-full w">
+					<div className='flex h-full flex-col items-center justify-center'>
+						<div className=' mx-auto'>
+							<img src={SiteImages.developer} alt='window wipe' className='w-96' />
+						</div>
+						<p class="mt-5 medium text-center text-2xl">Sorry! We don't have any updates available</p>
+						<p class="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly Eyemark and check back with us in the near future.</p>
+						<div class="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Overview</div>
+					</div>
+				</div>
+			}
+			{tab === 3 &&
+				<div className="mt-10 sm:mt-20 h-full">
+					<div className="flex-shrink-0">
+						<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">Media</p>
+						<div className="flex items-start flex-wrap lg:flex-nowrap justify-between mb-7 px-6 mt-5">
+							<div className="w-full lg:w-9/12">
+								<div className="">
+									<p className="text-2-xs text-light-grey-2"></p>
+									<div className="mt-1">
+										<p className="text-2-xs uppercase text-input-border">SUPERVISING MDA</p>
+										<div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer">
+											<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
+												<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src="" />
+											</div>
+											<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF TRANSPORT </p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="w-full sm:w-7/12 lg:w-3/12 flex-shrink-0 mt-4 lg:mt-0">
+								<div className="projectPage_project-location-card__f7FjG">
+									<div className="flex items-center text-xs space-x-1">
+										<p className="text-dark-grey medium">
+											<span className=""><span className="capitalize">FCT-ABUJA</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
+									</div>
+									<div className="flex items-center justify-between mt-4 text-2-xs">
+										<p className="uppercase medium text-input-border">STATES</p>
+										<div className="relative group-seeall" data-testid="project-geo_location_see_all"><button
+											className="flex items-center space-x-1 cursor-pointer focus:outline-none">
+											<p className="text-dark-grey medium mr-1">See All</p><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
+												<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
+													<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
+												</span>
+												<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
+										</button>
+											<div className="w-40 lg:w-52 p-4 right-2 top-5 absolute rounded-lg bg-white z-40 hidden"
+												style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}>
+												<p className="text-sm medium text-accepted mb-5">All States</p>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Municipal Area Council, FCT-ABUJA</p>
+												</div>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Igabi, KADUNA</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="lg:hidden px-6 mb-5">
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs uppercase">1001100</p>
+									<p className="text-input-border text-2-xs uppercase">project CODE</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">CONSTRUCTION</p>
+									<p className="text-input-border text-2-xs uppercase">SECTOR</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">-</p>
+									<p className="text-input-border text-2-xs uppercase">DEPARTMENT</p>
+								</div>
+							</div>
+						</div>
+						<div className="projectPage_project-info-cards__3SQz7">
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="bg-white rounded-lg p-4 mb-2 flex justify-between items-center w-full lg:w-6/12">
+									<div className="flex flex-col justify-between w-5/12">
+										<div>
+											<p className="text-2xl capitalize medium">Completed</p>
+											<p className="projectPage_project-info-card-title__qwoK4">PROJECT STATUS</p>
+										</div>
+									</div>
+									<div className="w-6/12 flex flex-col justify-center">
+										<div data-test-id="CircularProgressbarWithChildren">
+											<div style={{ position: 'relative', width: '100%', height: '100%' }}>
+												<svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 0px' }}></path><path class="CircularProgressbar-path" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ stroke: 'rgb(97, 182, 132)', strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 88.5929px', }}></path></svg>
+												<div data-test-id="CircularProgressbarWithChildren__children"
+													style={{ position: 'absolute', width: '100%', height: '100%', marginTop: '-100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+													<p className="" data-testid="project-percentage_completed">50%</p>
+													<p className="text-2-xs text-input-border uppercase">completed</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="w-full lg:w-6/12 mb-2">
+									<div className="flex space-x-2 h-1/2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw uppercase"
+														data-testid="project-total_project_cost">₦291.71B</p>
+													<p className="projectPage_project-info-card-title__qwoK4">TOTAL PROJECT COST</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-timeline">5
+														Years</p>
+													<p className="projectPage_project-info-card-title__qwoK4">PROJECT TIMELINE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="flex space-x-2 h-1/2 pt-2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-start_date">
+														1st Oct 2009</p>
+													<p className="projectPage_project-info-card-title__qwoK4">START DATE</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-end_date">30th
+														Dec 2014</p>
+													<p className="projectPage_project-info-card-title__qwoK4">END DATE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v relative">
+											<div className="mb-6 flex justify-between items-center w-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div className="relative group-appro">
+													<div className="" data-testid="project-appropriated_more_info"><button className=""><span
+														style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span></button>
+													</div>
+													<div
+														className="w-52 lg:w-72 p-4 z-10 false absolute rounded-lg bg-white -left-20 sm:left-0 hidden"
+														style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}
+														data-testid="project-appropriated_more_info_dropdown">
+														<div className="lg:hidden absolute top-4 right-4 h-4"><span
+															style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+														</div>
+														<p className="text-sm medium text-accepted ">Appropriation Breakdown</p>
+														<p className="text-xs text-light-grey-2 mt-2 medium">Total</p>
+														<p className="mt-0.5 pb-2 border-b border-light-grey-4 medium">_</p>
+														<div className="mt-2"></div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-total_appropriated">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">TOTAL APPROPRIATED</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-amount_spent_so_far">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">AMOUNT SPENT SO FAR</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw"
+													data-testid="project-shildren_project">None</p>
+												<p className="projectPage_project-info-card-title__qwoK4">CHILDREN PROJECT</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-page_views">
+													31.38K</p>
+												<p className="projectPage_project-info-card-title__qwoK4">PAGE VIEWS</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="px-6 text-dark-grey">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<h2 className="medium">Project Description</h2>
+								<p className="text-input-border text-sm">Below explains what this project is all about.</p>
+								<div className="mt-6 text-sm"><span className="" data-testid="project-description">The Idu – Kaduna railway is
+									part of the Nigerian Railway Modernization Project, consisting of the realization of a new
+									standard gauge railway line from Lagos to Kano with connections to Abuja, via Minna and Kaduna, a
+									total length of 1315 km. Estimated project cost is US$876 million</span></div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Contractors</p>
+								<p className="text-input-border text-sm">Below are the contractors working on this project.</p>
+								<div className="mt-6 flex items-center flex-wrap space-x-5 overflow-x-auto"
+									data-testid="project-contractors">
+									<div className="bg-grey-white space-x-3 px-3 py-2 flex items-center rounded"><img
+										alt="contractor-avatar" loading="lazy" width="32" height="32" decoding="async" data-nimg="1"
+										className="h-8"
+										style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} />
+										<p className="text-sm medium">Ccecc Nigeria Limited</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Sustainable Development Goal<span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<p className="text-input-border text-sm">Below are the Sustainable Development Goals this project targets.
+								</p>
+								<div className="mt-3 flex flex-wrap items-center" data-testid="project-sustainable_development_goals">
+								</div>
+							</div>
+						</div>
+						<div>
+							<div className="mt-4 px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<p className="medium mb-4">Project Location <span className="text-2-xs text-light-grey-5">2</span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4">
+							<div className="px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<div className="flex justify-between">
+										<p className="medium">Project Reviews </p>
+										<div className="projectPage_see-all__FjyO9" data-testid="project-review_view_all">view all</div>
+									</div>
+									<div className="mt-8 flex flex-col lg:flex-row lg:items-center">
+										<div className="lg:w-5/12">
+											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
+											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
+												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
+												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												<p className="text-xl medium capitalize">positive</p>
+											</div>
+											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
+										</div>
+										<div className="w-full lg:w-7/12 flex flex-col space-y-2 mt-3 lg:mt-0">
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">4</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="pt-8 w-full">
+							<div className="flex justify-between px-6">
+								<p className="medium">Project Updates <span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<div className="projectPage_see-all__FjyO9" data-testid="project-see_all">see all</div>
+							</div>
+							<div className="projectPage_project-update-list__ChjQW"></div>
+						</div>
+					</div>
+				</div>
+			}
+			{tab === 4 &&
+				<div className="mt-10 sm:mt-20 h-full">
+					<div className="flex-shrink-0">
+						<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">Reviews</p>
+						<div className="flex items-start flex-wrap lg:flex-nowrap justify-between mb-7 px-6 mt-5">
+							<div className="w-full lg:w-9/12">
+								<div className="">
+									<p className="text-2-xs text-light-grey-2"></p>
+									<div className="mt-1">
+										<p className="text-2-xs uppercase text-input-border">SUPERVISING MDA</p>
+										<div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer">
+											<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
+												<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src="" />
+											</div>
+											<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF TRANSPORT </p>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="w-full sm:w-7/12 lg:w-3/12 flex-shrink-0 mt-4 lg:mt-0">
+								<div className="projectPage_project-location-card__f7FjG">
+									<div className="flex items-center text-xs space-x-1">
+										<p className="text-dark-grey medium">
+											<span className=""><span className="capitalize">FCT-ABUJA</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
+									</div>
+									<div className="flex items-center justify-between mt-4 text-2-xs">
+										<p className="uppercase medium text-input-border">STATES</p>
+										<div className="relative group-seeall" data-testid="project-geo_location_see_all"><button
+											className="flex items-center space-x-1 cursor-pointer focus:outline-none">
+											<p className="text-dark-grey medium mr-1">See All</p><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
+												<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
+													<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
+												</span>
+												<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
+										</button>
+											<div className="w-40 lg:w-52 p-4 right-2 top-5 absolute rounded-lg bg-white z-40 hidden"
+												style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}>
+												<p className="text-sm medium text-accepted mb-5">All States</p>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Municipal Area Council, FCT-ABUJA</p>
+												</div>
+												<div className="flex items-center space-x-3">
+													<p className="text-accepted medium">•</p>
+													<p className="medium text-dark-grey text-sm mb-1">Igabi, KADUNA</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="lg:hidden px-6 mb-5">
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs uppercase">1001100</p>
+									<p className="text-input-border text-2-xs uppercase">project CODE</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">CONSTRUCTION</p>
+									<p className="text-input-border text-2-xs uppercase">SECTOR</p>
+								</div>
+							</div>
+							<div className="flex items-center space-x-3 py-5">
+								<p className="text-accepted">•</p>
+								<div>
+									<p className="text-xs">-</p>
+									<p className="text-input-border text-2-xs uppercase">DEPARTMENT</p>
+								</div>
+							</div>
+						</div>
+						<div className="projectPage_project-info-cards__3SQz7">
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="bg-white rounded-lg p-4 mb-2 flex justify-between items-center w-full lg:w-6/12">
+									<div className="flex flex-col justify-between w-5/12">
+										<div>
+											<p className="text-2xl capitalize medium">Completed</p>
+											<p className="projectPage_project-info-card-title__qwoK4">PROJECT STATUS</p>
+										</div>
+									</div>
+									<div className="w-6/12 flex flex-col justify-center">
+										<div data-test-id="CircularProgressbarWithChildren">
+											<div style={{ position: 'relative', width: '100%', height: '100%' }}>
+												<svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 0px' }}></path><path class="CircularProgressbar-path" d="
+M 50,50
+m 0,-47
+a 47,47 0 1 1 0,94
+a 47,47 0 1 1 0,-94
+" stroke-width="6" fill-opacity="0" style={{ stroke: 'rgb(97, 182, 132)', strokeDasharray: '295.31px, 295.31px; stroke-dashoffset: 88.5929px', }}></path></svg>
+												<div data-test-id="CircularProgressbarWithChildren__children"
+													style={{ position: 'absolute', width: '100%', height: '100%', marginTop: '-100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+													<p className="" data-testid="project-percentage_completed">50%</p>
+													<p className="text-2-xs text-input-border uppercase">completed</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="w-full lg:w-6/12 mb-2">
+									<div className="flex space-x-2 h-1/2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw uppercase"
+														data-testid="project-total_project_cost">₦291.71B</p>
+													<p className="projectPage_project-info-card-title__qwoK4">TOTAL PROJECT COST</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-timeline">5
+														Years</p>
+													<p className="projectPage_project-info-card-title__qwoK4">PROJECT TIMELINE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div className="flex space-x-2 h-1/2 pt-2">
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-start_date">
+														1st Oct 2009</p>
+													<p className="projectPage_project-info-card-title__qwoK4">START DATE</p>
+												</div>
+											</div>
+										</div>
+										<div className="w-6/12">
+											<div className="projectPage_project-info-card___Ix8v h-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div>
+													<p className="projectPage_project-info-card-content__YOwSw " data-testid="project-end_date">30th
+														Dec 2014</p>
+													<p className="projectPage_project-info-card-title__qwoK4">END DATE</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div className="flex flex-col lg:flex-row w-full lg:space-x-2">
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v relative">
+											<div className="mb-6 flex justify-between items-center w-full"><span
+												style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+												<div className="relative group-appro">
+													<div className="" data-testid="project-appropriated_more_info"><button className=""><span
+														style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span></button>
+													</div>
+													<div
+														className="w-52 lg:w-72 p-4 z-10 false absolute rounded-lg bg-white -left-20 sm:left-0 hidden"
+														style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}
+														data-testid="project-appropriated_more_info_dropdown">
+														<div className="lg:hidden absolute top-4 right-4 h-4"><span
+															style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+														</div>
+														<p className="text-sm medium text-accepted ">Appropriation Breakdown</p>
+														<p className="text-xs text-light-grey-2 mt-2 medium">Total</p>
+														<p className="mt-0.5 pb-2 border-b border-light-grey-4 medium">_</p>
+														<div className="mt-2"></div>
+													</div>
+												</div>
+											</div>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-total_appropriated">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">TOTAL APPROPRIATED</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw uppercase"
+													data-testid="project-amount_spent_so_far">_</p>
+												<p className="projectPage_project-info-card-title__qwoK4">AMOUNT SPENT SO FAR</p>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw"
+													data-testid="project-shildren_project">None</p>
+												<p className="projectPage_project-info-card-title__qwoK4">CHILDREN PROJECT</p>
+											</div>
+										</div>
+									</div>
+									<div className="w-6/12">
+										<div className="projectPage_project-info-card___Ix8v"><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+											<div>
+												<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-page_views">
+													31.38K</p>
+												<p className="projectPage_project-info-card-title__qwoK4">PAGE VIEWS</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="px-6 text-dark-grey">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<h2 className="medium">Project Description</h2>
+								<p className="text-input-border text-sm">Below explains what this project is all about.</p>
+								<div className="mt-6 text-sm"><span className="" data-testid="project-description">The Idu – Kaduna railway is
+									part of the Nigerian Railway Modernization Project, consisting of the realization of a new
+									standard gauge railway line from Lagos to Kano with connections to Abuja, via Minna and Kaduna, a
+									total length of 1315 km. Estimated project cost is US$876 million</span></div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Contractors</p>
+								<p className="text-input-border text-sm">Below are the contractors working on this project.</p>
+								<div className="mt-6 flex items-center flex-wrap space-x-5 overflow-x-auto"
+									data-testid="project-contractors">
+									<div className="bg-grey-white space-x-3 px-3 py-2 flex items-center rounded"><img
+										alt="contractor-avatar" loading="lazy" width="32" height="32" decoding="async" data-nimg="1"
+										className="h-8"
+										style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} />
+										<p className="text-sm medium">Ccecc Nigeria Limited</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4 px-6">
+							<div className="projectPage_project-overview-card__6pxG4">
+								<p className="medium">Sustainable Development Goal<span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<p className="text-input-border text-sm">Below are the Sustainable Development Goals this project targets.
+								</p>
+								<div className="mt-3 flex flex-wrap items-center" data-testid="project-sustainable_development_goals">
+								</div>
+							</div>
+						</div>
+						<div>
+							<div className="mt-4 px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<p className="medium mb-4">Project Location <span className="text-2-xs text-light-grey-5">2</span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div className="mt-4">
+							<div className="px-6">
+								<div className="projectPage_project-overview-card__6pxG4">
+									<div className="flex justify-between">
+										<p className="medium">Project Reviews </p>
+										<div className="projectPage_see-all__FjyO9" data-testid="project-review_view_all">view all</div>
+									</div>
+									<div className="mt-8 flex flex-col lg:flex-row lg:items-center">
+										<div className="lg:w-5/12">
+											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
+											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
+												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
+												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												<p className="text-xl medium capitalize">positive</p>
+											</div>
+											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
+										</div>
+										<div className="w-full lg:w-7/12 flex flex-col space-y-2 mt-3 lg:mt-0">
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">4</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+											<div className="flex items-center space-x-2 w-full text-xs">
+												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
+													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
+														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
+														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+												</div>
+												<div className="relative rounded-full bg-input-border h-1 w-7/12">
+													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
+												</div>
+												<p className="text-light-grey-2 text-right">0</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="pt-8 w-full">
+							<div className="flex justify-between px-6">
+								<p className="medium">Project Updates <span
+									className="text-2-xs text-light-grey-5">(0)</span></p>
+								<div className="projectPage_see-all__FjyO9" data-testid="project-see_all">see all</div>
+							</div>
+							<div className="projectPage_project-update-list__ChjQW"></div>
+						</div>
+					</div>
+				</div>
+			}
 
-    const hideAddButtons = () => {
-        const btns = document.querySelectorAll('.addBtn');
-        for (let b = 0; b < btns.length; b++) {
-            if (!btns[b].classList.contains('0-0')) {
-                btns[b].classList.add('d-none')
-            }
-        }
-    }
-
-    const updateProject = () => {
-        let submit = true;
-
-        submit = validateInput({ submit, setBtnStatus, inputData });
-
-        // if false do not create project
-        if (!submit) return;
-        // upload
-        const myFormData = getFormData(inputData);
-
-        axios.patch("/project/update/" + params.id, myFormData, {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        }).then(({ data }) => {
-            setBtnStatus(true);
-            document.querySelector('#project').reset()
-            window.toastr.success(data.data.message);
-        }).catch(({ response }) => {
-            setBtnStatus(false);
-            window.toastr.error(response.data.data.message);
-        });
-    }
-
-    return (
-        <>
-            <ContentHeader title="View Project" />
-            <section className="content">
-                <div className="container-fluid">
-                    <div className="card">
-                        <div className='container'>
-                            {
-                                !isLoading && project ?
-                                    <form id="project" encType="multipart/form-data">
-                                        <div className='row'>
-                                            <FormInput className="col-12 form-group mt-3" label="Title" value={inputData.titleRef.value} name={"titleRef"} onChange={handelInputChange} placeholder={inputData.titleRef.value ? inputData.titleRef.value : "Project Title"} />
-                                            <div className='col-6 col-md-4 form-group mt-3'>
-                                                <label>Select SPP</label>
-                                                <select name={"sppCodeRef"} onChange={handelInputChange} className='form-control'>
-                                                    <option defaultValue value={inputData.sppCodeRef.value}>{inputData.sppCodeRef.innerHTML || "Change SPP"}</option>
-                                                    {contractors.length && contractors.map(contractor => <option key={contractor._id} value={contractor._id}>{contractor.SPP_name}</option>)}
-                                                </select>
-                                            </div>
-                                            <div className='col-6 col-md-4 form-group mt-3'>
-                                                <label>Select Sector</label>
-                                                <select value={inputData.sectorRef.value} name={"sectorRef"} onChange={handelInputChange} className='form-control'>
-                                                    <option defaultValue value={inputData.sectorRef.value}>{inputData.sectorRef.innerHTML || "Change Sector"}</option>
-                                                    {sectors.length && sectors.map(sector => <option key={sector._id} value={sector._id}>{sector.name}</option>)}
-                                                </select>
-                                            </div>
-                                            <div className='col-6 col-md-4 form-group mt-3'>
-                                                <label>Select MDA</label>
-                                                <select value={inputData.mdaRef.value} name={"mdaRef"} onChange={handelInputChange} className='form-control'>
-                                                    <option defaultValue value={inputData.mdaRef.value}>{inputData.mdaRef.innerHTML || "Change MDA"}</option>
-                                                    {mdas.length && mdas.map(mda => <option key={mda._id} value={mda._id}>{mda.name}</option>)}
-                                                </select>
-                                            </div>
-                                            <FormInput className="col-6 form-group mt-3" label="Duration" type="date" value={moment(inputData.durationRef.value).format("YYYY-MM-DD")} name={"durationRef"} onChange={handelInputChange} placeholder={inputData.durationRef.value ? moment(inputData.durationRef.value).format("YYYY-MM-DD") : "When will it finish"} />
-                                            <FormInput className="col-6 form-group mt-3" label="Date Awarded" type="date" value={moment(inputData.awardDateRef.value).format("YYYY-MM-DD")} name={"awardDateRef"} onChange={handelInputChange} placeholder={inputData.awardDateRef.value ? moment(inputData.awardDateRef.value).format("YYYY-MM-DD") : "Date Awarded"} />
-                                            <div className='col-6 form-group mt-3'>
-                                                <label>Project Tag</label>
-                                                <select value={inputData.categoryRef.value} name={"categoryRef"} onChange={handelInputChange} className='form-control'>
-                                                    <option defaultValue>{inputData.categoryRef.value}</option>
-                                                    {tagsExample.map((tag, index) => <option key={index} value={tag}>{tag}</option>)}
-                                                </select>
-                                            </div>                                            <div className='col-6 col-md-4 form-group mt-3'>
-                                                <div className="row">
-                                                    <div className="col-12">
-                                                        <select className='form-control'>
-                                                            <option defaultValue>All Funding</option>
-                                                            {inputData.fundingRef.value?.length && inputData.fundingRef.value.map((ff, index) => <option key={index}>{ff}</option>)}
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-12">
-                                                        <FormInput className="" label="Add New Funding" type="number" value={inputData.fundingRef_int.value} name={"fundingRef_int"} onChange={handelInputChange} placeholder={inputData.fundingRef_int.value || "Funding Amount"} />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <FormInput className="col-6 form-group mt-3" label="State" value={inputData.stateRef.value} name={"stateRef"} onChange={handelInputChange} placeholder={inputData.stateRef.value ? inputData.stateRef.value : "Enter State"} />
-                                            <FormInput className="col-6 form-group mt-3" label="LGA" value={inputData.lgaRef.value} name={"lgaRef"} onChange={handelInputChange} placeholder={inputData.titleRef.value ? inputData.titleRef.value : "Local Government Area"} />
-                                            <FormInput className="col-6 form-group mt-3" label="Location" value={inputData.locationRef.value} name={"locationRef"} onChange={handelInputChange} placeholder={inputData.titleRef.value ? inputData.titleRef.value : "Enter the location for the project"} />
-                                            <div className='form-group mt-3 col-12 col-md-6'>
-                                                <label htmlFor='file'>Project Thumbnail</label>
-                                                <div className='input-group'>
-                                                    <div className="custom-file">
-                                                        <input className="custom-file-input" accept="image/*" multiple onChange={(e) => setImageText(e.target.files[0].name)} type='file' id="file" />
-                                                        <label className="custom-file-label" htmlFor="file">{imageText || "Upload Project Thumbnail"}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <FormInput className="col-6 form-group mt-3" label="Grand Total" value={inputData.totalRef.value} name={"totalRef"} onChange={handelInputChange} placeholder="Amount" type="number" readonly />
-                                            <div className='form-group mt-3 col-12 col-md-6'>
-                                                <textarea className='form-control' value={inputData.descriptionRef.value} name={"descriptionRef"} onChange={handelInputChange} placeholder='Project Description' rows={3}></textarea>
-                                            </div>
-                                            <div className='form-group mt-3 col-12 col-md-6'>
-                                                <PrimaryButton type="button" title="Update Project" disabled={btnStatus} onClick={updateProject} className="btn btn-primary btn-end btn-sm mb-3 mt-3" />
-                                            </div>
-
-                                            {/* Milestones */}
-                                            <hr />
-                                            <div className="col-12">
-                                                <h2>Milestones</h2>
-                                            </div>
-                                            {project.milestones?.length && project.milestones.map((milestone, index) => (
-                                                <div key={index}>
-                                                    <span className='col-12'>Milestone {index + 1}</span>
-                                                    <div className='d-flex col-12'>
-                                                        <ul className="list-group">
-                                                            {
-                                                                Object.keys(milestone).map(key => {
-                                                                    if (key === "_id") return null;
-                                                                    return milestone[key].map((items, mIndex, mArr) => (
-                                                                        <div key={key + '-' + mIndex} className="m-0 p-0">
-                                                                            <Link to={"#x"} className="lead text-dark text-decoration-none" onClick={() => setMilestoneModalState(pre => {
-                                                                                return {
-                                                                                    title: `${milestoneText[key]} ${mIndex + 1}`,
-                                                                                    state: true,
-                                                                                    item: items
-                                                                                }
-                                                                            })}>
-                                                                                <li className="list-group-item">{milestoneText[key]} {mIndex + 1}</li>
-                                                                            </Link>
-                                                                        </div>
-                                                                    ));
-                                                                })
-                                                            }
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            ))}
-
-                                            {/* Images */}
-                                            {/*
-                                            <div className="col-12 mt-5">
-                                                <h2>Media</h2>
-                                            </div>
-                                            <hr />
-                                                project.images?.length && project.images.map((img, index) => 
-                                                    (
-                                                        <div key={index} className="card" style={{width: "500px"}}>
-                                                            <img className="card-img-top" src={hostUrl + img.path} alt={"Project image " + index} />
-                                                                <div className="card-img-overlay"> 
-                                                                    <h4 className="card-title">John Doe</h4>
-                                                                    <p className="card-text">Some example text.</p>
-                                                                    <a href="#x" className="btn btn-primary">See Profile</a>
-                                                                </div>
-                                                        </div>
-                                                    ))
-                                                    */  }
-                                        </div>
-                                    </form>
-                                    : <h4>Loading...</h4>
-                            }
-                        </div>
-                    </div>
-                </div>
-                {/* Modal */}
-                {
-                    milestoneModalState.state && <MilestoneModal modalProps={milestoneModalState} setStatus={setMilestoneModalState} />
-                }
-            </section>
-        </>
-    );
+		</div>
+	</div>;
 }
 
 export default ViewProject;
+
+
+{/* Milestones */ }
+{/* <hr />
+<div className="col-12">
+	<h2>Milestones</h2>
+</div>
+{project.milestones?.length && project.milestones.map((milestone, index) => (
+	<div key={index}>
+		<span className='col-12'>Milestone {index + 1}</span>
+		<div className='d-flex col-12'>
+			<ul className="list-group">
+				{
+					Object.keys(milestone).map(key => {
+						if (key === "_id") return null;
+						return milestone[key].map((items, mIndex, mArr) => (
+							<div key={key + '-' + mIndex} className="m-0 p-0">
+								<Link to={"#x"} className="lead text-dark text-decoration-none" onClick={() => setMilestoneModalState(pre => {
+									return {
+										title: `${milestoneText[key]} ${mIndex + 1}`,
+										state: true,
+										item: items
+									}
+								})}>
+									<li className="list-group-item">{milestoneText[key]} {mIndex + 1}</li>
+								</Link>
+							</div>
+						));
+					})
+				}
+			</ul>
+		</div>
+	</div>
+))} */}
+
+{/* Modal */ }
+// {
+// 	milestoneModalState.state && <MilestoneModal modalProps={milestoneModalState} setStatus={setMilestoneModalState} />
+// }

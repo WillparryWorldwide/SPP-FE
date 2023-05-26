@@ -20,6 +20,7 @@ import faqMotif from "../../assets/fonts/faqMotif.5d6dfe90.svg";
 import features from "../../assets/fonts/features.3714c93e.svg";
 import featuresMotif from "../../assets/fonts/featuresMotif.c8af642d.svg";
 import featuresMotifMobile from "../../assets/fonts/featuresMotifMobile.ab611fc0.svg";
+import folder from "../../assets/fonts/folder.svg"
 import filterAdd from "../../assets/fonts/filterAdd.ed4053fe.svg";
 import getStarted from "../../assets/fonts/getStarted.8cf2f3de.svg";
 import goldGradientCaret from "../../assets/fonts/goldGradientCaret.e11a297a.svg";
@@ -85,6 +86,7 @@ const IconSVG = {
 	featuresMotif,
 	featuresMotifMobile,
 	filterAdd,
+	folder,
 	getStarted,
 	goldGradientCaret,
 	greenCaret,
