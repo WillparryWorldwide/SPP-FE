@@ -12,12 +12,27 @@ import '../../assets/css/tailwind.css'
 import DetailNav from './components/projectdetails/detailnav';
 import Tab from './components/projectdetails/tab';
 import BottomNav from './components/discovery/bottomnav';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import EscalatorWarningIcon from '@mui/icons-material/EscalatorWarning';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import CircularProgress, {CircularProgressProps,} from '@mui/material/CircularProgress';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
+import './projectdetails.css'
 
 const ProjectDetails = () => {
     const { id } = useParams();
     const [project, setProject] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const [tab, setTab] = useState(1)
+    const options = { month: 'long', year: 'numeric', day: 'numeric' };
 
     const fetchProject = async () => {
         try {
@@ -34,7 +49,7 @@ const ProjectDetails = () => {
         fetchProject()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
+console.log(project)
     return (
         <div className="appLayout_dash-contents__f3VlW">
             <div className="leftSideBar_sidebar__85S4S flex-shrink-0 z-20 w-32 bg-white py-8 justify-between">
@@ -68,7 +83,7 @@ const ProjectDetails = () => {
                             <p className="text-sub-text text-2-xs mt-5 text-center">{project?.description}</p>
                             <div className="mt-4 w-4/12"><button data-testid="project-btn_eyemark"
                                 className="undefined font-bold text-center w-full border py-2 text-xs sm:text-sm rounded-md tracking-wider flex-shrink-0 bg-accepted-light border-accepted text-accepted hover:bg-accepted hover:text-accepted-light transition ease-in-out duration-300">
-                                <p className="medium text-base">Eyemark</p>
+                                <p className="medium text-base">SPPA</p>
                             </button></div>
                         </div>
                     </div>
@@ -99,7 +114,7 @@ const ProjectDetails = () => {
                                         <div className="projectPage_project-location-card__f7FjG">
                                             <div className="flex items-center text-xs space-x-1">
                                                 <p className="text-dark-grey medium">
-                                                    <span className=""><span className="capitalize">FCT-ABUJA</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
+                                                    <span className=""><span className="capitalize">{(project.state)?.toUpperCase()}</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
                                             </div>
                                             <div className="flex items-center justify-between mt-4 text-2-xs">
                                                 <p className="uppercase medium text-input-border">STATES</p>
@@ -140,15 +155,15 @@ const ProjectDetails = () => {
                                     <div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
                                         <p className="text-accepted">•</p>
                                         <div>
-                                            <p className="text-xs">CONSTRUCTION</p>
+                                            <p className="text-xs">{(project.category)?.toUpperCase()}</p>
                                             <p className="text-input-border text-2-xs uppercase">SECTOR</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-3 py-5">
                                         <p className="text-accepted">•</p>
                                         <div>
-                                            <p className="text-xs">-</p>
-                                            <p className="text-input-border text-2-xs uppercase">DEPARTMENT</p>
+                                            <p className="text-xs">{(project.location)?.toUpperCase()}</p>
+                                            <p className="text-input-border text-2-xs uppercase">Local Government Area</p>
                                         </div>
                                     </div>
                                 </div>
@@ -161,8 +176,29 @@ const ProjectDetails = () => {
                                                     <p className="projectPage_project-info-card-title__qwoK4">PROJECT STATUS</p>
                                                 </div>
                                             </div>
-                                            <div className="w-6/12 flex flex-col justify-center">
-                                                <div data-test-id="CircularProgressbarWithChildren">
+                                            <div className="w-6/12 h-full flex flex-col justify-center">
+                                                <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', height: '100%' }}>
+                                                    <CircularProgress size={'100%'} color="primary" variant="determinate" value={30}  />
+                                                    <Box
+                                                        sx={{
+                                                        top: 0,
+                                                        left: 0,
+                                                        bottom: 0,
+                                                        right: 0,
+                                                        position: 'absolute',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                        variant="caption"
+                                                        component="div"
+                                                        color="text.secondary"
+                                                        >{`${Math.round(30)}%`}</Typography>
+                                                    </Box>
+                                                </Box>
+                                                {/* <div data-test-id="CircularProgressbarWithChildren">
                                                     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                     <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
         M 50,50
@@ -181,27 +217,30 @@ const ProjectDetails = () => {
                                                             <p className="text-2-xs text-input-border uppercase">completed</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                         <div className="w-full lg:w-6/12 mb-2">
                                             <div className="flex space-x-2 h-1/2">
                                                 <div className="w-6/12">
                                                     <div className="projectPage_project-info-card___Ix8v h-full"><span
-                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                            <MonetizationOnIcon />
+                                                        </span>
                                                         <div>
                                                             <p className="projectPage_project-info-card-content__YOwSw uppercase"
-                                                                data-testid="project-total_project_cost">₦291.71B</p>
+                                                                data-testid="project-total_project_cost">₦{project.grand_total}</p>
                                                             <p className="projectPage_project-info-card-title__qwoK4">TOTAL PROJECT COST</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="w-6/12">
                                                     <div className="projectPage_project-info-card___Ix8v h-full"><span
-                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                            <HistoryToggleOffIcon />
+                                                        </span>
                                                         <div>
-                                                            <p className="projectPage_project-info-card-content__YOwSw" data-testid="project-timeline">5
-                                                                Years</p>
+                                                            <p className="projectPage_project-info-card-content__YOwSw" data-testid="project-timeline">{(new Date(project.date_awarded)).toLocaleDateString("en-GB")+ '-' +(new Date(project.duration)).toLocaleDateString("en-GB")}</p>
                                                             <p className="projectPage_project-info-card-title__qwoK4">PROJECT TIMELINE</p>
                                                         </div>
                                                     </div>
@@ -210,20 +249,22 @@ const ProjectDetails = () => {
                                             <div className="flex space-x-2 h-1/2 pt-2">
                                                 <div className="w-6/12">
                                                     <div className="projectPage_project-info-card___Ix8v h-full"><span
-                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                            <PlayCircleOutlineIcon />
+                                                        </span>
                                                         <div>
-                                                            <p className="projectPage_project-info-card-content__YOwSw " data-testid="project-start_date">
-                                                                1st Oct 2009</p>
+                                                            <p className="projectPage_project-info-card-content__YOwSw " data-testid="project-start_date">{(new Date(project.date_awarded)).toLocaleDateString('en-US', options)}</p>
                                                             <p className="projectPage_project-info-card-title__qwoK4">START DATE</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div className="w-6/12">
                                                     <div className="projectPage_project-info-card___Ix8v h-full"><span
-                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                            <StopCircleIcon />
+                                                        </span>
                                                         <div>
-                                                            <p className="projectPage_project-info-card-content__YOwSw " data-testid="project-end_date">30th
-                                                                Dec 2014</p>
+                                                            <p className="projectPage_project-info-card-content__YOwSw " data-testid="project-end_date">{(new Date(project.duration)).toLocaleDateString('en-US', options)}</p>
                                                             <p className="projectPage_project-info-card-title__qwoK4">END DATE</p>
                                                         </div>
                                                     </div>
@@ -236,7 +277,9 @@ const ProjectDetails = () => {
                                             <div className="w-6/12">
                                                 <div className="projectPage_project-info-card___Ix8v relative">
                                                     <div className="mb-6 flex justify-between items-center w-full"><span
-                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                        style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                            <PaymentsIcon />
+                                                        </span>
                                                         <div className="relative group-appro">
                                                             <div className="" data-testid="project-appropriated_more_info"><button className=""><span
                                                                 style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span></button>
@@ -257,14 +300,16 @@ const ProjectDetails = () => {
                                                     </div>
                                                     <div>
                                                         <p className="projectPage_project-info-card-content__YOwSw uppercase"
-                                                            data-testid="project-total_appropriated">_</p>
+                                                            data-testid="project-total_appropriated">₦{project.funding_amount}</p>
                                                         <p className="projectPage_project-info-card-title__qwoK4">TOTAL APPROPRIATED</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="w-6/12">
                                                 <div className="projectPage_project-info-card___Ix8v"><span
-                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                        <PriceCheckIcon />
+                                                    </span>
                                                     <div>
                                                         <p className="projectPage_project-info-card-content__YOwSw uppercase"
                                                             data-testid="project-amount_spent_so_far">_</p>
@@ -276,7 +321,9 @@ const ProjectDetails = () => {
                                         <div className="flex mb-2 w-full lg:w-6/12 space-x-2">
                                             <div className="w-6/12">
                                                 <div className="projectPage_project-info-card___Ix8v"><span
-                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                        <EscalatorWarningIcon />
+                                                    </span>
                                                     <div>
                                                         <p className="projectPage_project-info-card-content__YOwSw"
                                                             data-testid="project-shildren_project">None</p>
@@ -286,7 +333,9 @@ const ProjectDetails = () => {
                                             </div>
                                             <div className="w-6/12">
                                                 <div className="projectPage_project-info-card___Ix8v"><span
-                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}></span>
+                                                    style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden',width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0',padding: '0', position: 'relative', maxWidth: '100%' }}>
+                                                        <ReviewsIcon />
+                                                    </span>
                                                     <div>
                                                         <p className="projectPage_project-info-card-content__YOwSw" data-testid="project-page_views">
                                                             31.38K</p>
@@ -313,10 +362,8 @@ const ProjectDetails = () => {
                                         <p className="text-input-border text-sm">Below are the contractors working on this project.</p>
                                         <div className="mt-6 flex items-center flex-wrap space-x-5 overflow-x-auto"
                                             data-testid="project-contractors">
-                                            <div className="bg-grey-white space-x-3 px-3 py-2 flex items-center rounded"><img
-                                                alt="contractor-avatar" loading="lazy" width="32" height="32" decoding="async" data-nimg="1"
-                                                className="h-8"
-                                                style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%',backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} />
+                                            <div className="bg-grey-white space-x-3 px-3 py-2 flex items-center rounded">
+                                                <EngineeringIcon />
                                                 <p className="text-sm medium">Ccecc Nigeria Limited</p>
                                             </div>
                                         </div>
@@ -345,7 +392,7 @@ const ProjectDetails = () => {
                                         <div className="projectPage_project-overview-card__6pxG4">
                                             <div className="flex justify-between">
                                                 <p className="medium">Project Reviews </p>
-                                                <div className="projectPage_see-all__FjyO9" data-testid="project-review_view_all">view all</div>
+                                                <div className="projectPage_see-all__FjyO9 text-primary" >view all</div>
                                             </div>
                                             <div className="mt-8 flex flex-col lg:flex-row lg:items-center">
                                                 <div className="lg:w-5/12">
@@ -400,7 +447,7 @@ const ProjectDetails = () => {
                                     <div className="flex justify-between px-6">
                                         <p className="medium">Project Updates <span
                                             className="text-2-xs text-light-grey-5">(0)</span></p>
-                                        <div className="projectPage_see-all__FjyO9" data-testid="project-see_all">see all</div>
+                                        <div className="projectPage_see-all__FjyO9 text-primary" >see all</div>
                                     </div>
                                     <div className="projectPage_project-update-list__ChjQW"></div>
                                 </div>
@@ -505,7 +552,9 @@ const ProjectDetails = () => {
                                                 </div>
                                             </div>
                                             <div className="w-6/12 flex flex-col justify-center">
-                                                <div data-test-id="CircularProgressbarWithChildren">
+                                                
+
+                                                {/* <div data-test-id="CircularProgressbarWithChildren">
                                                     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                     <svg class="CircularProgressbar " viewBox="0 0 100 100" data-test-id="CircularProgressbar"><path class="CircularProgressbar-trail" d="
         M 50,50
@@ -524,7 +573,7 @@ const ProjectDetails = () => {
                                                             <p className="text-2-xs text-input-border uppercase">completed</p>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                             </div>
                                         </div>
                                         <div className="w-full lg:w-6/12 mb-2">
