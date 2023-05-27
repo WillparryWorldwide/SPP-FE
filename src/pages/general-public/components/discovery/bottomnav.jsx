@@ -15,7 +15,7 @@ const BottomNav = () => {
             </div>
             <div className="text-light-grey-2 cursor-pointer flex flex-col item-center justify-center hover:text-primary  ">
                 <ExploreOutlinedIcon className="mx-auto" sx={{width: 20}} />
-                <p>Eyemarked</p>
+                <p>SPPed</p>
             </div>
             <div className="text-light-grey-2 cursor-pointer flex flex-col item-center justify-center hover:text-primary  ">
                 <CategoryOutlinedIcon className="mx-auto" sx={{width: 20}} />

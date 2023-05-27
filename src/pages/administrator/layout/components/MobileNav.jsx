@@ -11,7 +11,7 @@ const MobileNav = () => {
 					<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: '100%' }}>
 						<img alt="something" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2717%27/%3e" style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0 }} />
 					</span>
-					<img alt="Eyemark" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding="async" data-nimg="intrinsic" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
+					<img alt="SPP" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding="async" data-nimg="intrinsic" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
 					<noscript />
 				</span>
 			</div>
@@ -23,7 +23,7 @@ const MobileNav = () => {
 					<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: '100%' }}>
 						<img alt="something" aria-hidden="true" src="data:image/svg+xml,%3csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20version=%271.1%27%20width=%2716%27%20height=%2714%27/%3e" style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0 }} />
 					</span>
-					<img alt="Eyemark" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding="async" data-nimg="intrinsic" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
+					<img alt="SPP" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" decoding="async" data-nimg="intrinsic" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
 					<noscript />
 				</span>
 			</div>
@@ -39,7 +39,7 @@ const MobileNav = () => {
 					<div className="flex items-center min-w-0 mr-2">
 						<span className="mr-1 flex items-center">
 							<div className="h-10 w-10 relative">
-								<img alt="avatar" loading="lazy" decoding="async" data-nimg="fill" className="shadow rounded-full bg-black" src="/assets/SVG/general/eyeMark.svg" style={{ position: 'absolute', height: '100%', width: '100%', inset: 0, color: 'transparent' }} />
+								<img alt="avatar" loading="lazy" decoding="async" data-nimg="fill" className="shadow rounded-full bg-black" src="/assets/SVG/general/SPP.svg" style={{ position: 'absolute', height: '100%', width: '100%', inset: 0, color: 'transparent' }} />
 							</div>
 							<span className="cursor-pointer ml-2 hidden">
 								<div className="relative">
@@ -48,7 +48,7 @@ const MobileNav = () => {
 							</span>
 						</span>
 						<span className="font-filson-mediums font-medium text-sm truncate" data-testid="active-tenant">
-							Eyemark
+							SPP
 						</span>
 					</div>
 					<div className="flex items-center">

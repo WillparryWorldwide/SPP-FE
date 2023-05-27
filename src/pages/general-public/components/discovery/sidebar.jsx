@@ -42,7 +42,7 @@ const SideBar = () => {
                                 </div>
                             </span>
                         </span>
-                        <span className="font-filson-mediums font-medium text-sm truncate hidden" data-testid="active-tenant">Eyemark</span>
+                        <span className="font-filson-mediums font-medium text-sm truncate hidden" data-testid="active-tenant">SPP</span>
                     </div>
                     {/* <div className="items-center hidden">
                         <div className="h-[56px] bg-grey-stroke w-[1px] self-center"></div>
@@ -61,7 +61,7 @@ const SideBar = () => {
                 </div>
                 <div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
                     <ExploreOutlinedIcon className="mr-1" />
-                    {size && <p>Eyemarked</p>}
+                    {size && <p>SPPed</p>}
                 </div>
                 <div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
                     <CategoryOutlinedIcon className="mr-1" />

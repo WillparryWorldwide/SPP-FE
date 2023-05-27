@@ -7,7 +7,7 @@ import { AdminDashboardLayout } from './pages/administrator/layout'
 const Router = () => {
 	return (
 		<Routes>
-			<Route path='/' element={<Welcome />} />
+			<Route path='/' element={<Discover />} />
 			<Route >
 				<Route path="/projects" element={<Discover />} />
 				<Route path='/project/:id' element={<ProjectDetails />} />

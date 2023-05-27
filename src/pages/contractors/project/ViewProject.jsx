@@ -112,12 +112,12 @@ const ViewProject = () => {
 			<div className="projectPage_header-section___pCZK fixed w-full lg:w-[calc(100%-8rem)] z-50 ">
 				<div className="hidden lg:block mr-5 cursor-pointer ">
 					<Link onClick={() => navigate(-1)}>
-						<img alt="back" loading="lazy" width="20" height="16" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://eyemark.ng/_next/static/media/arrowBack.7d6d5eda.svg" />
+						<img alt="back" loading="lazy" width="20" height="16" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://SPP.ng/_next/static/media/arrowBack.7d6d5eda.svg" />
 					</Link>
 				</div>
 				<div className="lg:hidden mr-5 cursor-pointer h-4">
 					<Link onClick={() => navigate(-1)}>
-						<img alt="back" loading="lazy" width="14" height="24" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://eyemark.ng/_next/static/media/backCaret.d64bb240.svg" />
+						<img alt="back" loading="lazy" width="14" height="24" decoding="async" data-nimg="1" style={{ color: 'transparent' }} src="https://SPP.ng/_next/static/media/backCaret.d64bb240.svg" />
 					</Link>
 				</div>
 				<p className="projectPage_header-text__Dzdkw">{project?.name}</p>
@@ -144,9 +144,9 @@ const ViewProject = () => {
 						</div>
 					</div>
 					<p className="text-sub-text text-2-xs mt-5 text-center">{project?.description}</p>
-					<div className="mt-4 w-4/12"><button data-testid="project-btn_eyemark"
+					<div className="mt-4 w-4/12"><button data-testid="project-btn_SPP"
 						className="undefined font-bold text-center w-full border py-2 text-xs sm:text-sm rounded-md tracking-wider flex-shrink-0 bg-accepted-light border-accepted text-accepted hover:bg-accepted hover:text-accepted-light transition ease-in-out duration-300">
-						<p className="medium text-base">Eyemark</p>
+						<p className="medium text-base">SPP</p>
 					</button></div>
 				</div>
 			</div>
@@ -452,7 +452,7 @@ a 47,47 0 1 1 0,-94
 											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
 											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
 												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
-												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												<p className="text-xl medium capitalize">positive</p>
 											</div>
 											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
@@ -462,7 +462,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+														src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
@@ -473,7 +473,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+														src="https://SPP.ng/_next/static/media/neutral.fdf19325.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
@@ -484,7 +484,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+														src="https://SPP.ng/_next/static/media/negative.844d95f8.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
@@ -514,7 +514,7 @@ a 47,47 0 1 1 0,-94
 							<img src={SiteImages.developer} alt='window wipe' className='w-96' />
 						</div>
 						<p class="mt-5 medium text-center text-2xl">Sorry! We don't have any updates available</p>
-						<p class="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly Eyemark and check back with us in the near future.</p>
+						<p class="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly SPP and check back with us in the near future.</p>
 						<div class="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Overview</div>
 					</div>
 				</div>
@@ -795,7 +795,7 @@ a 47,47 0 1 1 0,-94
 											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
 											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
 												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
-												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												<p className="text-xl medium capitalize">positive</p>
 											</div>
 											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
@@ -805,7 +805,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+														src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
@@ -816,7 +816,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+														src="https://SPP.ng/_next/static/media/neutral.fdf19325.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
@@ -827,7 +827,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+														src="https://SPP.ng/_next/static/media/negative.844d95f8.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
@@ -1126,7 +1126,7 @@ a 47,47 0 1 1 0,-94
 											<p className="uppercase medium text-input-border text-xs">general sentiment</p>
 											<div className="mt-2 flex items-center space-x-2"><img alt="sentiment" loading="lazy" width="24"
 												height="24" decoding="async" data-nimg="1" className="h-6" style={{ color: 'transparent' }}
-												src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+												src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												<p className="text-xl medium capitalize">positive</p>
 											</div>
 											<p className="mt-2 text-2-xs text-light-grey-2">4 Reviews</p>
@@ -1136,7 +1136,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">positive</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/positive.c5fdf05d.svg" />
+														src="https://SPP.ng/_next/static/media/positive.c5fdf05d.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '100%' }}></div>
@@ -1147,7 +1147,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">neutral</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/neutral.fdf19325.svg" />
+														src="https://SPP.ng/_next/static/media/neutral.fdf19325.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
@@ -1158,7 +1158,7 @@ a 47,47 0 1 1 0,-94
 												<div className="flex items-center w-7/12 sm:w-4/12 justify-between">
 													<p className="capitalize">negative</p><img alt="sentiment" loading="lazy" width="15" height="15"
 														decoding="async" data-nimg="1" className="h-4" style={{ color: 'transparent' }}
-														src="https://eyemark.ng/_next/static/media/negative.844d95f8.svg" />
+														src="https://SPP.ng/_next/static/media/negative.844d95f8.svg" />
 												</div>
 												<div className="relative rounded-full bg-input-border h-1 w-7/12">
 													<div className="projectPage_filler__lgYZx" style={{ width: '0%' }}></div>
