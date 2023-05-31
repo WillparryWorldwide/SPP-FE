@@ -1,10 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import ContentHeader from "../../../components/ContentHeader";
-import FormInput from "../../../components/FormInput";
-import PrimaryButton from "../../../components/PrimaryButton";
+import React, { useEffect, useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
-import { TextField, Box, MenuItem, Button, Grid } from "@mui/material";
-import FormTextArea from "../../../components/FormTextArea";
+import { TextField, Box, MenuItem, Grid, CircularProgress } from "@mui/material";
 import validateInput from "./functions/validateInput";
 import { SearchNav, Title } from "../components";
 import IconSVG from "../../../components/icon/svg";
@@ -15,11 +11,11 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from "moment";
 
-const AddNew = () => {
+const RegisterProject = () => {
 	const axios = AxiosClient();
 	const [imageText, setImageText] = useState(null);
 	const [submitBtnStatus, setSubmitBtnStatus] = useState({
-		active: true,
+		active: false,
 		text: "Register Project"
 	});
 	const [editedMilestone, setEditedMilestone] = useState(0);
@@ -201,7 +197,7 @@ const AddNew = () => {
 		e.preventDefault();
 
 		setSubmitBtnStatus({
-			active: false,
+			active: true,
 			text: "Loading..."
 		});
 
@@ -229,13 +225,17 @@ const AddNew = () => {
 			// document.querySelector('#project').reset()
 			console.log("data", data);
 			setSubmitBtnStatus({
-				active: true,
+				active: false,
 				text: "Register Project"
 			});
 			window.toastr.success(data.data.message);
 		}).catch((error) => {
 			// setBtnStatus(false);
 			console.error("Error", error);
+			setSubmitBtnStatus({
+				active: false,
+				text: "Try Again"
+			});
 			window.toastr.error(error?.response ? error.response.data.message : error.message);
 		})
 	}
@@ -584,7 +584,7 @@ const AddNew = () => {
 												onClick={create}
 												disabled={submitBtnStatus.active}
 												className="w-full md:w-50 lg:w-25 rounded-full bg-primary text-white mt-12 py-3 mb-12 text-center">
-												<p className="medium">{submitBtnStatus.text}</p>
+												<p className="medium">{submitBtnStatus.active? <CircularProgress color="inherit" />: submitBtnStatus.text}</p>
 											</button>
 										</Grid>
 									</Grid>
@@ -598,4 +598,4 @@ const AddNew = () => {
 	)
 }
 
-export default AddNew;
+export default RegisterProject;

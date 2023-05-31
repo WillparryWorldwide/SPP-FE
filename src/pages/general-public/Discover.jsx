@@ -9,7 +9,6 @@ import Comment from '../../components/generalpublic/comment';
 import useGetAllProject from "../../Hooks/usegetallproject";
 import useSearchProject from '../../Hooks/usesearchproject';
 import BottomNav from './components/discovery/bottomnav';
-import FilterProject from './helper/getFilterBy';
 
 const Discover = () => {
 	const [option, setOption] = useState(null)
@@ -20,7 +19,6 @@ const Discover = () => {
 	const { fetchProject, data, hostUrl,  loading  } = useGetAllProject();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
 	const [projects, setProjects] = useState(null)
-	const myFilters = new FilterProject(projects);
 	const [commentData, setCommentData] = useState({
 		description: "",
 		radioValue: "",
@@ -130,7 +128,6 @@ const Discover = () => {
 					<div className="sticky top-0 z-50">
 						<DiscoveryNavBar
 							option={option}
-							filters={myFilters}
 							handleOption={handleOption}
 							setOption={setOption}
 						/>

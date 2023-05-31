@@ -18,7 +18,7 @@ const ProjectCards = ({ project, hostUrl, format, displayComment }) => {
 									event
 								)
 							}
-							className="absolute hover:bg-primary hover:border-primary transition ease-in text-white p-4 right-2 rounded-full top-2 z-10">
+							className="absolute hover:bg-primary hover:border-primary transition ease-in text-white p-2 right-2 rounded-full top-2 z-10">
 							<Comment />
 						</button>
 						<div className="absolute medium transform transition duration-300 ease-in-out bg-black text-white text-2-xs rounded-l-full bottom-4 px-3 py-1 right-0 uppercase z-10 text-ongoing"> {project.category}</div>

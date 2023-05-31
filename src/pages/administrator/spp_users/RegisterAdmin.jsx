@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react'
 // import { useAppContext } from '../../context/AppContext'
-import FormInput from '../../components/FormInput'
-import PrimaryButton from '../../components/PrimaryButton'
-import ContentHeader from '../../components/ContentHeader'
-import AxiosClient from '../../Helper/axiosClient'
+import FormInput from '../../../components/FormInput'
+import PrimaryButton from '../../../components/PrimaryButton'
+import ContentHeader from '../../../components/ContentHeader'
+import AxiosClient from '../../../Helper/axiosClient'
 
 const Signup = () => {
 

@@ -1,5 +1,5 @@
 
-const Title = ({ headText, icon, appendChild }) => {
+const Title = ({ headText, icon, children }) => {
 	return <div className="bg-white relative h-14 z-30 border-t border-EB md:px-6 px-3 flex justify-between items-center w-full" data-testid="project-view_grid">
 
 		<div className="flex relative items-center space-x-2 h-full mr-2 md:ml-4 flex-shrink-0 " data-testid="set-project_view">
@@ -10,9 +10,8 @@ const Title = ({ headText, icon, appendChild }) => {
 			<div className="h-8 bg-grey-stroke w-[1px]" />
 		</div>
 		<div className="flex w-full space-x-2 h-full items-center overflow-x-auto hide-scroll pr-4">
-			<p>SPP App</p>
+			{children}
 		</div>
-		{appendChild}
 	</div>
 }
 

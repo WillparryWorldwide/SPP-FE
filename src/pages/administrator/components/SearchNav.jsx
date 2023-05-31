@@ -9,7 +9,7 @@ const SearchNav = () => {
 						<div className="text-tiny px-5 rounded-full bg-gray-200 items-center flex flex-row justify-between relative w-full">
 							<input type="text" className="border-transparent outline-none text-light-grey search-input flex-grow px-2 py-3 bg-gray-200 w-full" id="search" placeholder="Search for any Project, LGA, State or Contractor" />
 							<button className="bg-accepted rounded-r-full px-5 h-full items-center absolute right-0 top-0 flex">
-								<img alt="search" loading="lazy" width={16} height={15} decoding="async" data-nimg={1} src={IconSVG.searchIcon} style={{ color: 'transparent' }} />
+								<img alt="search" loading="lazy" width={16} height={15} decoding="async" data-nimg={1} src={IconSVG.searchIcon} style={{ color: 'transparent', filter: "brightness(2)" }} />
 							</button>
 						</div>
 					</div>

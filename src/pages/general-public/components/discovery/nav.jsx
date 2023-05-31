@@ -1,13 +1,27 @@
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import search from '../../../../assets/images/search.svg'
 // import logo from "../../../../assets/images/SPPA LOGO.jpg";
 // import { Link } from 'react-router-dom';
 import Icon from '../../../../components/icon/icons';
 import { camelCase } from 'lodash';
+import useGetAllProject from '../../../../Hooks/usegetallproject';
+import FilterProject from '../../helper/getFilterBy';
 
 const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
-	const searchRef = useRef()
+	const searchRef = useRef();
+	const { fetchProject, data } = useGetAllProject();
+	const myFilters = new FilterProject(data);
+
+	// Make All Project Fetch Request
+	useEffect(() => {
+		const makeFetch = async () =>{
+			console.log('here1')
+			fetchProject();
+		}
+		makeFetch();
+		console.log("Rendering...");
+	}, []);
 
 	return (
 		<>
@@ -64,21 +78,21 @@ const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
 						</div>
 						<p>Around You!</p>
 					</div>
-					{filters.category.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.category.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
 					{
-						filters.category.map(category => <div key={category} onClick={() => handleOption(category)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === category.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(category)}`}>
+						myFilters.category.map(category => <div key={category} onClick={() => handleOption(category)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === category.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(category)}`}>
 							<p>{category.toUpperCase()}</p>
 						</div>)
 					}
-					{filters.local_goverment.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.local_goverment.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
 					{
-						filters.local_goverment.map(lga => <div key={lga} onClick={() => handleOption(lga)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === lga.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(lga)}`}>
+						myFilters.local_goverment.map(lga => <div key={lga} onClick={() => handleOption(lga)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === lga.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(lga)}`}>
 							<p>{lga.toUpperCase()}</p>
 						</div>)
 					}
-					{filters.state.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.state.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
 					{
-						filters.state.map(state => <div key={state} onClick={() => handleOption(state)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === state.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(state)}`}>
+						myFilters.state.map(state => <div key={state} onClick={() => handleOption(state)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === state.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(state)}`}>
 							<p>{state.toUpperCase()}</p>
 						</div>)
 					}

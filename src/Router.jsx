@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import { Login, CProjectList, ADashboard, AddNew, Profile, CreateSPPUser, ListSPPUser, Signup, GeneralPublic, ProjectDetails, ViewProject, PublicIndividualProject, Welcome, Discover } from './pages'
+import { Login, ViewAllProject, ADashboard, RegisterProject, Profile, ListSPPUser, ProjectDetails, ViewProject, Discover, RegisterAdmin, RegisterContractor, RegisterSector, RegisterMDA } from './pages'
 import { AdminDashboardLayout } from './pages/administrator/layout'
 
 const Router = () => {
@@ -22,15 +22,17 @@ const Router = () => {
 						<Route path="users">
 							<Route index element={<ListSPPUser />} />
 							<Route path="register">
-								<Route path="admin" element={<Signup />} />
-								<Route path='contractor' element={<CreateSPPUser />} />
+								<Route path="admin" element={<RegisterAdmin />} />
+								<Route path='contractor' element={<RegisterContractor />} />
+								<Route path='sector' element={<RegisterSector />} />
+								<Route path='mda' element={<RegisterMDA />} />
 							</Route>
 						</Route>
 
-						<Route path="project">
-							<Route index element={<CProjectList />} />
+						<Route path="projects">
+							<Route index element={<ViewAllProject />} />
 							<Route path="view/:id" element={<ViewProject />} />
-							<Route path="register" element={<AddNew />} />
+							<Route path="register" element={<RegisterProject />} />
 						</Route>
 					</Route>
 				</Route>

@@ -13,6 +13,7 @@ import moment from "moment";
 import { SearchNav, Title } from "../components";
 import IconSVG from "../../../components/icon/svg";
 import { IconPlus } from "@tabler/icons-react";
+import { CircularProgress } from "@mui/material";
 
 const columns = [
 	{ id: "name", label: "Name", minWidth: 170, format: (val) => val },
@@ -60,14 +61,12 @@ export default function AllProjects() {
 						<img alt="icon" src={IconSVG.categoryIcon} decoding="async" data-nimg="intrinsic" className="leftSideBar_nav-icon__7Dhay" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
 						<noscript />
 					</span>
-				}
-				appendChild={
-					<Link to="/spp/dashboard/project/register" className="bg-grey-white cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex font-bold hover:bg-EB">
-						<IconPlus />
-						Add Project
-					</Link>
-				}
-			/>
+				}>
+				<Link to="/spp/dashboard/projects/register" className="bg-grey-white cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex font-bold hover:bg-EB">
+					<IconPlus />
+					Add Project
+				</Link>
+			</Title>
 		</div>
 		<div className="h-full  p-6">
 			<div>
@@ -121,7 +120,7 @@ export default function AllProjects() {
 									onRowsPerPageChange={handleChangeRowsPerPage}
 								/>
 							</Paper>
-							: <h4>Loading...</h4>
+							: <CircularProgress />
 					}
 				</div>
 			</div>

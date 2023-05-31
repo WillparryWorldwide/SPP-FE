@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import FormInput from "../../../components/FormInput";
 import AxiosClient from "../../../Helper/axiosClient";
-import validateInput from "../../administrator/project/functions/validateInput";
+import validateInput from "./functions/validateInput";
 import FormTextArea from "../../../components/FormTextArea";
 import PrimaryButton from "../../../components/PrimaryButton";
 import ContentHeader from "../../../components/ContentHeader";
