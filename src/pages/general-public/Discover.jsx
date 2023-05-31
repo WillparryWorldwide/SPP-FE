@@ -25,6 +25,7 @@ const Discover = () => {
 		name: "",
 	});
 
+	
 
 	// Make All Project Fetch Request
 	useEffect(() => {
