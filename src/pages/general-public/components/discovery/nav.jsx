@@ -1,34 +1,23 @@
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import search from '../../../../assets/images/search.svg'
 // import logo from "../../../../assets/images/SPPA LOGO.jpg";
 // import { Link } from 'react-router-dom';
 import Icon from '../../../../components/icon/icons';
 import { camelCase } from 'lodash';
-import useGetAllProject from '../../../../Hooks/usegetallproject';
 import FilterProject from '../../helper/getFilterBy';
 
-const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
+const DiscoveryNavBar = ({ data, filters, option, handleOption, setOption }) => {
 	const searchRef = useRef();
-	const { fetchProject, data } = useGetAllProject();
 	const myFilters = new FilterProject(data);
 
-	// Make All Project Fetch Request
-	useEffect(() => {
-		const makeFetch = async () =>{
-			console.log('here1')
-			fetchProject();
-		}
-		makeFetch();
-		console.log("Rendering...");
-	}, []);
 
+	console.log(myFilters.category)
+	console.log(myFilters.local_goverment)
+	console.log(myFilters.state)
 	return (
 		<>
 			<div className="w-full bg-white flex lg:px-6 px-2 relative items-center justify-between" id="myHeader">
-				{/* <Link to="/" className='h-10 md:flex w-24 bg-grey-white cursor-pointer overflow-hidden  hidden items-center font-bold text-xs p-2 mr-2 flex-shrink-0 border-grey-stroke border rounded-full'>
-                    <img alt="logo" src={logo} className='w-full h-full object-fill object-center' />
-                </Link> */}
 
 				<div className="md:w-11/12 w-full">
 					<div className="py-4 px-4 sm:px-8 bg-white w-full">
@@ -78,19 +67,19 @@ const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
 						</div>
 						<p>Around You!</p>
 					</div>
-					{myFilters.category.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{(myFilters.category.length > 0) ? <div className="h-8 bg-grey-stroke w-[1px]"></div> : ''}
 					{
 						myFilters.category.map(category => <div key={category} onClick={() => handleOption(category)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === category.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(category)}`}>
 							<p>{category.toUpperCase()}</p>
 						</div>)
-					}
-					{myFilters.local_goverment.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					} 
+					{(myFilters.local_goverment.length > 0) ? <div className="h-8 bg-grey-stroke w-[1px]"></div> : ''}
 					{
-						myFilters.local_goverment.map(lga => <div key={lga} onClick={() => handleOption(lga)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === lga.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(lga)}`}>
+						(myFilters.local_goverment).map(lga => <div key={lga} onClick={() => handleOption(lga)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === lga.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(lga)}`}>
 							<p>{lga.toUpperCase()}</p>
 						</div>)
-					}
-					{myFilters.state.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					} 
+					{(myFilters.state.length > 0) ? <div className="h-8 bg-grey-stroke w-[1px]"></div> : ''}
 					{
 						myFilters.state.map(state => <div key={state} onClick={() => handleOption(state)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === state.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(state)}`}>
 							<p>{state.toUpperCase()}</p>

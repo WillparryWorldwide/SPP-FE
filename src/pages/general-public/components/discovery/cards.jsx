@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import {Comment} from "@mui/icons-material";
 
 const ProjectCards = ({ project, hostUrl, format, displayComment }) => {
+	console.log(project)
 	return (
 		<>
 

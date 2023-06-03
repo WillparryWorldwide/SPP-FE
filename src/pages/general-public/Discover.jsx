@@ -128,14 +128,15 @@ const Discover = () => {
 				<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 					<div className="sticky top-0 z-50">
 						<DiscoveryNavBar
+							data={data}
 							option={option}
 							handleOption={handleOption}
 							setOption={setOption}
 						/>
 						{loading || searchLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
 						<div className="h-full flex  p-6">
-							<div>
-								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
+							<div className='w-full'>
+								<div className="flex flex-wrap p-0 pb-28 w-full sm:pb-0" data-testid="discover-projects">
 									{projects?.map((project, index) => (
 										<ProjectCards
 											project={project}
