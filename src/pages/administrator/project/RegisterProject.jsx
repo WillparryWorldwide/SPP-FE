@@ -3,7 +3,7 @@ import AxiosClient from "../../../Helper/axiosClient";
 import { TextField, Box, MenuItem, Grid, CircularProgress } from "@mui/material";
 import validateInput from "./functions/validateInput";
 import { SearchNav, Title } from "../components";
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

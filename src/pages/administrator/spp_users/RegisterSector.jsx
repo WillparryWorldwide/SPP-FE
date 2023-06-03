@@ -1,8 +1,8 @@
+import { Box, CircularProgress, Grid, TextField, Toolbar, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
 import { SearchNav, Title } from "../components";
-import IconSVG from "../../../components/icon/svg";
-import { Box, CircularProgress, Grid, TextField, Toolbar, Typography } from "@mui/material";
+import IconSVG from "../../../Utils/svg";
 
 const RegisterMDA = () => {
 	const axios = AxiosClient();
@@ -40,12 +40,12 @@ const RegisterMDA = () => {
 			data[key] = inputDetails[key].value
 		});
 
-		axios.post('/auth/register-spp', data).then(({ data }) => {
+		axios.post('/sector/register', data).then(({ data }) => {
 			setSubmitBtnStatus({
 				active: false,
 				text: "Register Sector"
 			});
-			window.toastr.success("Successfully Registered SEctor");
+			window.toastr.success("Successfully Registered Sector");
 		}).catch(({ response }) => {
 			setSubmitBtnStatus({
 				active: false,
@@ -82,11 +82,11 @@ const RegisterMDA = () => {
 												<Typography
 													variant="h6"
 													component="div">
-													Contractors
+													Sector
 												</Typography>
 											</Toolbar>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={12}>
 											<TextField
 												fullWidth
 												type="text"

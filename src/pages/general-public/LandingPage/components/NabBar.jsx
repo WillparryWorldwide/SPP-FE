@@ -1,6 +1,6 @@
 // NavBar
 import { Link } from "react-router-dom";
-import IconSVG from "../../../../components/icon/svg";
+import IconSVG from "../../../../Utils/svg";
 import SiteImages from "../../../../Utils/images";
 
 const NavBar = () => {

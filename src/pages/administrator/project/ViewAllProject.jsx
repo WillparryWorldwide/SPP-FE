@@ -11,7 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import useGetAllProject from "../../../Hooks/usegetallproject";
 import moment from "moment";
 import { SearchNav, Title } from "../components";
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 import { IconPlus } from "@tabler/icons-react";
 import { CircularProgress } from "@mui/material";
 
@@ -47,7 +47,7 @@ export default function AllProjects() {
 	useEffect(() => {
 		fetchProject();
 		console.log("Rendering...");
-	}, [fetchProject.name]);
+	}, []);
 
 	return <>
 		<div className="sticky top-0 z-50">
@@ -82,7 +82,11 @@ export default function AllProjects() {
 													<TableCell
 														key={column.id}
 														style={{ minWidth: column.minWidth }}
-													>
+														sx={{
+															color: "white",
+															backgroundColor: "#3878f4",
+															border: ".3px solid white"
+														}}>
 														{column.label}
 													</TableCell>
 												))}
@@ -98,8 +102,11 @@ export default function AllProjects() {
 															<TableRow hover role="checkbox" tabIndex={-1} key={row._id} onClick={() => handelNavigation(row._id)}>
 																{columns.map((column) => {
 																	const value = row[column.id]
-																	return <TableCell key={column.id}>
-
+																	return <TableCell
+																		key={column.id}
+																		sx={{
+																			border: ".3px solid #e0e0e0"
+																		}}>
 																		{column.id === "open" ? value.toString() : column.format(value)}
 																	</TableCell>
 																})}

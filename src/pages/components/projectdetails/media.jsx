@@ -1,4 +1,4 @@
-import no_photo from '../../../../assets/images/no_photo.svg'
+import IconSVG from "../../../Utils/svg";
 
 const Media = ({project, hostUrl}) => {
   console.log((project.iamges))
@@ -16,7 +16,7 @@ const Media = ({project, hostUrl}) => {
           (
             <div className='flex h-full flex-col items-center justify-center'>
               <div className=' mx-auto'>
-                  <img src={no_photo} alt='window wipe' className='w-96' />
+                  <img src={IconSVG.no_photo} alt='window wipe' className='w-96' />
               </div>
               <p className="mt-5 medium text-center text-2xl">No image yet</p>
               <p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">It seems that no one has updated or reviewed this project with pictures. Why not upload some with your review.</p>

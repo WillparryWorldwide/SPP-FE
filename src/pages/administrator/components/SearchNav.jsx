@@ -1,4 +1,4 @@
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 
 const SearchNav = () => {
 	return <div className="w-full bg-white flex lg:px-6 px-2 relative items-center justify-between">

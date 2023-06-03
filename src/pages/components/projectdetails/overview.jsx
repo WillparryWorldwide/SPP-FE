@@ -11,8 +11,8 @@ import ReviewsIcon from '@mui/icons-material/Reviews';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import federal from '../../../../assets/images/partner1_r23puw.png'
-import moment from 'moment'
+import moment from 'moment';
+import SiteImages from '../../../Utils/images';
 
 
 const OverView = ({project}) => {
@@ -73,7 +73,7 @@ useEffect(()=>{
                         <p className="text-2-xs uppercase text-input-border">SUPERVISING MDA</p>
                         <div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer">
                             <div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
-                                <img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={federal} />
+                                <img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={SiteImages.federal} />
                             </div>
                             <p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF TRANSPORT </p>
                         </div>

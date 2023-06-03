@@ -8,7 +8,7 @@ import FormTextArea from "../../../components/FormTextArea";
 import PrimaryButton from "../../../components/PrimaryButton";
 import ContentHeader from "../../../components/ContentHeader";
 import MilestoneModal from "../../../components/Milestone.modal";
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 import SiteImages from "../../../Utils/images";
 
 const ViewProject = () => {

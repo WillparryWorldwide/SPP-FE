@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
 import { SearchNav, Title } from "../components";
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 import { Box, CircularProgress, Grid, TextField, Toolbar, Typography } from "@mui/material";
 
 const RegisterMDA = () => {
 	const axios = AxiosClient();
 	const [submitBtnStatus, setSubmitBtnStatus] = useState({
 		active: false,
-		text: "Register Sector"
+		text: "Register MDA"
 	});
 	const [inputDetails, setInputDetails] = useState({
 		name: { name: "name", value: '' }
@@ -40,12 +40,12 @@ const RegisterMDA = () => {
 			data[key] = inputDetails[key].value
 		});
 
-		axios.post('/auth/register-spp', data).then(({ data }) => {
+		axios.post('/mda/register', data).then(({ data }) => {
 			setSubmitBtnStatus({
 				active: false,
 				text: "Register Sector"
 			});
-			window.toastr.success("Successfully Registered SEctor");
+			window.toastr.success("Successfully Registered MDA");
 		}).catch(({ response }) => {
 			setSubmitBtnStatus({
 				active: false,
@@ -59,7 +59,7 @@ const RegisterMDA = () => {
 		<>
 			<div className="sticky top-0 z-50">
 				<SearchNav />
-				<Title headText="Register Sector" icon={
+				<Title headText="Register MDA" icon={
 					<span>
 						<img alt="icon" src={IconSVG.categoryIcon} decoding="async" data-nimg="intrinsic" className="w-6 mr-3 leftSideBar_nav-icon_7Dhay" />
 					</span>
@@ -82,11 +82,11 @@ const RegisterMDA = () => {
 												<Typography
 													variant="h6"
 													component="div">
-													Contractors
+													MDA
 												</Typography>
 											</Toolbar>
 										</Grid>
-										<Grid item xs={12} md={6}>
+										<Grid item xs={12}>
 											<TextField
 												fullWidth
 												type="text"

@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import IconSVG from "../components/icon/svg";
+import IconSVG from "../Utils/svg";
 import SiteImages from "../Utils/images";
 
 const Login = () => {

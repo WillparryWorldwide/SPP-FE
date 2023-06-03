@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
 import { SearchNav, Title } from "../components";
-import IconSVG from "../../../components/icon/svg";
+import IconSVG from "../../../Utils/svg";
 import { Box, CircularProgress, Grid, TextField, Toolbar, Typography } from "@mui/material";
 
 const Create = () => {

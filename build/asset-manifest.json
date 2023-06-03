@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.bd304848.css",
-    "main.js": "/static/js/main.67439b19.js",
+    "main.css": "/static/css/main.1da390dc.css",
+    "main.js": "/static/js/main.2a0bbfc4.js",
     "static/media/photo1.png": "/static/media/photo1.879d4fb602d1037fad5b.png",
     "static/media/developer.png": "/static/media/developer.ce46829771f7be5a2ecb.png",
     "static/media/mda_m30ptu.webp": "/static/media/mda_m30ptu.defda26b44fec1e7b8ae.webp",
@@ -11,7 +11,9 @@
     "static/media/FilsonPro-Medium.6cf6b78b.ttf": "/static/media/FilsonPro-Medium.6cf6b78b.ae49e17b20ca11f6b910.ttf",
     "static/media/FilsonPro-Bold.3470891d.ttf": "/static/media/FilsonPro-Bold.3470891d.3a2dc4034a105afd2909.ttf",
     "static/media/FilsonPro-Regular.64852bfe.ttf": "/static/media/FilsonPro-Regular.64852bfe.5782353bbf6c5c5bcdae.ttf",
+    "static/media/SPPA LOGO.png": "/static/media/SPPA LOGO.a18db60dcd821bb3a5fc.png",
     "static/media/winner.e996e91c.svg": "/static/media/winner.e996e91c.ab26927e58db69c21a2d4f22217e85b7.svg",
+    "static/media/SPPA LOGO2.png": "/static/media/SPPA LOGO2.7fbac31cbe492fff338e.png",
     "static/media/hiking.0d626b06.svg": "/static/media/hiking.0d626b06.c5e166e2bfd9773d2257ccb1742ddeb2.svg",
     "static/media/partner1_r23puw.png": "/static/media/partner1_r23puw.12b3f65883ee7a0bd30d.png",
     "static/media/motivation.5b1ea3ae.svg": "/static/media/motivation.5b1ea3ae.c316e477ac0297b70efe7230adc36178.svg",
@@ -21,6 +23,7 @@
     "static/media/facebook.97234b5d.svg": "/static/media/facebook.97234b5d.5aff0f99083c9136fd515f0d3d154139.svg",
     "static/media/userInterface.03f434db.svg": "/static/media/userInterface.03f434db.51dd761acccc4fde4fbae8fadbd51089.svg",
     "static/media/appstore.a7430883.svg": "/static/media/appstore.a7430883.5bee6ee444060aa4b637ee59dbfc5afa.svg",
+    "static/media/no_photo.svg": "/static/media/no_photo.ddfb38be2dfd7ce818b089f5ea628006.svg",
     "static/media/heroMotif.36145ce0.svg": "/static/media/heroMotif.36145ce0.ad575b59c89ad44038195fcc0fa69f9d.svg",
     "static/media/playstore.454948e6.svg": "/static/media/playstore.454948e6.2fd426a5cd7f59b59b155e0afb7202aa.svg",
     "static/media/login-motif-1.3163bb89.svg": "/static/media/login-motif-1.3163bb89.ce0171e79fb9c8ee44d04ff958b1ae35.svg",
@@ -42,7 +45,6 @@
     "static/media/active-citizen.f1afbc46.svg": "/static/media/active-citizen.f1afbc46.2af495cb7b04b3e9f4f8f632b4f5bd57.svg",
     "static/media/hiddenEye.b208788b.svg": "/static/media/hiddenEye.b208788b.d76e70a284b004be2f2e7c0e034fb629.svg",
     "static/media/statesicon.43cffd8a.svg": "/static/media/statesicon.43cffd8a.97eaece8693a3627c5ea94fd01655638.svg",
-    "static/media/doubleArrow.svg": "/static/media/doubleArrow.095bae80a4854cea17ff2c7d672a0aca.svg",
     "static/media/doubleArrow.596ce5ab.svg": "/static/media/doubleArrow.596ce5ab.095bae80a4854cea17ff2c7d672a0aca.svg",
     "static/media/greenGradientCaret.4b50abab.svg": "/static/media/greenGradientCaret.4b50abab.5e44627832dc6cef0cd0cf7946e83e36.svg",
     "static/media/goldGradientCaret.e11a297a.svg": "/static/media/goldGradientCaret.e11a297a.66ed480cdbef4047fa69a978f1098ef7.svg",
@@ -73,15 +75,16 @@
     "static/media/greenCaret.a14cc74a.svg": "/static/media/greenCaret.a14cc74a.23b180c627dba1dbfe48c13783db0da3.svg",
     "static/media/faqCaret.2b5ed3e0.svg": "/static/media/faqCaret.2b5ed3e0.b3f04b1852e4ab33d4c628c3c47fe6c4.svg",
     "static/media/whiteCaret.5444e822.svg": "/static/media/whiteCaret.5444e822.e9695293fa3c8a25e852fd280788f0ca.svg",
+    "static/media/backarrow.svg": "/static/media/backarrow.11bdbfe5030f1dbd4d72935f96bc62c6.svg",
     "static/media/darkCaret.25ee4a91.svg": "/static/media/darkCaret.25ee4a91.78290be8199af4ef08db44128cb2e567.svg",
     "static/media/grey-caret-right.f2818630.svg": "/static/media/grey-caret-right.f2818630.859273b2ce98cf5964ed93b991a661f6.svg",
     "static/media/separator.b19041fb.svg": "/static/media/separator.b19041fb.656ce17511108bff4eca3e0aa1f04ab9.svg",
     "static/media/empty.svg": "/static/media/empty.36798c915fe4305ad2a4b612f4e26591.svg",
-    "main.bd304848.css.map": "/static/css/main.bd304848.css.map",
-    "main.67439b19.js.map": "/static/js/main.67439b19.js.map"
+    "main.1da390dc.css.map": "/static/css/main.1da390dc.css.map",
+    "main.2a0bbfc4.js.map": "/static/js/main.2a0bbfc4.js.map"
   },
   "entrypoints": [
-    "static/css/main.bd304848.css",
-    "static/js/main.67439b19.js"
+    "static/css/main.1da390dc.css",
+    "static/js/main.2a0bbfc4.js"
   ]
 }

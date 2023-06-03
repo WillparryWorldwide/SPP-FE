@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SiteImages from "../../../../Utils/images";
-import IconSVG from "../../../../components/icon/svg";
+import IconSVG from "../../../../Utils/svg";
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';

@@ -1,7 +1,7 @@
 // section
 import mdaImg from "../../../../assets/images/mda_m30ptu.webp";
 import citizen from "../../../../assets/images/citizen_edns1x.webp"
-import IconSVG from "../../../../components/icon/svg";
+import IconSVG from "../../../../Utils/svg";
 
 const sty = { color: "transparent", maxWwidth: "100%", height: "auto" };
 

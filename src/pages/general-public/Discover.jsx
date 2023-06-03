@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
 import '../../assets/css/9120b63ab911b239.css'
-import DiscoveryNavBar from './components/discovery/nav';
-import ProjectCards from './components/discovery/cards';
-import SideBar from './components/discovery/sidebar';
+import DiscoveryNavBar from '../components/discovery/nav';
+import ProjectCards from '../components/discovery/cards';
+import SideBar from '../components/discovery/sidebar';
 import useUpdateProject from "../../Hooks/useupdateproject";
 import Comment from '../../components/generalpublic/comment';
 import useGetAllProject from "../../Hooks/usegetallproject";
 import useSearchProject from '../../Hooks/usesearchproject';
-import BottomNav from './components/discovery/bottomnav';
+import BottomNav from '../components/discovery/bottomnav';
 
 const Discover = () => {
 	const [option, setOption] = useState(null)

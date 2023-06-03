@@ -7,17 +7,17 @@ import '../../assets/css/d35beeb833360611.css'
 import '../../assets/css/4c4867adecdc883a.css'
 import '../../assets/css/3f1327110777dc38.css'
 import '../../assets/css/tailwind.css'
-import DetailNav from './components/projectdetails/detailnav';
-import Tab from './components/projectdetails/tab';
-import BottomNav from './components/discovery/bottomnav';
+import DetailNav from '../components/projectdetails/detailnav';
+import Tab from '../components/projectdetails/tab';
+import BottomNav from '../components/discovery/bottomnav';
 import useGetProject from '../../Hooks/useGetProject';
 
 
 import './projectdetails.css'
-import OverView from './components/projectdetails/overview';
-import Activity from './components/projectdetails/activity';
-import Media from './components/projectdetails/media';
-import Review from './components/projectdetails/review';
+import OverView from '../components/projectdetails/overview';
+import Activity from '../components/projectdetails/activity';
+import Media from '../components/projectdetails/media';
+import Review from '../components/projectdetails/review';
 
 
 const ProjectDetails = () => {

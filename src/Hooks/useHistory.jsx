@@ -1,15 +1,15 @@
 import { useState } from "react";
 import AxiosClient from "../Helper/axiosClient";
 
-const useGetAllContractors = () => {
+const useAllUpdateHistory = () => {
 	// const url = process.env.REACT_APP_BASE_URL;
 	const axios = AxiosClient();
-	const [data, setData] = useState([]);
-	const [loading, setLoading] = useState(false);
+	const [updateHistory, setData] = useState([]);
+	const [loadingUpdateHistory, setLoading] = useState(false);
 
-	const fetchContractors = () => {
+	const fetchUpdateHistory = () => {
 		setLoading(true);
-		axios.get("/admin/all-spp/contractor").then((res) => {
+		axios.get("/history/all").then((res) => {
 			setData(res.data.data.result);
 			setLoading(false);
 			return true;
@@ -19,7 +19,7 @@ const useGetAllContractors = () => {
 		});
 	}
 
-	return { fetchContractors, data, loading }
+	return { fetchUpdateHistory, updateHistory, loadingUpdateHistory }
 }
 
-export default useGetAllContractors;
+export default useAllUpdateHistory;

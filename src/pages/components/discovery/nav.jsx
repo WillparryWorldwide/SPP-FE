@@ -1,12 +1,10 @@
 
 import { useEffect, useRef } from 'react';
-import search from '../../../../assets/images/search.svg'
-// import logo from "../../../../assets/images/SPPA LOGO.jpg";
-// import { Link } from 'react-router-dom';
-import Icon from '../../../../components/icon/icons';
+import Icon from '../../../components/icon/icons';
 import { camelCase } from 'lodash';
-import useGetAllProject from '../../../../Hooks/usegetallproject';
-import FilterProject from '../../helper/getFilterBy';
+import useGetAllProject from '../../../Hooks/usegetallproject';
+import FilterProject from '../helper/getFilterBy';
+import IconSVG from '../../../Utils/svg';
 
 const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
 	const searchRef = useRef();
@@ -37,7 +35,7 @@ const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
 								<div className="text-tiny px-5 rounded-full bg-gray-200 items-center flex flex-row justify-between relative w-full">
 									<input ref={searchRef} type="text" className="border-transparent outline-none text-light-grey search-input flex-grow px-2 py-3 bg-gray-200 w-full" id="search" placeholder="Search for any Project, LGA, State or Contractor" autoComplete="off" />
 									<button onClick={() => handleOption(searchRef.current.value)} className="bg-primary rounded-r-full px-5 h-full items-center absolute right-0 top-0 flex">
-										<img alt="search" loading="lazy" width="16" height="15" style={{ color: 'transparent' }} src={search} />
+										<img alt="search" loading="lazy" width="16" height="15" style={{ color: 'transparent' }} src={IconSVG.search_icon} />
 									</button>
 								</div>
 								<div className="lg:w-9/12 w-8/12 discover_recent-searches__bVR6U hidden">

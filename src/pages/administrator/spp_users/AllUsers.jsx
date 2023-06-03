@@ -9,11 +9,12 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import useGetAllContractors from '../../../Hooks/useGetAllContractors';
 import { SearchNav, Title } from '../components';
-import IconSVG from '../../../components/icon/svg';
+import IconSVG from '../../../Utils/svg';
 import { Link } from 'react-router-dom';
 import { IconPlus } from '@tabler/icons-react';
 import { CircularProgress, Toolbar, Typography } from '@mui/material';
-import AxiosClient from '../../../Helper/axiosClient';
+import useAllSectors from '../../../Hooks/useAllSectors';
+import useAllMDA from '../../../Hooks/useAllMDA';
 
 const columns = [
 	{ id: 'SPP_name', label: 'Spp Name', minWidth: 70 },
@@ -42,10 +43,9 @@ const MDAColumns = [
 ];
 
 export default function AllUser() {
-	const axios = AxiosClient();
 	const [page, setPage] = React.useState(0);
-	const [mdas, setMDA] = useState([]);
-	const [sectors, setSectors] = useState([]);
+	const { mdas, loadingMdas, fetchMdas } = useAllMDA();
+	const { sectors, loadingSectors, fetchSectors } = useAllSectors();
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const { data, loading, fetchContractors } = useGetAllContractors();
 
@@ -59,27 +59,11 @@ export default function AllUser() {
 	};
 
 	useEffect(() => {
-		const fetchSectors = () => {
-			axios.get('/sector/all').then(({ data }) => {
-				setSectors(data.data.result);
-			}).catch(({ response }) => {
-				console.log(response.data.message);
-			});
-		}
-
-		const fetchMdas = () => {
-			axios.get('/mda/all').then(({ data }) => {
-				setMDA(data.data.result);
-			}).catch(({ response }) => {
-				console.log(response.data.message);
-			});
-		}
-
 		fetchContractors();
 		fetchSectors();
 		fetchMdas();
 		console.log("Rendering...");
-	}, [fetchContractors.name]);
+	}, []);
 
 	return <>
 		<div className="sticky top-0 z-50">
@@ -107,10 +91,13 @@ export default function AllUser() {
 					{
 						!loading ?
 							<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
-								<Toolbar>
+								<Toolbar sx={{
+									backgroundColor: "#3878f4"
+								}}>
 									<Typography
 										sx={{ flex: '1 1 100%' }}
 										variant="h6"
+										color="white"
 										id="tableTitle"
 										component="div">
 										Contractors
@@ -129,7 +116,9 @@ export default function AllUser() {
 														key={column.id}
 														align={column.align}
 														style={{ minWidth: column.minWidth }}
-													>
+														sx={{
+															border: ".3px solid #e0e0e0"
+														}}>
 														{column.label}
 													</TableCell>
 												))}
@@ -144,7 +133,10 @@ export default function AllUser() {
 															{columns.map((column) => {
 																const value = row[column.id]
 																return (
-																	<TableCell key={column.id} align={column.align}>
+																	<TableCell key={column.id} align={column.align}
+																		sx={{
+																			border: ".3px solid #e0e0e0"
+																		}}>
 																		{value}
 																	</TableCell>
 																);
@@ -170,12 +162,15 @@ export default function AllUser() {
 
 					{/* Sector */}
 					{
-						!loading ?
+						!loadingSectors ?
 							<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
-								<Toolbar>
+								<Toolbar sx={{
+									backgroundColor: "#3878f4"
+								}}>
 									<Typography
 										sx={{ flex: '1 1 100%' }}
 										variant="h6"
+										color="white"
 										id="tableTitle"
 										component="div">
 										Sectors
@@ -194,7 +189,9 @@ export default function AllUser() {
 														key={column.id}
 														align={column.align}
 														style={{ minWidth: column.minWidth }}
-													>
+														sx={{
+															border: ".3px solid #e0e0e0"
+														}}>
 														{column.label}
 													</TableCell>
 												))}
@@ -209,7 +206,9 @@ export default function AllUser() {
 															{sectorColumns.map((column) => {
 																const value = row[column.id]
 																return (
-																	<TableCell key={column.id} align={column.align}>
+																	<TableCell key={column.id} align={column.align} sx={{
+																		border: ".3px solid #e0e0e0"
+																	}}>
 																		{value}
 																	</TableCell>
 																);
@@ -235,12 +234,15 @@ export default function AllUser() {
 
 					{/* MDA */}
 					{
-						!loading ?
+						!loadingMdas ?
 							<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
-								<Toolbar>
+								<Toolbar sx={{
+									backgroundColor: "#3878f4"
+								}}>
 									<Typography
 										sx={{ flex: '1 1 100%' }}
 										variant="h6"
+										color="white"
 										id="tableTitle"
 										component="div">
 										MDA
@@ -259,7 +261,9 @@ export default function AllUser() {
 														key={column.id}
 														align={column.align}
 														style={{ minWidth: column.minWidth }}
-													>
+														sx={{
+															border: ".3px solid #e0e0e0"
+														}}>
 														{column.label}
 													</TableCell>
 												))}
@@ -274,7 +278,10 @@ export default function AllUser() {
 															{MDAColumns.map((column) => {
 																const value = row[column.id]
 																return (
-																	<TableCell key={column.id} align={column.align}>
+																	<TableCell key={column.id} align={column.align}
+																		sx={{
+																			border: ".3px solid #e0e0e0"
+																		}}>
 																		{value}
 																	</TableCell>
 																);

@@ -1,12 +1,12 @@
-import Icon from "../../../../components/icon/icons";
+import Icon from "../../../components/icon/icons";
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { useState } from "react";
-import SiteImages from "../../../../Utils/images";
-import IconSVG from "../../../../components/icon/svg";
+import SiteImages from "../../../Utils/images";
+import IconSVG from "../../../Utils/svg";
 
 const SideBar = () => {
 	const [size, setSize] = useState(false);
@@ -33,7 +33,7 @@ const SideBar = () => {
 							<div className="flex items-center min-w-0 mr-2">
 								<span className="mr-1 flex items-center">
 									<div className="h-10 w-10 relative">
-										<img alt="avatar" className="shadow rounded-full absolute h-full w-full text-transparent w-[184.5px]" src={SiteImages.logo5} />
+										<span>Menu</span>
 									</div>
 									<span className="cursor-pointer ml-2">
 										<div className="relative stroke-black">
