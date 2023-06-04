@@ -159,13 +159,11 @@ useEffect(()=>{
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                }}
-                            >
+                                }}>
                                 <Typography
                                 variant="caption"
                                 component="div"
-                                color="text.secondary"
-                                >{`${Math.round(progress)}%`}</Typography>
+                                color="text.secondary">{`${Math.round(progress)}%`}</Typography>
                             </Box>
                         </Box>
                     </div>

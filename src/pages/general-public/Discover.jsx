@@ -15,8 +15,8 @@ const Discover = () => {
 	const [nameOfProject, setNameOfProject] = useState("");
 	const [idOfProject, setIdOfProject] = useState("");
 	const [viewComment, setViewComment] = useState(false);
-	const { upDAteProject,  loading: upDateLoading  } = useUpdateProject();
-	const { fetchProject, data, hostUrl,  loading  } = useGetAllProject();
+	const { upDAteProject, loading: upDateLoading } = useUpdateProject();
+	const { fetchProject, data, hostUrl, loading } = useGetAllProject();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
 	const [projects, setProjects] = useState(null)
 	const [commentData, setCommentData] = useState({
@@ -25,65 +25,34 @@ const Discover = () => {
 		name: "",
 	});
 
-	
-
 	// Make All Project Fetch Request
 	useEffect(() => {
-		const makeFetch = async () =>{
+		const makeFetch = async () => {
 			console.log('here1')
 			await fetchProject()
 		}
-
-		if(option === null){
-			makeFetch()
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
-
-	//  Set project to Fetch Request Data
-	useEffect(()=>{
-		if(option === null){
-			setProjects(data)
-			console.log(data)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data])
-
-	//  Set project to Search Request Data
-	useEffect(()=>{
-		if(option !== null){
-			setProjects(searchData)
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchData])
-	
-	//  Make Search Request
-	useEffect(() => {
-		const makeSearchFetch = async () =>{
+		
+		//  Make Search Request
+		const makeSearchFetch = async () => {
 			console.log('here')
 			await searchProject(option)
 			setProjects(searchData)
 		}
 
-		if(option !== null){
+		if (!option) {
+			//  Set project to Fetch Request Data
+			makeFetch();
+			setProjects(data);
+			console.log("data", data);
+		} else {
+			//  Set project to Search Request Data
 			makeSearchFetch()
+			setProjects(searchData);
 		}
+
+		console.log("Rendering...");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [option])
-
-	// useEffect(() => {
-		// window.onscroll = function () { scroll() };
-		// var header = document.getElementById("myHeader");
-		// var sticky = header.offsetTop;
-
-		// function scroll() {
-		// 	if (window.pageYOffset > sticky) {
-		// 		header.classList.add("sticky");
-		// 	} else {
-		// 		header.classList.remove("sticky");
-		// 	}
-		// }
-	// })
+	}, [data, searchData, option]);
 
 	const format = (amount) => {
 		const formatted = parseFloat(amount).toLocaleString("en", {
@@ -93,30 +62,29 @@ const Discover = () => {
 		return formatted;
 	}
 
-	const handleOption = (value) =>{
+	const handleOption = (value) => {
 		setOption(value)
 	}
 
-	
 	const handleRadioSelection = (event) => {
 		setCommentData((prev) => ({ ...prev, radioValue: event.target.value }));
-	  };
+	};
 
-	  const displayComment = (name, id, item, e) => {
+	const displayComment = (name, id, item, e) => {
 		e.preventDefault()
 		setIdOfProject(id);
 		setNameOfProject(name);
 		setViewComment(true);
-	  };
+	};
 
 	const submitComment = async (e) => {
 		e.preventDefault();
 		await upDAteProject(idOfProject, commentData);
 		setNameOfProject("");
 		setCommentData({
-		  description: "",
-		  radioValue: "",
-		  name: "",
+			description: "",
+			radioValue: "",
+			name: "",
 		});
 		setViewComment(false)
 	}
@@ -130,7 +98,6 @@ const Discover = () => {
 						<DiscoveryNavBar
 							option={option}
 							handleOption={handleOption}
-							setOption={setOption}
 						/>
 						{loading || searchLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
 						<div className="h-full flex  p-6">
@@ -149,16 +116,16 @@ const Discover = () => {
 							</div>
 							{viewComment && (
 								<div className="hidden lg:flex">
-								<Comment
-									nameOfProject={nameOfProject}
-									submitComment={submitComment}
-									commentData={commentData}
-									setCommentData={setCommentData}
-									handleRadioSelection={handleRadioSelection}
-									setComment={setViewComment}
-									upDateLoading={upDateLoading}
-									noCancel={null}
-								/>
+									<Comment
+										nameOfProject={nameOfProject}
+										submitComment={submitComment}
+										commentData={commentData}
+										setCommentData={setCommentData}
+										handleRadioSelection={handleRadioSelection}
+										setComment={setViewComment}
+										upDateLoading={upDateLoading}
+										noCancel={null}
+									/>
 								</div>
 							)}
 						</div>

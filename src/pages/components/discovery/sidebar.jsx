@@ -1,15 +1,18 @@
-import Icon from "../../../components/icon/icons";
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { useState } from "react";
-import SiteImages from "../../../Utils/images";
+import { Link } from "react-router-dom";
 import IconSVG from "../../../Utils/svg";
+import SiteImages from "../../../Utils/images";
+import { useAuthUser, useIsAuthenticated } from "react-auth-kit";
+import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 const SideBar = () => {
+	const userData = useAuthUser();
 	const [size, setSize] = useState(false);
+	const isAuthenticated = useIsAuthenticated();
+
 	return (
 		<>
 			<div className={`leftSideBar_sidebar__85S4S flex-shrink-0 z-[51] bg-white py-8 ${size ? 'w-[332px]' : 'w-32'}`}>
@@ -29,55 +32,61 @@ const SideBar = () => {
 								</span>
 							</button>
 						</div>
-						<div className="mt-10 mb-6  flex items-center min-h-[64px] relative justify-center bg-grey-white-2">
+						<div className="tab_tabs-active__ealQz mt-10 mb-6 flex items-center relative justify-center bg-grey-white-2 py-4">
 							<div className="flex items-center min-w-0 mr-2">
 								<span className="mr-1 flex items-center">
-									<div className="h-10 w-10 relative">
-										<span>Menu</span>
+									<div className="relative">
+										<span>{userData()? userData().role.toUpperCase(): "Menu"}</span>
 									</div>
-									<span className="cursor-pointer ml-2">
-										<div className="relative stroke-black">
-											<Icon drop_down='drop_down' />
-										</div>
-									</span>
 								</span>
 								<span className="font-filson-mediums font-medium text-sm truncate hidden" data-testid="active-tenant">SPP</span>
 							</div>
-							{/* <div className="items-center hidden">
-                        <div className="h-[56px] bg-grey-stroke w-[1px] self-center"></div>
-                        <div className="flex gap-2 ml-2">
-                            <div className="cursor-pointer h-6 w-6 relative">
-                                <img alt="avatar" loading="lazy" decoding="async" data-nimg="fill" className="shadow rounded-full absolute w-full h-full text-transparent" src="https://res.cloudinary.com/zst/image/upload/v1682948947/hi4tmxvrt29gcmay82f6.svg" />
-                            </div>
-                        </div>
-                    </div> */}
 						</div>
 					</div>
 					<div className="flex flex-col py-4 text-med items-left px-8">
+						{
+							isAuthenticated() &&
+							<>
+								<Link to="/spp/dashboard" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer leftSideBar_left-nav-active__v4i8w w-full">
+									<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
+										<ExploreOutlinedIcon className="mr-1" />
+										{size && <p>Dashboard</p>}
+									</div>
+								</Link>
+
+								<Link to="/spp/dashboard/projects" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">
+									<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
+										<img alt="icon" src={IconSVG.categoryIcon} decoding="async" data-nimg="intrinsic" className="leftSideBar_nav-icon__7Dhay mr-1 w-7" />
+										{size && <p>Projects</p>}
+									</div>
+								</Link>
+								<Link to="/spp/dashboard/users" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">
+									<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
+										<PersonIcon className="mr-1" />
+										{size && <p>SPP</p>}
+									</div>
+								</Link>
+								<Link to="/spp/dashboard" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">
+									<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
+										<SettingsIcon className="mr-1" />
+										{size && <p>Settings</p>}
+									</div>
+								</Link>
+							</>
+						}
+						{
+							!isAuthenticated() &&
+							<>
 						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
 							<ExploreOutlinedIcon className="mr-1" />
 							{size && <p>Discover</p>}
 						</div>
 						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
-							<ExploreOutlinedIcon className="mr-1" />
-							{size && <p>SPPed</p>}
-						</div>
-						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
 							<CategoryOutlinedIcon className="mr-1" />
 							{size && <p>Categories</p>}
 						</div>
-						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
-							<NotificationsNoneIcon className="mr-1" />
-							{size && <p>Notifications</p>}
-						</div>
-						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
-							<PersonIcon className="mr-1" />
-							{size && <p>Profile</p>}
-						</div>
-						<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
-							<SettingsIcon className="mr-1" />
-							{size && <p>Settings</p>}
-						</div>
+							</>
+						}
 					</div>
 				</div>
 			</div>

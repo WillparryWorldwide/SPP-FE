@@ -1,26 +1,30 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
-    const [loginStatus, setLoginStatus] = useState(false);
-    const [loginModalState, setLoginModalState] = useState(false);
+	const navigate = useNavigate();
+	const [isLogin, setIsLogin] = useState(false);
 
-    const INITIALVALUES = {
-        site_name: "SPP APP",
-        login_status: loginStatus,
-        login_modal_state: loginModalState,
-        updateLoginStatus: setLoginStatus,
-        updateLoginModalStatus: setLoginModalState
-    };
+	const INITIALVALUES = {
+		isLogin,
+		setIsLogin
+	};
 
-    return (
-        <AppContext.Provider value={INITIALVALUES}>
-            {children}
-        </AppContext.Provider>
-    );
+	
+	useEffect(() => {
+		console.log("login?", isLogin);
+		// if(!isLogin) navigate("/spp");
+	}, []);
+
+	return (
+		<AppContext.Provider value={INITIALVALUES}>
+			{children}
+		</AppContext.Provider>
+	);
 };
 
 export const useAppContext = () => {
-    return useContext(AppContext);
+	return useContext(AppContext);
 };

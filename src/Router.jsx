@@ -7,8 +7,8 @@ const Router = () => {
 	return (
 		<Routes>
 			<Route path="/" element={<Discover />} />
-			<Route path="/projects" element={<Discover />} />
-			<Route path="/project/:id" element={<ProjectDetails />} />
+			<Route path="projects" element={<Discover />} />
+			<Route path="project/:id" element={<ProjectDetails />} />
 
 			<Route path="spp">
 				<Route index element={<Login />} />

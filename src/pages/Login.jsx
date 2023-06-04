@@ -1,10 +1,8 @@
 import "./Login.css";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
 // import axios from '../Helper/axiosClient'
-import { useAuthUser } from "react-auth-kit";
-import { useSignIn, useIsAuthenticated } from "react-auth-kit";
+import { useSignIn, useIsAuthenticated, useAuthUser } from "react-auth-kit";
 import AxiosClient from "../Helper/axiosClient";
 import {
 	Box,
@@ -19,21 +17,22 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconSVG from "../Utils/svg";
 import SiteImages from "../Utils/images";
+import { useAppContext } from "../context/AppContext";
 
 const Login = () => {
 	const axios = AxiosClient();
-	const { updateLoginStatus, login_status } = useAppContext();
+	const SignIn = useSignIn();
+	const {setIsLogin} = useAppContext();
+	const navigate = useNavigate();
+	const userData = useAuthUser();
+	const isAuthenticated = useIsAuthenticated();
 	const [loginDetails, setLoginDetails] = useState({
 		username: '',
 		password: '',
 		usernameErr: false,
 		passwordErr: false
 	});
-	const navigate = useNavigate();
-	const SignIn = useSignIn();
-	const isAuthenticated = useIsAuthenticated();
-	const userData = useAuthUser();
-
+	
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -41,7 +40,7 @@ const Login = () => {
 	const handleMouseDownPassword = (event) => event.preventDefault();
 
 	useEffect(() => {
-		if (isAuthenticated()) window.location.pathname = "/spp/dashboard";
+		if (isAuthenticated()) navigate("/spp/dashboard");
 		console.log("Render...");
 	}, [isAuthenticated, navigate, userData]);
 
@@ -61,52 +60,32 @@ const Login = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
-		if (loginDetails.username === '') {
-			setLoginDetails(pre => {
-				return {
-					...pre,
-					usernameErr: !pre.usernameErr
-				}
-			});
-			window.toastr.error("Enter your user code");
-		} else if (loginDetails.password === '') {
-			setLoginDetails(pre => {
-				return {
-					...pre,
-					passwordErr: !pre.passwordErr
-				}
-			});
-			window.toastr.error("Password is required");
-		} else {
-			const data = {
-				username: loginDetails.username,
-				password: loginDetails.password,
-			};
+		const data = {
+			username: loginDetails.username,
+			password: loginDetails.password,
+		};
 
-			axios.post("/auth/login", data).then(({ data }) => {
-				console.log(data);
-				const user = data.data;
-				window.toastr.success(data.alert);
-				if (
-					SignIn({
-						token: user.token,
-						expiresIn: 1440,
-						tokenType: "Bearer",
-						authState: user,
-						refreshToken: user.token,
-						refreshTokenExpireIn: 1440,
-					})
-				) {
-					updateLoginStatus(!login_status);
-					window.location.pathname = "/spp/dashboard";
-				}
-			}).catch((err) => {
-				console.error("errrorr", err);
-				err.response
-					? window.toastr.error(err.response.data.message)
-					: window.toastr.error(err.message);
+		axios.post("/auth/login", data).then(({ data }) => {
+			console.log(data);
+			const user = data.data;
+			window.toastr.success(data.alert);
+			SignIn({
+				token: user.token,
+				expiresIn: 1440,
+				tokenType: "Bearer",
+				authState: user,
+				refreshToken: user.token,
+				refreshTokenExpireIn: 1440,
 			});
-		}
+			setIsLogin(true);
+		}).catch((err) => {
+			console.error("errrorr", err);
+			setIsLogin(false);
+			err.response
+				? window.toastr.error(err.response.data.message)
+				: window.toastr.error(err.message);
+		});
+
 	};
 
 	return (

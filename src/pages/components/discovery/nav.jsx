@@ -6,7 +6,7 @@ import useGetAllProject from '../../../Hooks/usegetallproject';
 import FilterProject from '../helper/getFilterBy';
 import IconSVG from '../../../Utils/svg';
 
-const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
+const DiscoveryNavBar = ({ option, handleOption }) => {
 	const searchRef = useRef();
 	const { fetchProject, data } = useGetAllProject();
 	const myFilters = new FilterProject(data);
@@ -45,12 +45,12 @@ const DiscoveryNavBar = ({ filters, option, handleOption, setOption }) => {
 							</div>
 						</div>
 					</div>
-				</div>
+			   	</div>
 				<div className="md:flex bg-grey-white cursor-pointer  hidden items-center font-bold text-xs py-2 px-4 mr-2 flex-shrink-0 border-grey-stroke border rounded-full ">
 					<p>Login</p>
 				</div>
 			</div>
-			<div className='bg-white relative h-14 z-30 border-t border-EB md:px-6 px-3 flex justify-between items-center w-full'>
+			<div className='bg-white rela            tive h-14 z-30 border-t border-EB md:px-6 px-3 flex justify-between items-center w-full'>
 				<div className="flex relative items-center space-x-2 h-full mr-2 md:ml-4 flex-shrink-0 " data-testid="set-project_view">
 					<div className="lg:block fill-primary cursor-pointer flex-shrink-0 hover:text-grey-white text-transparent block">
 						<Icon grid_menu='grid_menu' />

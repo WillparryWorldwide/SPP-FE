@@ -17,17 +17,17 @@ import useAllMDA from "../../Hooks/useAllMDA";
 import useAllUpdateHistory from "../../Hooks/useHistory";
 import moment from "moment/moment";
 
-	const historyCol = [
-		{ id: 'changed_by', label: 'User', minWidth: 70, force: (val) => val?.firstname},
-		{ id: 'type', label: 'Updated', minWidth: 70 },
-		{ id: 'createdAt', label: 'Time', minWidth: 70, force: (val) => moment(val).startOf("days").fromNow() }
-	];
+const historyCol = [
+	{ id: 'changed_by', label: 'User', minWidth: 70, force: (val) => val?.firstname },
+	{ id: 'type', label: 'Updated', minWidth: 70 },
+	{ id: 'createdAt', label: 'Time', minWidth: 70, force: (val) => moment(val).startOf("days").fromNow() }
+];
 
 const Welcome = () => {
 	const [page, setPage] = React.useState(0);
-	const {sectors, fetchSectors} = useAllSectors();
-	const {mdas, fetchMdas} = useAllMDA();
-	const {updateHistory, fetchUpdateHistory, loadingUpdateHistory} = useAllUpdateHistory();
+	const { sectors, fetchSectors } = useAllSectors();
+	const { mdas, fetchMdas } = useAllMDA();
+	const { updateHistory, fetchUpdateHistory, loadingUpdateHistory } = useAllUpdateHistory();
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const { data: allContractors, fetchContractors } = useGetAllContractors();
 
@@ -47,7 +47,7 @@ const Welcome = () => {
 		fetchMdas();
 		console.log("Rendering...");
 	}, []);
-	
+
 	return (
 		<>
 			<div className="sticky top-0 z-50">
@@ -191,7 +191,7 @@ const Welcome = () => {
 																		<TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
 																			{historyCol.map((column) => {
 																				let value = row[column.id];
-																				if(column.force) value = column.force(value);
+																				if (column.force) value = column.force(value);
 
 																				return (
 																					<TableCell key={column.id} align={column.align}
