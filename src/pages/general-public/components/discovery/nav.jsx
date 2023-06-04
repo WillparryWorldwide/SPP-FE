@@ -12,9 +12,6 @@ const DiscoveryNavBar = ({ data, filters, option, handleOption, setOption }) => 
 	const myFilters = new FilterProject(data);
 
 
-	console.log(myFilters.category)
-	console.log(myFilters.local_goverment)
-	console.log(myFilters.state)
 	return (
 		<>
 			<div className="w-full bg-white flex lg:px-6 px-2 relative items-center justify-between" id="myHeader">

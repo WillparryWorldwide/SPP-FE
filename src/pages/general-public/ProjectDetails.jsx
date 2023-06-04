@@ -18,35 +18,20 @@ import OverView from './components/projectdetails/overview';
 import Activity from './components/projectdetails/activity';
 import Media from './components/projectdetails/media';
 import Review from './components/projectdetails/review';
+import CommentModal from './components/modal/commentmodal';
 
 
 const ProjectDetails = () => {
     const { id } = useParams();
-    // const [project, setProject] = useState([])
     const { fetchProject, data: project, loading: isLoading, hostUrl } = useGetProject()
-    // const [isLoading, setIsLoading] = useState(false)
     const [tab, setTab] = useState(1)
+    const {commentOption, setCommentOption, CommentPopUp, data: commentData} = CommentModal()
 
-
-
-  
-
-    // const fetchProject = async () => {
-    //     try {
-    //         const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/project/only/${id}`);
-    //         console.log(data)
-    //         setProject(data.data.result)
-    //         setIsLoading(true);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
 
     useEffect(() => {
         fetchProject(id)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
+    }, [commentData])
     return (
         <div className="appLayout_dash-contents__f3VlW">
             <div className="leftSideBar_sidebar__85S4S flex-shrink-0 z-20 w-32 bg-white py-8 justify-between">
@@ -114,6 +99,7 @@ const ProjectDetails = () => {
                         <div className="mt-10 sm:mt-20 h-full">
                             <Review
                                 project={project}
+                                setCommentOption={setCommentOption}
                             />
                         </div>
                     }
@@ -121,7 +107,8 @@ const ProjectDetails = () => {
                 </div>
             </div>
             <BottomNav />
-            {!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+            {isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+            {commentOption && <CommentPopUp project={project} />}
         </div>
     )
 }

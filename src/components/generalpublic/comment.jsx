@@ -15,7 +15,7 @@ const Comment = ({nameOfProject, submitComment, commentData, setCommentData, han
                         placeholder="comment" 
                         value={commentData.description}
                         onChange={(e)=> setCommentData((prev) => ({...prev, description: e.target.value}))}
-                        rows={3} 
+                        // rows={3} 
                         required
                     >
                     </textarea>
@@ -69,11 +69,11 @@ const Comment = ({nameOfProject, submitComment, commentData, setCommentData, han
                         type="radio" 
                         name="radioSelection" 
                         onChange={(e)=> handleRadioSelection(e)} 
-                        id="exampleRadios3" 
+                        id="exampleRadios4" 
                         value="Unfriendly" 
                         required
                     />
-                    <label className="form-check-label" htmlFor="exampleRadios3">
+                    <label className="form-check-label" htmlFor="exampleRadios4">
                         Unfriendly
                     </label>
                 </div>
@@ -83,11 +83,11 @@ const Comment = ({nameOfProject, submitComment, commentData, setCommentData, han
                         type="radio" 
                         name="radioSelection" 
                         onChange={(e)=> handleRadioSelection(e)} 
-                        id="exampleRadios3" 
+                        id="exampleRadios5" 
                         value="Very unfriendly" 
                         required
                     />
-                    <label className="form-check-label" htmlFor="exampleRadios3">
+                    <label className="form-check-label" htmlFor="exampleRadios5">
                         Very unfriendly
                     </label>
                 </div>

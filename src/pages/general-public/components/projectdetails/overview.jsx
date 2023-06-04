@@ -47,6 +47,7 @@ const OverView = ({project}) => {
         setProgress(((compMilstone/((project.milestones).length*3))* 100))
         setMoneySpent(spent)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [project])
 
 
@@ -58,6 +59,7 @@ useEffect(()=>{
     }else{
         setTimeLine(`${day} Days`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [year, month])
 
 
