@@ -52,7 +52,7 @@ const Discover = () => {
 
 		console.log("Rendering...");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, searchData, option]);
+	}, [data.length, option]);
 
 	const format = (amount) => {
 		const formatted = parseFloat(amount).toLocaleString("en", {
@@ -63,6 +63,7 @@ const Discover = () => {
 	}
 
 	const handleOption = (value) => {
+		console.log("option", value);
 		setOption(value)
 	}
 

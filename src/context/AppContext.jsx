@@ -1,25 +1,20 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
 	const navigate = useNavigate();
-	const [isLogin, setIsLogin] = useState(false);
+	const location = useLocation();
+	const isLogin = window.localStorage.getItem("isLogin");
 
-	const INITIALVALUES = {
-		isLogin,
-		setIsLogin
-	};
-
-	
 	useEffect(() => {
-		console.log("login?", isLogin);
-		// if(!isLogin) navigate("/spp");
+		if(!Boolean(isLogin) && !(location.pathname === '/' || location.pathname.search("/project") === 0)) navigate("/spp");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
-		<AppContext.Provider value={INITIALVALUES}>
+		<AppContext.Provider value={{}}>
 			{children}
 		</AppContext.Provider>
 	);

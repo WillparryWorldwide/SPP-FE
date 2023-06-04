@@ -17,12 +17,10 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconSVG from "../Utils/svg";
 import SiteImages from "../Utils/images";
-import { useAppContext } from "../context/AppContext";
 
 const Login = () => {
 	const axios = AxiosClient();
 	const SignIn = useSignIn();
-	const {setIsLogin} = useAppContext();
 	const navigate = useNavigate();
 	const userData = useAuthUser();
 	const isAuthenticated = useIsAuthenticated();
@@ -69,6 +67,7 @@ const Login = () => {
 			console.log(data);
 			const user = data.data;
 			window.toastr.success(data.alert);
+			window.localStorage.setItem("isLogin", true);
 			SignIn({
 				token: user.token,
 				expiresIn: 1440,
@@ -77,10 +76,8 @@ const Login = () => {
 				refreshToken: user.token,
 				refreshTokenExpireIn: 1440,
 			});
-			setIsLogin(true);
 		}).catch((err) => {
 			console.error("errrorr", err);
-			setIsLogin(false);
 			err.response
 				? window.toastr.error(err.response.data.message)
 				: window.toastr.error(err.message);

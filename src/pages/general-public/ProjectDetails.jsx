@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
-import '../../assets/css/d35beeb833360611.css';
-import '../../assets/css/4c4867adecdc883a.css';
-import '../../assets/css/3f1327110777dc38.css';
-import '../../assets/css/tailwind.css'
-import DetailNav from '../components/projectdetails/detailnav';
-import Tab from '../components/projectdetails/tab';
-import BottomNav from '../components/discovery/bottomnav';
-import useGetProject from '../../Hooks/useGetProject';
-
-
-import './projectdetails.css'
-import OverView from '../components/projectdetails/overview';
-import Activity from '../components/projectdetails/activity';
-import Media from '../components/projectdetails/media';
-import Review from '../components/projectdetails/review';
+import "../../assets/css/tailwind.css";
+import { useParams } from "react-router-dom";
+import "../../assets/css/d35beeb833360611.css";
+import "../../assets/css/4c4867adecdc883a.css";
+import "../../assets/css/3f1327110777dc38.css";
+import "../css/projectDetails/projectdetails.css";
+import React, { useEffect, useState } from "react";
+import Tab from "../components/projectdetails/tab";
+import useGetProject from "../../Hooks/useGetProject";
+import Media from "../components/projectdetails/media";
+import Review from "../components/projectdetails/review";
+import BottomNav from "../components/discovery/bottomnav";
+import OverView from "../components/projectdetails/overview";
+import Activity from "../components/projectdetails/activity";
+import DetailNav from "../components/projectdetails/detailnav";
 
 
 const ProjectDetails = () => {
@@ -90,7 +88,7 @@ const ProjectDetails = () => {
                 </div>
             </div>
             <BottomNav />
-            {!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+            {!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ""}
         </div>
     )
 }

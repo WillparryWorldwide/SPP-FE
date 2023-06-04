@@ -26,8 +26,8 @@ const columns = [
 ];
 
 export default function AllProjects() {
-	const [page, setPage] = React.useState(0);
 	const navigate = useNavigate();
+	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const { data, loading, fetchProject } = useGetAllProject();
 
@@ -36,7 +36,7 @@ export default function AllProjects() {
 	};
 
 	const handelNavigation = (id) => {
-		navigate("/spp/dashboard/project/view/" + id, { replace: true });
+		navigate("/spp/dashboard/projects/view/" + id, { replace: true });
 	}
 
 	const handleChangeRowsPerPage = (event) => {

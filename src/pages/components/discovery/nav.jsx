@@ -76,19 +76,19 @@ const DiscoveryNavBar = ({ option, handleOption }) => {
 						</div>
 						<p>Around You!</p>
 					</div>
-					{myFilters.category.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.category.length? <div className="h-8 bg-grey-stroke w-[1px]"></div>: ''}
 					{
 						myFilters.category.map(category => <div key={category} onClick={() => handleOption(category)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === category.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(category)}`}>
 							<p>{category.toUpperCase()}</p>
 						</div>)
 					}
-					{myFilters.local_goverment.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.local_goverment.length? <div className="h-8 bg-grey-stroke w-[1px]"></div>: ''}
 					{
 						myFilters.local_goverment.map(lga => <div key={lga} onClick={() => handleOption(lga)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === lga.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(lga)}`}>
 							<p>{lga.toUpperCase()}</p>
 						</div>)
 					}
-					{myFilters.state.length && <div className="h-8 bg-grey-stroke w-[1px]"></div>}
+					{myFilters.state.length? <div className="h-8 bg-grey-stroke w-[1px]"></div>: ''}
 					{
 						myFilters.state.map(state => <div key={state} onClick={() => handleOption(state)} className={`cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex ${option?.toLowerCase() === state.toLowerCase() ? 'bg-primary hover:bg-prmary/[.5] text-white fill-white' : 'bg-grey-white text-black hover:bg-EB'}`} data-testid={`tag-${camelCase(state)}`}>
 							<p>{state.toUpperCase()}</p>
