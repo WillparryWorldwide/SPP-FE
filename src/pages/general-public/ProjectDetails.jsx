@@ -15,6 +15,7 @@ import OverView from '../components/projectdetails/overview';
 import Activity from '../components/projectdetails/activity';
 import Media from '../components/projectdetails/media';
 import Review from '../components/projectdetails/review';
+import CommentModal from './modal/commentmodal'
 
 
 const ProjectDetails = () => {
@@ -23,6 +24,7 @@ const ProjectDetails = () => {
     const { fetchProject, data: project, loading: isLoading, hostUrl } = useGetProject()
     // const [isLoading, setIsLoading] = useState(false)
     const [tab, setTab] = useState(1)
+    const {commentOption, setCommentOption, CommentPopUp, data: commentData} = CommentModal()
 
 
 
@@ -42,7 +44,7 @@ const ProjectDetails = () => {
     useEffect(() => {
         fetchProject(id)
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [commentData])
 
     return (
         <div className="appLayout_dash-contents__f3VlW">
@@ -84,13 +86,15 @@ const ProjectDetails = () => {
                         <div className="mt-10 sm:mt-20 h-full">
                             <Review
                                 project={project}
+                                setCommentOption={setCommentOption}
                             />
                         </div>
                     }
                 </div>
             </div>
             <BottomNav />
-            {!isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+            {isLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
+            {commentOption && <CommentPopUp project={project} />}
         </div>
     )
 }
