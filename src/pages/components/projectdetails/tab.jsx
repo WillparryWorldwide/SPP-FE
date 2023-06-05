@@ -7,8 +7,7 @@ const Tab = ({setTab, tab}) => {
         <div className="sticky top-12 z-30 bg-grey-white">
             <div className="bg-grey-white w-full sticky top-0 z-30 pt-2">
                 <div className="nav_search-navbar__B_TGY">
-                    <div onClick={() => setTab(1)} className="nav_nav__fL7mg nav_search-nav-active__00eqb cursor-pointer"
-                        data-testid="project-tab_Overview">
+                    <div onClick={() => setTab(1)} className="nav_nav__fL7mg nav_search-nav-active__00eqb cursor-pointer" data-testid="project-tab_Overview">
                         <p className={`${tab === 1 && 'text-primary'}`}>Overview</p>
                         <div className={`${tab === 1 && 'nav_active-bar__FGbx_'}`} ></div>
                     </div>
