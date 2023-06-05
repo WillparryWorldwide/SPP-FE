@@ -1,7 +1,7 @@
 import IconSVG from "../../../Utils/svg";
 
 const Media = ({project, hostUrl}) => {
-  console.log((project.iamges))
+  console.log((project.images))
   return (
     <>
       <div className="flex-grow flex flex-col h-full" data-testid="project-tab_media_content">

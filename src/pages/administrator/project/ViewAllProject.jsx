@@ -22,7 +22,7 @@ const columns = [
 	{ id: "code", label: "Code", minWidth: 70, format: (val) => val },
 	{ id: "grand_total", label: "Grand Total", minWidth: 70, format: (val) => val },
 	{ id: "duration", label: "Duration", minWidth: 70, format: (val) => moment(val, "YYYYMMDD").fromNow() },
-	{ id: "open", label: "Status", minWidth: 70, format: (val) => val }
+	{ id: "open", label: "Status", minWidth: 70, format: (val) => val?.toString() }
 ];
 
 export default function AllProjects() {
@@ -107,7 +107,7 @@ export default function AllProjects() {
 																		sx={{
 																			border: ".3px solid #e0e0e0"
 																		}}>
-																		{column.id === "open" ? value.toString() : column.format(value)}
+																		{column.format(value)}
 																	</TableCell>
 																})}
 															</TableRow>

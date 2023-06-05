@@ -1,18 +1,21 @@
+import moment from "moment";
+import IconSVG from "../../../Utils/svg";
+import { SearchNav, Title } from "../components";
 import React, { useEffect, useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
-import { TextField, Box, MenuItem, Grid, CircularProgress } from "@mui/material";
 import validateInput from "./functions/validateInput";
-import { SearchNav, Title } from "../components";
-import IconSVG from "../../../Utils/svg";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import moment from "moment";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { TextField, Box, MenuItem, Grid, CircularProgress, Button, ButtonGroup } from "@mui/material";
+
 
 const RegisterProject = () => {
 	const axios = AxiosClient();
+	const [project, setProject] = useState(null);
+	const [isHidden, setIsHidden] = useState(true);
 	const [imageText, setImageText] = useState(null);
 	const [submitBtnStatus, setSubmitBtnStatus] = useState({
 		active: false,
@@ -42,16 +45,14 @@ const RegisterProject = () => {
 	const tagsExample = [
 		"Legacy", "childcare", "maternal motality", "mega project", "road", "technology", "school"
 	]
+
 	const milestoneText = {
 		preliminaries_sum: "Preliminary Sum",
 		provisional_sums: "Provisional Sum",
 		measured_work: "Measured Work"
 	}
-	const [milestones, setMileStones] = useState([{
-		preliminaries_sum: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }],
-		provisional_sums: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }],
-		measured_work: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }]
-	}]);
+
+	const [milestones, setMileStones] = useState([{ id: 0, project: null, typeOf: "preliminaries_sum", level: 0, rate: 0, amount: 0, duration: null, description: '', quantity: 0 }]);
 
 	// function
 	const handelInputChange = (e, dateName) => {
@@ -74,73 +75,72 @@ const RegisterProject = () => {
 	}
 
 	// function
-	const handleAddMilestone = (e) => {
-		e.preventDefault();
-		const newMilestone = {
-			preliminaries_sum: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }],
-			provisional_sums: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }],
-			measured_work: [{ rate: '', amount: '', duration: null, description: '', quantity: '' }]
-		}
+	const handelMilestoneChange = (e, index, dateName) => {
+		let data = e?.target;
 
+		if (!data) data = { name: dateName, value: e };
+
+		let { name, value } = data;
+
+		console.log("data", name, value, index, data);
 		setMileStones(prev => {
+			prev[index][name] = value;
+			return prev;
+		});
+		setEditedMilestone(preVal => preVal + 1);
+	}
+
+	// function
+	const handleAddMilestone = () => {
+		setMileStones(prev => {
+			const newMilestone = { id: prev.length ? prev[prev.length - 1].id + 1 : 1, project: null, typeOf: "preliminaries_sum", level: prev.length ? prev[prev.length - 1].level + 1 : 1, rate: 0, amount: 0, duration: null, description: '', quantity: 0 }
 			return [...prev, newMilestone];
 		});
 	};
 
 	// function
-	const handelMilestoneChange = (e, dateDataSet) => {
-		let k = e?.target;
-
-		if (!k) k = { value: e, dataset: { ...dateDataSet } }
-
-		const val = k.value;
-		const milestoneIndex = k.dataset.milestoneIndex;
-		const milestoneItem = k.dataset.milestoneItem;
-		const itemIndex = k.dataset.itemIndex;
-		const item = k.dataset.item;
-
-		setMileStones(preVal => {
-			preVal[milestoneIndex][milestoneItem][itemIndex][item] = val;
-			return preVal;
+	const handleAddMileStoneItem = (level) => {
+		setMileStones(prev => {
+			const newMilestone = { id: prev.length ? prev[prev.length - 1].id + 1 : 1, project: null, typeOf: "preliminaries_sum", level, rate: 0, amount: 0, duration: null, description: '', quantity: 0 }
+			return [...prev, newMilestone];
 		});
-		setEditedMilestone(preVal => preVal + 1);
 	}
 
 	// function
-	const handleAddMileStoneItem = (e) => {
-		const k = e.currentTarget;
-		const milestoneIndex = k.dataset.milestoneIndex;
-		const milestoneItem = k.dataset.milestoneItem;
-		const newPreliminary = { rate: 65, amount: 76, duration: moment(moment.now()).format("YYYY-MM-DD"), description: "Lol", quantity: 1862 };
-
-		milestones[milestoneIndex][milestoneItem].push(newPreliminary)
-		setMileStones(milestones);
-		hideAddButtons();
-		setEditedMilestone(preVal => preVal + 1);
-	}
-
-	// function
-	const handleRemoveMilestone = (e) => {
-		const k = e.currentTarget;
-		const milestoneIndex = k.dataset.milestoneIndex;
-		const milestoneItem = k.dataset.milestoneItem;
-		const itemIndex = k.dataset.itemIndex;
-
-		milestones[milestoneIndex][milestoneItem].length > 1 && milestones[milestoneIndex][milestoneItem].splice(itemIndex, 1);
-		setMileStones(milestones);
-		setEditedMilestone(preVal => preVal + 1);
+	const handleRemoveMilestone = (id) => {
+		setMileStones(prev => {
+			prev.splice(id, 1);
+			return prev;
+		});
+		setEditedMilestone(pre => pre + 1);
 	};
+
+	const organiseMilestone = () => {
+		let levelNo = 0;
+
+		milestones.forEach(m => {
+			if (m.level > levelNo) levelNo = m.level;
+		});
+
+		return () => {
+			const result = [];
+
+			milestones.forEach((m) => {
+				if (!Array.isArray(result[m.level])) result[m.level] = [];
+				result[m.level].push(m);
+			});
+
+			return result;
+		}
+	}
 
 	useEffect(() => {
 		const updateGrandTotal = () => {
 			let total = 0;
 			milestones.forEach(milestoneItem => {
-				Object.keys(milestoneItem).forEach(item => {
-					milestoneItem[item].forEach(item => {
-						total += Number(item.amount);
-					});
-				});
+				total += Number(milestoneItem.amount);
 			});
+
 			setInputDetails(prev => {
 				return {
 					...prev,
@@ -182,7 +182,7 @@ const RegisterProject = () => {
 		fetchContractors();
 		updateGrandTotal();
 		console.log("Rerendering...");
-	}, [editedMilestone, milestones]);
+	}, [editedMilestone, milestones, project?._id]);
 
 	const hideAddButtons = () => {
 		const btns = document.querySelectorAll('.addBtn');
@@ -195,11 +195,6 @@ const RegisterProject = () => {
 
 	const create = (e) => {
 		e.preventDefault();
-
-		setSubmitBtnStatus({
-			active: true,
-			text: "Loading..."
-		});
 
 		let submit = true;
 
@@ -214,30 +209,57 @@ const RegisterProject = () => {
 
 		Object.keys(inputDetails).forEach(key => myFormData.append(inputDetails[key].name, inputDetails[key].value));
 		Object.values(file.files).forEach((f, index) => myFormData.append("images", file.files[index]));
-		myFormData.append("milestones", JSON.stringify(milestones));
 
+		setSubmitBtnStatus({
+			active: true,
+			text: "Loading..."
+		});
+
+		// submit project
 		axios.post('/project/register', myFormData, {
 			headers: {
 				"Content-Type": "multipart/form-data"
 			}
 		}).then(({ data }) => {
-			// setBtnStatus(true);
-			// document.querySelector('#project').reset()
-			console.log("data", data);
-			setSubmitBtnStatus({
-				active: false,
-				text: "Register Project"
-			});
+			// get project result
 			window.toastr.success(data.data.message);
+			return data.data.result;
+		}).then(res => {
+			// set project id to milestones
+			setMileStones(prev => {
+				prev.forEach(m => {
+					m.project = res._id
+					delete m.id;
+				});
+				return prev;
+			});
+			setEditedMilestone(pre => pre + 1);
+		}).then(() => {
+			// submit the milestone
+			axios.post("/milestone/register", milestones).then(ress => {
+				window.toastr.success(ress.data.data.message);
+				window.document.querySelector("#project").reset();
+				setSubmitBtnStatus({
+					active: false,
+					text: "Register Project"
+				});
+			}).catch((error) => {
+				console.error("Error", error);
+				setSubmitBtnStatus({
+					active: false,
+					text: "Try Again"
+				});
+				window.document.querySelector("#project").reset();
+				window.toastr.error(error?.response ? error.response.data.message : error.message);
+			});
 		}).catch((error) => {
-			// setBtnStatus(false);
 			console.error("Error", error);
 			setSubmitBtnStatus({
 				active: false,
 				text: "Try Again"
 			});
 			window.toastr.error(error?.response ? error.response.data.message : error.message);
-		})
+		});
 	}
 
 	return (
@@ -396,7 +418,7 @@ const RegisterProject = () => {
 												onChange={handelInputChange}
 												label="Category">
 												{tagsExample.map((option) => (
-													<MenuItem key={option} value={option}>
+													<MenuItem key={option} className="uppercase" value={option}>
 														{option}
 													</MenuItem>
 												))}
@@ -454,127 +476,90 @@ const RegisterProject = () => {
 
 									{/* Milestone */}
 									<Grid container spacing={1} sx={{ marginTop: "3em" }}>
-										{milestones.map((milestone, index) => (
-											<Grid key={index} item xs={12}>
-												<h3 className="flex justify-start items-center text-lg">
-													<span>Milestone {index + 1}</span>
-													<IconPlus
-														onClick={handleAddMilestone}
-														className="text-accepted ml-5 text-2xl bg-cream rounded-full cursor-pointer"
-													/>
-												</h3>
-												{
-													Object.keys(milestone).map(key => {
-														if (key === "id") return null;
-														return milestone[key].map((items, mIndex, mArr) => (
-															<div key={key + '-' + mIndex} className="m-0 p-0">
-																<div className="flex justify-between items-center">
-																	<h5 className="text-sm">{milestoneText[key]} {mIndex + 1}</h5>
-																	<div className="flex justify-around items-center">
-																		{mIndex === 0 && <IconPlus type="button" className="text-accepted cursor-pointer mx-1" onClick={handleAddMileStoneItem} data-milestone-index={index} data-milestone-item={key} />}
-																		{mArr.length - 1 ? <IconTrash type="button" className={`text-abandoned cursor-pointer mx-1 ${index}-${mIndex}`} onClick={handleRemoveMilestone} data-milestone-index={index} data-milestone-item={key} data-item-index={mIndex} /> : null}
-																	</div>
-																</div>
-																<div className={`${key} flex`}>
-																	<Grid container spacing={1}>
-																		<Grid item xs={12} md={6} lg={3}>
-																			<TextField
-																				className={`milestone-${index}-${key}-${mIndex}-quantity`}
+										{organiseMilestone()().map((sortedM) => (
+											sortedM.map((milestone, index, mArr) => <Grid key={index} item xs={12}>
+												<div className="flex justify-between items-center text-lg">
+													<h3>Milestone {milestone.level + 1}</h3>
 
-																				fullWidth type="number"
-																				name="quantity"
-																				value={items.quantity}
-																				onChange={handelMilestoneChange}
-																				label="Quantity"
-																				placeholder="Enter quantity"
-																				inputProps={{
-																					"data-milestone-index": index,
-																					"data-milestone-item": key,
-																					"data-item-index": mIndex,
-																					"data-item": "quantity"
-																				}}
-																			/>
-																		</Grid>
-																		<Grid item xs={12} md={6} lg={3}>
-																			<TextField
-																				className={`milestone-${index}-${key}-${mIndex}-rate`}
-
-																				fullWidth type="number"
-																				name="rate"
-																				value={items.rate}
-																				onChange={handelMilestoneChange}
-																				label="Rate"
-																				placeholder="Enter rate"
-																				inputProps={{
-																					"data-milestone-index": index,
-																					"data-milestone-item": key,
-																					"data-item-index": mIndex,
-																					"data-item": "rate"
-																				}}
-																			/>
-																		</Grid>
-																		<Grid item xs={12} md={6} lg={3}>
-																			<TextField
-																				className={`milestone-${index}-${key}-${mIndex}-amount`}
-
-																				fullWidth type="number"
-																				name="amount"
-																				value={items.amount}
-																				onChange={handelMilestoneChange}
-																				label="Amount"
-																				placeholder="Enter amount"
-																				inputProps={{
-																					"data-milestone-index": index,
-																					"data-milestone-item": key,
-																					"data-item-index": mIndex,
-																					"data-item": "amount"
-																				}}
-																			/>
-																		</Grid>
-																		<Grid item xs={12} md={6} lg={3}>
-																			<DatePicker
-																				className={`w-full milestone-${index}-${key}-${mIndex}-date`}
-																				label="Duration"
-																				value={inputDetails.date_awarded.value}
-																				onChange={(e) => handelMilestoneChange(e, {
-																					milestoneIndex: index,
-																					milestoneItem: key,
-																					itemIndex: mIndex,
-																					item: "duration"
-																				})}
-																				data-milestone-index={index}
-																				data-milestone-item={key}
-																				data-item-index={mIndex}
-																				data-item="duration"
-																			/>
-																		</Grid>
-																		<Grid item xs={12}>
-																			<TextField
-																				className={`milestone-${index}-${key}-${mIndex}-description`}
-																				fullWidth
-																				multiline
-																				type="text"
-																				name="description"
-																				value={items.description}
-																				inputProps={{
-																					"data-milestone-index": index,
-																					"data-milestone-item": key,
-																					"data-item-index": mIndex,
-																					"data-item": "description"
-																				}}
-																				onChange={handelMilestoneChange}
-																				label="Description"
-																				placeholder="Type here..."
-																			/>
-																		</Grid>
-																	</Grid>
-																</div>
-															</div>
-														));
-													})
-												}
+													<ButtonGroup variant="outlined" aria-label="outlined primary button group">
+														<Button onClick={handleAddMilestone}><IconPlus className="text-accepted ml-5 text-2xl bg-cream rounded-full cursor-pointer" /> New Milestone</Button>
+														<Button onClick={() => handleAddMileStoneItem(milestone.level)}><IconPlus type="button" className="text-accepted cursor-pointer mx-1" />New Type</Button>
+														<Button onClick={() => handleRemoveMilestone(milestone.id)}><IconTrash type="button" className={`text-abandoned cursor-pointer mx-1`} /></Button>
+													</ButtonGroup>
+												</div>
+												<div className="m-0 p-0">
+													<div className="my-2">
+														<TextField
+															fullWidth
+															select
+															defaultValue={milestoneText.preliminaries_sum}
+															name="typeOf"
+															value={milestone.typeOf}
+															onChange={(e) => handelMilestoneChange(e, milestone.id)}
+															label="Milestone Type">
+															{Object.keys(milestoneText).map((key) => (
+																<MenuItem key={key} value={key}>
+																	{milestoneText[key]}
+																</MenuItem>
+															))}
+														</TextField>
+													</div>
+													<div className={`flex`}>
+														<Grid container spacing={1}>
+															<Grid item xs={12} md={6} lg={3}>
+																<TextField
+																	fullWidth type="number"
+																	name="quantity"
+																	value={milestone.quantity}
+																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
+																	label="Quantity"
+																	placeholder="Enter quantity"
+																/>
+															</Grid>
+															<Grid item xs={12} md={6} lg={3}>
+																<TextField
+																	fullWidth type="number"
+																	name="rate"
+																	value={milestone.rate}
+																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
+																	label="Rate"
+																	placeholder="Enter rate"
+																/>
+															</Grid>
+															<Grid item xs={12} md={6} lg={3}>
+																<TextField
+																	fullWidth type="number"
+																	name="amount"
+																	value={milestone.amount}
+																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
+																	label="Amount"
+																	placeholder="Enter amount"
+																/>
+															</Grid>
+															<Grid item xs={12} md={6} lg={3}>
+																<DatePicker
+																	label="Duration"
+																	value={milestone.duration}
+																	onChange={(e) => handelMilestoneChange(e, milestone.id, "duration")}
+																/>
+															</Grid>
+															<Grid item xs={12}>
+																<TextField
+																	fullWidth
+																	multiline
+																	type="text"
+																	name="description"
+																	value={milestone.description}
+																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
+																	label="Description"
+																	placeholder="Type here..."
+																/>
+															</Grid>
+														</Grid>
+													</div>
+												</div>
 											</Grid>
-										))}
+											)))}
 									</Grid>
 
 									<Grid container spacing={1}>
@@ -584,7 +569,7 @@ const RegisterProject = () => {
 												onClick={create}
 												disabled={submitBtnStatus.active}
 												className="w-full md:w-50 lg:w-25 rounded-full bg-primary text-white mt-12 py-3 mb-12 text-center">
-												<p className="medium">{submitBtnStatus.active? <CircularProgress color="inherit" />: submitBtnStatus.text}</p>
+												<p className="medium">{submitBtnStatus.active ? <CircularProgress color="inherit" /> : submitBtnStatus.text}</p>
 											</button>
 										</Grid>
 									</Grid>

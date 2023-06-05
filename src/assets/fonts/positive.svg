@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/><link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/><style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/><style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+<path d="M8.75 0.721688C9.5235 0.275106 10.4765 0.275106 11.25 0.721688L17.4103 4.27831C18.1838 4.72489 18.6603 5.55021 18.6603 6.44338V13.5566C18.6603 14.4498 18.1838 15.2751 17.4103 15.7217L11.25 19.2783C10.4765 19.7249 9.5235 19.7249 8.75 19.2783L2.58975 15.7217C1.81624 15.2751 1.33975 14.4498 1.33975 13.5566V6.44338C1.33975 5.55021 1.81624 4.72489 2.58975 4.27831L8.75 0.721688Z" fill="#61B684"/>
+<path d="M5.71484 11.9036L9.04818 14.8203L15.7148 8.57031" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="6.42857" y1="4.71373" x2="6.42857" y2="8.1423" stroke="white" stroke-width="0.857143" stroke-linecap="round"/>
+<line x1="4.71568" y1="6.4308" x2="8.14425" y2="6.4308" stroke="white" stroke-width="0.857143" stroke-linecap="round"/>
+</svg>

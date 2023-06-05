@@ -1,4 +1,4 @@
-export default function validateInput({submit, inputDetails}) {
+export default function validateInput({ submit, inputDetails }) {
 	if (inputDetails.spp_code.value === "Select SPP") {
 		inputDetails.spp_code.focus();
 		window.toastr.error("SPP Code is required");
@@ -35,14 +35,10 @@ export default function validateInput({submit, inputDetails}) {
 		inputDetails.date_awarded.focus();
 		window.toastr.error("Award date is required");
 		submit = !submit
-	} else if (inputDetails.grand_total.value === '') {
-		inputDetails.grand_total.focus();
-		window.toastr.error("Amount is required");
-		submit = !submit
 	} else if (inputDetails.description.value === '') {
 		inputDetails.description.focus();
 		window.toastr.error("Project description is required");
 		submit = !submit
 	}
-    return submit
+	return submit
 }

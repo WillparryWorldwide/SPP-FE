@@ -13,7 +13,7 @@ const useGetProject = () => {
 
   const fetchProject = (id) => {
     setLoading(true)
-    axios.get('/project/milestone/populate-only/'+ id,).then((res) => {
+    axios.get('/project/only-populated/'+ id,).then((res) => {
       setData(res.data.data.result)
       setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
       setLoading(false)

@@ -45,8 +45,11 @@ import menu from "../assets/fonts/menu.bd48213b.svg";
 import ministriesIcon from "../assets/fonts/ministriesicon.cbdfddde.svg";
 import more_icon_dark from "../assets/fonts/more-icon-dark.6441d6e3.svg";
 import motivation from "../assets/fonts/motivation.5b1ea3ae.svg";
+import negative from "../assets/fonts/negative.svg";
+import neutral from "../assets/fonts/neutral.svg";
 import no_photo from "../assets/fonts/no_photo.svg";
 import playstore from "../assets/fonts/playstore.454948e6.svg";
+import positive from "../assets/fonts/positive.svg";
 import project_carousel from "../assets/fonts/project-carousel.f90b3a0d.svg";
 import project_map from "../assets/fonts/project-map.a600c013.svg";
 import scrollDown from "../assets/fonts/scrollDown.68930c0e.svg";
@@ -113,8 +116,11 @@ const IconSVG = {
 	ministriesIcon,
 	more_icon_dark,
 	motivation,
+	negative,
+	neutral,
 	no_photo,
 	playstore,
+	positive,
 	project_carousel,
 	project_map,
 	searchIcon,
