@@ -317,7 +317,7 @@ const OverView = ({ project }) => {
 							<div>
 								<div className='bg-grey-white space-x-3 px-3 py-2 flex items-center rounded'>
 									<EngineeringIcon />
-									<p className="text-sm medium">{project.spp_code.SPP_name}</p>
+									<p className="text-sm medium">{project.spp_code?.SPP_name}</p>
 								</div>
 								<div>
 									{/* <p><strong className="text-input-border text-sm">HOO</strong> {project.spp_code.hoo_fullname}</p> */}
