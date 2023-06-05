@@ -6,7 +6,7 @@ const Review = ({ project, setCommentOption }) => {
   console.log(project?.review?.comments)
   return (
     <>
-    {project?.review?.comments.map((comment)=>{
+    {project?.review?.comments.slice(0).reverse().map((comment)=>{
         return (
           <div key={comment._id} className="mb-6 px-[5%]">
             
