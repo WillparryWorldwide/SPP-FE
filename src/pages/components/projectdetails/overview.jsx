@@ -17,7 +17,7 @@ import useProjectMilestone from '../../../Hooks/useProjectMilestone';
 import IconSVG from '../../../Utils/svg';
 
 
-const OverView = ({ project }) => {
+const OverView = ({ project, setTab }) => {
 	const options = { month: 'long', year: 'numeric', day: 'numeric' };
 	const [year, setYear] = useState(0);
 	const [month, setMonth] = useState(0);
@@ -26,15 +26,20 @@ const OverView = ({ project }) => {
 	const [moneySpent, setMoneySpent] = useState(0);
 	const [progress, setProgress] = useState(0);
 	const { pMilestone, fetchProjectMilestone } = useProjectMilestone();
+console.log(pMilestone)
+
+	useEffect(()=>{
+		if(project){
+			fetchProjectMilestone(project._id);
+		}
+	}, [project])
 
 	useEffect(() => {
 
 		var spent = 0;
 		var compMilstone = 0;
 
-		if (project._id) {
-			fetchProjectMilestone(project._id);
-
+		if (pMilestone.length > 0) {
 			console.log("pM", pMilestone);
 
 			pMilestone.forEach(element => {
@@ -48,11 +53,12 @@ const OverView = ({ project }) => {
 			setProgress(((compMilstone / ((pMilestone).length * 3)) * 100));
 			setDay(moment(project.duration).diff(project.date_awarded, 'days'));
 			setYear(moment(project.duration).diff(project.date_awarded, 'Years'));
+			setDay(moment(project.duration).diff(project.date_awarded, 'days'));
 			setMonth(moment(project.duration).diff(project.date_awarded, 'Months'));
 		}
 
 		console.log("Rendering...");
-	}, [project._id]);
+	}, [pMilestone]);
 
 
 	useEffect(() => {
@@ -66,6 +72,7 @@ const OverView = ({ project }) => {
 	}, [year, month])
 
 
+	console.log("pM", pMilestone);
 	return (
 		<>
 			<div className="flex-shrink-0">
@@ -89,19 +96,20 @@ const OverView = ({ project }) => {
 						<div className="projectPage_project-location-card__f7FjG">
 							<div className="flex items-center text-xs space-x-1">
 								<p className="text-dark-grey medium">
-									<span className=""><span className="capitalize">{(project.state)?.toUpperCase()}</span><span className="text-light-grey-2"> &amp; 1 more</span></span></p>
+									<span className=""><span className="capitalize">{(project.state)?.toUpperCase()}</span><span className="text-light-grey-2"></span></span></p>
 							</div>
 							<div className="flex items-center justify-between mt-4 text-2-xs">
 								<p className="uppercase medium text-input-border">STATES</p>
-								<div className="relative group-seeall" data-testid="project-geo_location_see_all"><button
-									className="flex items-center space-x-1 cursor-pointer focus:outline-none">
-									<p className="text-dark-grey medium mr-1">See All</p><span
-										style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
-										<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
-											<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
-										</span>
-										<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
-								</button>
+								{/* <div className="relative group-seeall" data-testid="project-geo_location_see_all">
+									<button
+										className="flex items-center space-x-1 cursor-pointer focus:outline-none">
+										<p className="text-dark-grey medium mr-1">See All</p><span
+											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
+											<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
+												<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
+											</span>
+											<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
+									</button>
 									<div className="w-40 lg:w-52 p-4 right-2 top-5 absolute rounded-lg bg-white z-40 hidden"
 										style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}>
 										<p className="text-sm medium text-accepted mb-5">All States</p>
@@ -114,7 +122,7 @@ const OverView = ({ project }) => {
 											<p className="medium text-dark-grey text-sm mb-1">Igabi, KADUNA</p>
 										</div>
 									</div>
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>
@@ -272,7 +280,7 @@ const OverView = ({ project }) => {
 								</div>
 							</div>
 						</div>
-						<div className="flex mb-2 w-full lg:w-6/12 space-x-2">
+						{/* <div className="flex mb-2 w-full lg:w-6/12 space-x-2">
 							<div className="w-6/12">
 								<div className="projectPage_project-info-card___Ix8v"><span
 									style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
@@ -297,7 +305,7 @@ const OverView = ({ project }) => {
 									</div>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<div className="px-6 text-dark-grey">
@@ -354,7 +362,7 @@ const OverView = ({ project }) => {
 						<div className="projectPage_project-overview-card__6pxG4">
 							<div className="flex justify-between">
 								<p className="medium">Project Reviews </p>
-								<div className="projectPage_see-all__FjyO9 text-primary" >view all</div>
+								<div onClick={()=> setTab(4)} className="projectPage_see-all__FjyO9 text-primary" >view all</div>
 							</div>
 							<div className="mt-8 flex flex-col lg:flex-row lg:items-center">
 								{/* NOTE: Make a calculaiton for this part, not important */}

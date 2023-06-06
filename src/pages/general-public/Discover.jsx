@@ -9,6 +9,7 @@ import Comment from '../../components/generalpublic/comment';
 import useGetAllProject from "../../Hooks/usegetallproject";
 import useSearchProject from '../../Hooks/usesearchproject';
 import BottomNav from '../components/discovery/bottomnav';
+import CommentModal from './modal/commentmodal'
 
 const Discover = () => {
 	const [option, setOption] = useState(null)
@@ -18,6 +19,8 @@ const Discover = () => {
 	const { upDAteProject, loading: upDateLoading } = useUpdateProject();
 	const { fetchProject, data, hostUrl, loading } = useGetAllProject();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
+	const { commentOption, setCommentOption, CommentPopUp, data: commentmobileData } = CommentModal()
+	const [commentItem, setCommentItem] = useState()
 	const [projects, setProjects] = useState(null)
 	const [commentData, setCommentData] = useState({
 		description: "",
@@ -34,25 +37,29 @@ const Discover = () => {
 		
 		//  Make Search Request
 		const makeSearchFetch = async () => {
-			console.log('here')
+			console.log('here2')
 			await searchProject(option)
-			setProjects(searchData)
 		}
 
 		if (!option) {
 			//  Set project to Fetch Request Data
 			makeFetch();
 			setProjects(data);
-			console.log("data", data);
 		} else {
 			//  Set project to Search Request Data
 			makeSearchFetch()
-			setProjects(searchData);
 		}
 
 		console.log("Rendering...");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.length, option]);
+
+	useEffect(()=>{
+		if(searchData.length > 0){
+			setProjects(searchData);
+		}
+
+	}, [searchData])
 
 	const format = (amount) => {
 		const formatted = parseFloat(amount).toLocaleString("en", {
@@ -75,7 +82,9 @@ const Discover = () => {
 		e.preventDefault()
 		setIdOfProject(id);
 		setNameOfProject(name);
+		setCommentItem(item)
 		setViewComment(true);
+		setCommentOption(true)
 	};
 
 	const submitComment = async (e) => {
@@ -88,6 +97,14 @@ const Discover = () => {
 			name: "",
 		});
 		setViewComment(false)
+		setCommentOption(false)
+		setCommentItem(null)
+	}
+
+	const cancelViewComment = ()=>{
+		setViewComment(false)
+		setCommentOption(false)
+		setCommentItem(null)
 	}
 
 	return (
@@ -102,7 +119,7 @@ const Discover = () => {
 						/>
 						{loading || searchLoading ? <div className="loader_setting-loader__1qM63"><div className="loader_setting-load-line__zN4EY"></div></div> : ''}
 						<div className="h-full flex  p-6">
-							<div>
+							<div className='w-full'>
 								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
 									{projects?.map((project, index) => (
 										<ProjectCards
@@ -125,7 +142,7 @@ const Discover = () => {
 										handleRadioSelection={handleRadioSelection}
 										setComment={setViewComment}
 										upDateLoading={upDateLoading}
-										noCancel={null}
+										noCancel={cancelViewComment}
 									/>
 								</div>
 							)}
@@ -133,6 +150,7 @@ const Discover = () => {
 					</div>
 				</div>
 				<BottomNav />
+				{commentOption && <div className='lg:hidden'><CommentPopUp project={commentItem} /> </div>}
 			</div>
 		</>
 	)

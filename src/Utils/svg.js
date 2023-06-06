@@ -67,6 +67,7 @@ import white_search from "../assets/fonts/white-search.bc50a395.svg";
 import whiteCaret from "../assets/fonts/whiteCaret.5444e822.svg";
 import whiteTextLogo from "../assets/fonts/whiteTextLogo.e0dd0780.svg";
 import winner from "../assets/fonts/winner.e996e91c.svg";
+import no_comment from '../assets/images/no_comment.png'
 
 const IconSVG = {
 	active_citized,
@@ -137,7 +138,8 @@ const IconSVG = {
 	white_search,
 	whiteCaret,
 	whiteTextLogo,
-	winner
+	winner,
+	no_comment
 }
 
 export default IconSVG;

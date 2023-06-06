@@ -14,6 +14,7 @@ import BottomNav from "../components/discovery/bottomnav";
 import OverView from "../components/projectdetails/overview";
 import Activity from "../components/projectdetails/activity";
 import DetailNav from "../components/projectdetails/detailnav";
+import SideBar from "../components/discovery/sidebar";
 
 
 const ProjectDetails = () => {
@@ -42,8 +43,8 @@ const ProjectDetails = () => {
 
 	return (
 		<div className="appLayout_dash-contents__f3VlW">
-			<div className="leftSideBar_sidebar__85S4S flex-shrink-0 z-20 w-32 bg-white py-8 justify-between">
-
+			<div>
+				<SideBar />	
 			</div>
 			<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 				<div className="projectPage_project-container__R1YM1 " id="project-cont">
@@ -59,6 +60,7 @@ const ProjectDetails = () => {
 						{console.log("project idd", project)}
 							<OverView
 								project={project}
+								setTab={setTab}
 							/>
 						</div>
 					}

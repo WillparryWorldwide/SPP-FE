@@ -47,7 +47,6 @@ const CommentModal = ()=>{
       setCommentOption(false)
       }
     }, [data])
-      console.log(data)
     return (
       <div onClick={HandleDeleteCancel} className='fixed p-2 md:p-5 top-0 left-0 w-full h-full bg-black/[.3] flex justify-center items-center z-[1000] '>
           <div 
@@ -59,7 +58,7 @@ const CommentModal = ()=>{
                     <div className="flex items-center space-x-3">
                       <h4 className="text-xs medium truncate">{project.name}</h4>
                     </div>
-                    <p className='text-lg text-black'>X</p>
+                    <p onClick={()=> setCommentOption(false)} className='text-lg text-black'>X</p>
                 </div>
                 <form onSubmit={handleSubmit} id='myform' className="block">
                   <div className="relative flex mt-5">
@@ -179,7 +178,7 @@ const CommentModal = ()=>{
                 </div>
             } */}
             <div className="px-8 py-3 text-sm flex space-x-3 justify-end bg-dark-grey ">
-              <button className="py-2 px-5 bg-transparent rounded-full text-white medium">
+              <button onClick={() => HandleDeleteCancel()} className="py-2 px-5 bg-transparent rounded-full text-white medium">
                 <p>Discard</p>
               </button>
               <button form="myform" className="py-2 px-5 rounded-full medium text-white bg-primary cursor-not-allowed">

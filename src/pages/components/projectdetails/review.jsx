@@ -1,12 +1,27 @@
 import { randomColor } from "../../../Helper/randomcolor";
-
+import IconSVG from "../../../Utils/svg";
 
 const Review = ({ project, setCommentOption }) => {
 	const { colors } = randomColor();
 	console.log(project?.comments);
 	return (
 		<>
-			{project?.comments.slice(0).reverse().map((comment) => {
+			{
+				project?.comments.length === 0 ?
+				(
+					<div className='flex h-full flex-col items-center justify-center'>
+					  <div className=' mx-auto'>
+						  <img src={IconSVG.no_comment} alt='window wipe' className='w-96' />
+					  </div>
+					  <p className="mt-5 medium text-center text-2xl">No reviews to show</p>
+					  <p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Looks like nobody has reviewed this project yet.</p>
+					  <div className="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Overview</div>
+					</div>
+		
+				  ) 
+				  :
+			
+			project?.comments.slice(0).reverse().map((comment) => {
 				return (
 					<div key={comment._id} className="mb-6 px-[5%]">
 						<div
@@ -56,7 +71,8 @@ const Review = ({ project, setCommentOption }) => {
 						</div>
 					</div>
 				)
-			})}
+			})
+			}
 
 		</>
 	);

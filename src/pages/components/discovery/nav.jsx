@@ -14,11 +14,11 @@ const DiscoveryNavBar = ({ option, handleOption }) => {
 	// Make All Project Fetch Request
 	useEffect(() => {
 		const makeFetch = async () =>{
-			console.log('here1')
+			console.log('here1 dd')
 			fetchProject();
 		}
 		makeFetch();
-		console.log("Rendering...");
+		console.log("Rendering... o");
 	}, []);
 
 	return (

@@ -6,7 +6,7 @@ const Comment = ({ nameOfProject, submitComment, commentData, setCommentData, ha
 	return (
 		<>
 			<div className="bg-white border-t-2 rounded-lg border-primary p-3 w-80">
-				{noCancel === null && <div className='text-primary flex '><p onClick={() => setComment(false)} className='ml-auto px-2'>X</p></div>}
+				{noCancel === null && <div className='text-primary flex '><p onClick={() => noCancel()} className='ml-auto px-2'>X</p></div>}
 				<h5 className="timeline-header">Comment on <a href="#x">{nameOfProject}</a> Project</h5>
 				<form onSubmit={submitComment} className='w-full text-sm'>
 					<div className="input-group input-group-sm w-full mb-3">

@@ -11,6 +11,8 @@ const Media = ({project, hostUrl}) => {
           <div className="projectPage_active-icon__x8GtR" />
         </div>
       </div>
+      
+      <div className=" projectPage_gallery___fDWv">
       {
         (project.images === undefined) ?
           (
@@ -26,8 +28,7 @@ const Media = ({project, hostUrl}) => {
           ) :
           (project.images).map((image) =>{
             return (
-              <div key={image.path} className=" projectPage_gallery___fDWv">
-                <div className="projectPage_gallery__item__xPnf7 ">
+                <div key={image.path} className="projectPage_gallery__item__xPnf7 ">
                   <div className="projectPage_image__nKqqh">
                     <span style={{boxSizing: 'border-box', display: 'block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, position: 'absolute', inset: 0}}>
                       <img alt="Second Niger Bridge" src={`${hostUrl}${image.path}`} style={{position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%', objectFit: 'cover'}} sizes="100vw"  />
@@ -35,11 +36,10 @@ const Media = ({project, hostUrl}) => {
                     </span>
                   </div>
                 </div>
-              </div>
             )
           })
       }
-      
+      </div>
 
       </div>
     </>
