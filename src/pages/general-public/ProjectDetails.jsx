@@ -68,9 +68,10 @@ const ProjectDetails = () => {
 						</div>
 					}
 					{tab === 2 &&
-						<div className="mt-10 sm:mt-20 p-10 h-full">
+						<div className="mt-10 sm:mt-20 py-10 h-full">
 							<Activity
 								project={project}
+								hostUrl={hostUrl}
 							/>
 						</div>
 					}

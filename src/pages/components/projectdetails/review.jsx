@@ -15,7 +15,7 @@ const Review = ({ project, setCommentOption }) => {
 					  </div>
 					  <p className="mt-5 medium text-center text-2xl">No reviews to show</p>
 					  <p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Looks like nobody has reviewed this project yet.</p>
-					  <div className="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Overview</div>
+					  <div onClick={() => setCommentOption(true)} className="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Add Comment</div>
 					</div>
 		
 				  ) 

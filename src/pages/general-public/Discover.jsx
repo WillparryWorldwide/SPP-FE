@@ -13,9 +13,9 @@ import CommentModal from './modal/commentmodal'
 
 const Discover = () => {
 	const [option, setOption] = useState(null)
-	const [nameOfProject, setNameOfProject] = useState("");
-	const [idOfProject, setIdOfProject] = useState("");
-	const [viewComment, setViewComment] = useState(false);
+	// const [nameOfProject, setNameOfProject] = useState("");
+	// const [idOfProject, setIdOfProject] = useState("");
+	// const [viewComment, setViewComment] = useState(false);
 	const { upDAteProject, loading: upDateLoading } = useUpdateProject();
 	const { fetchProject, data, hostUrl, loading } = useGetAllProject();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
@@ -74,38 +74,38 @@ const Discover = () => {
 		setOption(value)
 	}
 
-	const handleRadioSelection = (event) => {
-		setCommentData((prev) => ({ ...prev, radioValue: event.target.value }));
-	};
+	// const handleRadioSelection = (event) => {
+	// 	setCommentData((prev) => ({ ...prev, radioValue: event.target.value }));
+	// };
 
 	const displayComment = (name, id, item, e) => {
 		e.preventDefault()
-		setIdOfProject(id);
-		setNameOfProject(name);
+		// setIdOfProject(id);
+		// setNameOfProject(name);
 		setCommentItem(item)
-		setViewComment(true);
+		// setViewComment(true);
 		setCommentOption(true)
 	};
 
-	const submitComment = async (e) => {
-		e.preventDefault();
-		await upDAteProject(idOfProject, { c_name: commentData.name, c_description: commentData.description, c_review: commentData.radioValue });
-		setNameOfProject("");
-		setCommentData({
-			description: "",
-			radioValue: "",
-			name: "",
-		});
-		setViewComment(false)
-		setCommentOption(false)
-		setCommentItem(null)
-	}
+	// const submitComment = async (e) => {
+	// 	e.preventDefault();
+	// 	await upDAteProject(idOfProject, commentData);
+	// 	setNameOfProject("");
+	// 	setCommentData({
+	// 		description: "",
+	// 		radioValue: "",
+	// 		name: "",
+	// 	});
+	// 	setViewComment(false)
+	// 	setCommentOption(false)
+	// 	setCommentItem(null)
+	// }
 
-	const cancelViewComment = ()=>{
-		setViewComment(false)
-		setCommentOption(false)
-		setCommentItem(null)
-	}
+	// const cancelViewComment = ()=>{
+	// 	setViewComment(false)
+	// 	setCommentOption(false)
+	// 	setCommentItem(null)
+	// }
 
 	return (
 		<>
@@ -132,7 +132,7 @@ const Discover = () => {
 									))}
 								</div>
 							</div>
-							{viewComment && (
+							{/* {viewComment && (
 								<div className="hidden lg:flex">
 									<Comment
 										nameOfProject={nameOfProject}
@@ -145,12 +145,12 @@ const Discover = () => {
 										noCancel={cancelViewComment}
 									/>
 								</div>
-							)}
+							)} */}
 						</div>
 					</div>
 				</div>
 				<BottomNav />
-				{commentOption && <div className='lg:hidden'><CommentPopUp project={commentItem} /> </div>}
+				{commentOption && <div><CommentPopUp project={commentItem} /> </div>}
 			</div>
 		</>
 	)
