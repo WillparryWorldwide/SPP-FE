@@ -9,6 +9,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, Box, MenuItem, Grid, CircularProgress, Button, ButtonGroup } from "@mui/material";
+import { default as orgMilS } from "../../functions/organiseMilestone";
 
 
 const RegisterProject = () => {
@@ -112,24 +113,7 @@ const RegisterProject = () => {
 		setEditedMilestone(pre => pre + 1);
 	};
 
-	const organiseMilestone = () => {
-		let levelNo = 0;
-
-		milestones.forEach(m => {
-			if (m.level > levelNo) levelNo = m.level;
-		});
-
-		return () => {
-			const result = [];
-
-			milestones.forEach((m) => {
-				if (!Array.isArray(result[m.level])) result[m.level] = [];
-				result[m.level].push(m);
-			});
-
-			return result;
-		}
-	}
+	const organiseMilestone = orgMilS(milestones);
 
 	useEffect(() => {
 		const updateGrandTotal = () => {
@@ -473,7 +457,7 @@ const RegisterProject = () => {
 
 									{/* Milestone */}
 									<Grid container spacing={1} sx={{ marginTop: "3em" }}>
-										{organiseMilestone()().map((sortedM) => (
+										{organiseMilestone().map((sortedM) => (
 											sortedM.map((milestone, index, mArr) => <Grid key={index} item xs={12}>
 												<div className="flex justify-between items-center text-lg">
 													<h3>Milestone {milestone.level + 1}</h3>
