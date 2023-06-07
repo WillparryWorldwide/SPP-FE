@@ -2,14 +2,14 @@ import IconSVG from "../../../Utils/svg";
 import { SearchNav, Title } from "../components";
 import React, { useEffect, useState } from "react";
 import AxiosClient from "../../../Helper/axiosClient";
-import validateInput from "./functions/validateInput";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { TextField, Box, MenuItem, Grid, CircularProgress, Button, ButtonGroup } from "@mui/material";
+import { Box, Grid, CircularProgress, Button, ButtonGroup } from "@mui/material";
 import { default as orgMilS } from "../../functions/organiseMilestone";
+import MilestoneInput from "./functions/milestoneInput";
+import ProjectInputField from "./functions/projectInputFields";
+import registerProject from "./functions/registrProject";
 
 
 const RegisterProject = () => {
@@ -174,74 +174,7 @@ const RegisterProject = () => {
 		}
 	}
 
-	const create = (e) => {
-		e.preventDefault();
-
-		let submit = true;
-
-		submit = validateInput({ submit, inputDetails });
-
-		// if false do not create project
-		if (!submit) return;
-
-		// upload
-		const myFormData = new FormData();
-		const file = document.getElementById("file");
-
-		Object.keys(inputDetails).forEach(key => myFormData.append(inputDetails[key].name, inputDetails[key].value));
-		Object.values(file.files).forEach((f, index) => myFormData.append("images", file.files[index]));
-
-		setSubmitBtnStatus({
-			active: true,
-			text: "Loading..."
-		});
-
-		// submit project
-		axios.post('/project/register', myFormData, {
-			headers: {
-				"Content-Type": "multipart/form-data"
-			}
-		}).then(({ data }) => {
-			// get project result
-			window.toastr.success(data.data.message);
-			return data.data.result;
-		}).then(res => {
-			// set project id to milestones
-			setMileStones(prev => {
-				prev.forEach(m => {
-					m.project = res._id
-					delete m.id;
-				});
-				return prev;
-			});
-			setEditedMilestone(pre => pre + 1);
-		}).then(() => {
-			// submit the milestone
-			axios.post("/milestone/register", milestones).then(ress => {
-				window.toastr.success(ress.data.data.message);
-				window.document.querySelector("#project").reset();
-				setSubmitBtnStatus({
-					active: false,
-					text: "Register Project"
-				});
-			}).catch((error) => {
-				console.error("Error", error);
-				setSubmitBtnStatus({
-					active: false,
-					text: "Try Again"
-				});
-				window.document.querySelector("#project").reset();
-				window.toastr.error(error?.response ? error.response.data.message : error.message);
-			});
-		}).catch((error) => {
-			console.error("Error", error);
-			setSubmitBtnStatus({
-				active: false,
-				text: "Try Again"
-			});
-			window.toastr.error(error?.response ? error.response.data.message : error.message);
-		});
-	}
+	const create = registerProject(inputDetails, setSubmitBtnStatus, axios, setMileStones, setEditedMilestone, milestones);
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -267,194 +200,8 @@ const RegisterProject = () => {
 									encType="multipart/form-data"
 									noValidate
 									autoComplete="off">
-									<Grid container spacing={1}>
-										<Grid item xs={12}>
-											<TextField
-												fullWidth
-												type="text"
-												name={inputDetails.name.name}
-												value={inputDetails.name.value}
-												onChange={handelInputChange}
-												label="Title"
-											/>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<DemoContainer sx={{ width: "100%" }} components={['DatePicker']}>
-												<DatePicker
-													className="w-full"
-													label="Duration"
-													value={inputDetails.duration.value}
-													onChange={(e) => handelInputChange(e, inputDetails.duration.name)}
-												/>
-											</DemoContainer>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<DemoContainer components={['DatePicker']}>
-												<DatePicker
-													className="w-full"
-													label="Date Awarded"
-													value={inputDetails.date_awarded.value}
-													onChange={(e) => handelInputChange(e, inputDetails.date_awarded.name)}
-												/>
-											</DemoContainer>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<DemoContainer components={["TextField"]}>
-												<TextField
-
-													fullWidth type="number"
-													name={inputDetails.funding_amount.name}
-													value={inputDetails.funding_amount.value}
-													onChange={handelInputChange}
-													label="Funding"
-												/>
-											</DemoContainer>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												type="text"
-												name={inputDetails.state.name}
-												value={inputDetails.state.value}
-												onChange={handelInputChange}
-												label="State"
-											/>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												type="text"
-												name={inputDetails.local_goverment.name}
-												value={inputDetails.local_goverment.value}
-												onChange={handelInputChange}
-												label="LGA"
-												placeholder="Local Government Area"
-											/>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												type="text"
-												name={inputDetails.location.name}
-												value={inputDetails.location.value}
-												onChange={handelInputChange}
-												label="Location"
-											/>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												select
-												defaultValue=""
-												name={inputDetails.spp_code.name}
-												value={inputDetails.spp_code.value}
-												onChange={handelInputChange}
-												label="Contractor">
-												{contractors.map((option) => (
-													<MenuItem key={option._id} value={option._id}>
-														{option.SPP_name}
-													</MenuItem>
-												))}
-											</TextField>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												select
-												defaultValue=""
-												name={inputDetails.sector_code.name}
-												value={inputDetails.sector_code.value}
-												onChange={handelInputChange}
-												label="Sector">
-												{sectors.map((option) => (
-													<MenuItem key={option._id} value={option._id}>
-														{option.name}
-													</MenuItem>
-												))}
-											</TextField>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												select
-												defaultValue=""
-												name={inputDetails.mda_code.name}
-												value={inputDetails.mda_code.value}
-												onChange={handelInputChange}
-												label="MDA">
-												{mdas.map((option) => (
-													<MenuItem key={option._id} value={option._id}>
-														{option.name}
-													</MenuItem>
-												))}
-											</TextField>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												fullWidth
-												select
-												defaultValue={tagsExample[0]}
-												name={inputDetails.category.name}
-												value={inputDetails.category.value}
-												onChange={handelInputChange}
-												label="Category">
-												{tagsExample.map((option) => (
-													<MenuItem key={option} className="uppercase" value={option}>
-														{option}
-													</MenuItem>
-												))}
-											</TextField>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<TextField
-												inputProps={{
-													readOnly: true
-												}}
-												fullWidth
-												type="number"
-												name={inputDetails.grand_total.name}
-												value={inputDetails.grand_total.value}
-												onChange={handelInputChange}
-												label="Total"
-												placeholder="Total"
-											/>
-										</Grid>
-										<Grid item xs={12} md={6} lg={4}>
-											<input
-												accept="image/*"
-												className=""
-												style={{ display: 'none' }}
-												id="file"
-												multiple
-												type="file"
-												onChange={(e) => setImageText(e.target.files.length)}
-											/>
-											<label htmlFor="file">
-												<button
-													data-testid="login-button"
-													type="button"
-													onClick={(e) => e.currentTarget.parentElement.click()}
-													className="w-full rounded-full bg-primary text-white py-3 text-center">
-													<p className="medium">
-														{imageText ? `Uploading ${imageText} Image(s)` : "Upload Images"}
-													</p>
-												</button>
-											</label>
-										</Grid>
-										<Grid item xs={12}>
-											<TextField
-												fullWidth
-												multiline
-												type="text"
-												name={inputDetails.description.name}
-												value={inputDetails.description.value}
-												onChange={handelInputChange}
-												label="Description"
-												placeholder="Type here..."
-											/>
-										</Grid>
-									</Grid>
-
+									{/* input fields */}
+									<ProjectInputField inputDetails={inputDetails} handelInputChange={handelInputChange} contractors={contractors} sectors={sectors} mdas={mdas} tagsExample={tagsExample} setImageText={setImageText} imageText={imageText} />
 									{/* Milestone */}
 									<Grid container spacing={1} sx={{ marginTop: "3em" }}>
 										{organiseMilestone().map((sortedM) => (
@@ -468,77 +215,7 @@ const RegisterProject = () => {
 														<Button onClick={() => handleRemoveMilestone(milestone.id)}><IconTrash type="button" className={`text-abandoned cursor-pointer mx-1`} /></Button>
 													</ButtonGroup>
 												</div>
-												<div className="m-0 p-0">
-													<div className="my-2">
-														<TextField
-															fullWidth
-															select
-															defaultValue={milestoneText.preliminaries_sum}
-															name="typeOf"
-															value={milestone.typeOf}
-															onChange={(e) => handelMilestoneChange(e, milestone.id)}
-															label="Milestone Type">
-															{Object.keys(milestoneText).map((key) => (
-																<MenuItem key={key} value={key}>
-																	{milestoneText[key]}
-																</MenuItem>
-															))}
-														</TextField>
-													</div>
-													<div className={`flex`}>
-														<Grid container spacing={1}>
-															<Grid item xs={12} md={6} lg={3}>
-																<TextField
-																	fullWidth type="number"
-																	name="quantity"
-																	value={milestone.quantity}
-																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
-																	label="Quantity"
-																	placeholder="Enter quantity"
-																/>
-															</Grid>
-															<Grid item xs={12} md={6} lg={3}>
-																<TextField
-																	fullWidth type="number"
-																	name="rate"
-																	value={milestone.rate}
-																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
-																	label="Rate"
-																	placeholder="Enter rate"
-																/>
-															</Grid>
-															<Grid item xs={12} md={6} lg={3}>
-																<TextField
-																	fullWidth type="number"
-																	name="amount"
-																	value={milestone.amount}
-																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
-																	label="Amount"
-																	placeholder="Enter amount"
-																/>
-															</Grid>
-															<Grid item xs={12} md={6} lg={3}>
-																<DatePicker
-																	label="Duration"
-																	value={milestone.duration}
-																	onChange={(e) => handelMilestoneChange(e, milestone.id, "duration")}
-																/>
-															</Grid>
-															<Grid item xs={12}>
-																<TextField
-																	fullWidth
-																	multiline
-																	type="text"
-																	name="description"
-																	value={milestone.description}
-																	onChange={(e) => handelMilestoneChange(e, milestone.id)}
-																	label="Description"
-																	placeholder="Type here..."
-																/>
-															</Grid>
-														</Grid>
-													</div>
-												</div>
+												<MilestoneInput milestoneText={milestoneText} milestone={milestone} handelMilestoneChange={handelMilestoneChange} />
 											</Grid>
 											)))}
 									</Grid>

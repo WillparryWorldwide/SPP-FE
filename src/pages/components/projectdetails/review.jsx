@@ -1,9 +1,11 @@
+import { useAuthUser } from "react-auth-kit";
 import { randomColor } from "../../../Helper/randomcolor";
 import IconSVG from "../../../Utils/svg";
 
 const Review = ({ project, setCommentOption }) => {
 	const { colors } = randomColor();
-	console.log(project?.comments);
+	const userData = useAuthUser()();
+	
 	return (
 		<>
 			{
@@ -46,7 +48,7 @@ const Review = ({ project, setCommentOption }) => {
 												</h4>
 											</div>
 											<div className="projectPage_update-detail__O0bzg">
-												<p className="projectPage_posted__Sj_3G">7 months ago</p>
+												<p className="projectPage_posted__Sj_3G">Few Hours Ago</p>
 											</div>
 										</div>
 									</div>

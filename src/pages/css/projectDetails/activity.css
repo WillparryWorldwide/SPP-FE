@@ -1,0 +1,8 @@
+.editBtn {
+	opacity: 0;
+	transition: opacity .3s ease-in;
+}
+
+.editContainer :hover .editBtn {
+	opacity: 1
+}

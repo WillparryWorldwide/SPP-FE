@@ -24,8 +24,8 @@ const StyledMenu = styled((props) => (
 ))(({ theme }) => ({
 	'& .MuiPaper-root': {
 		borderRadius: 6,
+		width: "50%",
 		marginTop: theme.spacing(1),
-		minWidth: 180,
 		color:
 			theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
 		boxShadow:
@@ -67,7 +67,11 @@ export default function CustomizedMenus({ id, name, onChanged }) {
 		{ name: "CLOSED", icon: <StopCircleIcon /> }
 	];
 
-	const handleClose = (val) => {
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
+
+	const updateMenu = (val) => {
 		upDAteProject(id, {status: val});
 		onChanged(prev => prev + 1);
 		setAnchorEl(null);
@@ -94,12 +98,11 @@ export default function CustomizedMenus({ id, name, onChanged }) {
 				}}
 				anchorEl={anchorEl}
 				open={open}
-				onClose={handleClose}
-			>
+				onClose={handleClose}>
 				{
 					projectStatus.map(status => {
 						if (status.name.toLowerCase() === name.toLowerCase()) return null;
-						return <MenuItem key={status.name} onClick={() => handleClose(status.name)} disableRipple>
+						return <MenuItem key={status.name} onClick={() => updateMenu(status.name)} disableRipple>
 							{status.icon}
 							{status.name}
 						</MenuItem>

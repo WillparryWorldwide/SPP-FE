@@ -56,7 +56,7 @@ const OverView = ({ project, setTab, onEdit }) => {
 	const [inputDetails, setInputDetails] = useState(initialInput);
 
 	const handleAddFunding = () => {
-		upDAteProject(project._id, {funding_amount_int: inputDetails.funding_amount.value});
+		upDAteProject(project._id, {funding_amount_int: inputDetails.funding_amount.value}).then(r => setOpenFundingModal(false));
 	}
 
 	// function
@@ -154,9 +154,9 @@ const OverView = ({ project, setTab, onEdit }) => {
 				<div className="flex justify-between">
 					<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z w-auto" data-testid="project-name">{project.name}</p>
 					{
-						showUpdateStatusMenu && <div className="flex justify-between items-center mr-5">
+						showUpdateStatusMenu && <div className="flex sm:justify-center md:justify-between items-center m-5 md:m-0 md:mr-5">
 							<UpdateStatusMenu id={project._id} name={project.status} onChanged={onEdit} />
-							<Button className="ml-5" color="inherit" onClick={() => setOpenFundingModal(pre => !pre)}><IconPlus /> Add Funding</Button>
+							<Button className="ml-5" color="inherit" size="small" onClick={() => setOpenFundingModal(pre => !pre)}><IconPlus /> Add Funding</Button>
 						</div>
 					}
 				</div>
