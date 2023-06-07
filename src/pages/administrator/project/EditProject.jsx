@@ -10,13 +10,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TextField, Box, MenuItem, Grid, CircularProgress, Button, ButtonGroup } from "@mui/material";
 
-
-const RegisterProject = () => {
+const EditProject = () => {
 	const axios = AxiosClient();
 	const [imageText, setImageText] = useState(null);
 	const [submitBtnStatus, setSubmitBtnStatus] = useState({
 		active: false,
-		text: "Register Project"
+		text: "Update Project"
 	});
 	const [editedMilestone, setEditedMilestone] = useState(0);
 	const [sectors, setSectors] = useState([]);
@@ -263,7 +262,7 @@ const RegisterProject = () => {
 		<LocalizationProvider dateAdapter={AdapterMoment}>
 			<div className="sticky top-0 z-50">
 				<SearchNav />
-				<Title headText="Register A Project" icon={
+				<Title headText="Edit A Project" icon={
 					<span style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, position: 'relative', maxWidth: '100%' }}>
 						<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, maxWidth: '100%' }}>
 							<img alt="empty" aria-hidden="true" src={IconSVG.empty} style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0 }} />
@@ -580,4 +579,4 @@ const RegisterProject = () => {
 	)
 }
 
-export default RegisterProject;
+export default EditProject;

@@ -20,7 +20,7 @@ const SearchBar = ({handleOption}) => {
 				<div className="flex items-center">
 					<div className="w-full flex justify-between items-center relative">
 						<div className="text-tiny px-5 rounded-full bg-gray-200 items-center flex flex-row justify-between relative w-full">
-							<input ref={searchRef} type="text" className="border-transparent outline-none text-light-grey search-input flex-grow px-2 py-3 bg-gray-200 w-full" id="search" placeholder="Search for any Project, LGA, State or Contractor" autoComplete="off" />
+							<input ref={searchRef} onChange={() => handleOption(searchRef.current.value)} type="text" className="border-transparent outline-none text-light-grey search-input flex-grow px-2 py-3 bg-gray-200 w-full" id="search" placeholder="Search for any Project, LGA, State or Contractor" />
 							<button onClick={() => handleOption(searchRef.current.value)} className="bg-primary rounded-r-full px-5 h-full items-center absolute right-0 top-0 flex">
 								<img alt="search" loading="lazy" width="16" height="15" style={{ color: 'transparent' }} src={IconSVG.search_icon} />
 							</button>

@@ -89,7 +89,7 @@ const Discover = () => {
 
 	const submitComment = async (e) => {
 		e.preventDefault();
-		await upDAteProject(idOfProject, commentData);
+		await upDAteProject(idOfProject, { c_name: commentData.name, c_description: commentData.description, c_review: commentData.radioValue });
 		setNameOfProject("");
 		setCommentData({
 			description: "",

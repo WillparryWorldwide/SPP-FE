@@ -21,6 +21,7 @@ const ViewProject = () => {
 	const { fetchProject, data: project, loading: isLoading, hostUrl } = useGetProject()
 	// const [isLoading, setIsLoading] = useState(false)
 	const [tab, setTab] = useState(1)
+	// const { commentOption, setCommentOption, CommentPopUp, data: commentData } = CommentModal()
 
 
 	// const fetchProject = async () => {
@@ -41,9 +42,6 @@ const ViewProject = () => {
 
 	return (
 		<div className="appLayout_dash-contents__f3VlW">
-			<div className="leftSideBar_sidebar__85S4S flex-shrink-0 z-20 w-32 bg-white py-8 justify-between">
-
-			</div>
 			<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 				<div className="projectPage_project-container__R1YM1 " id="project-cont">
 					<DetailNav
@@ -55,8 +53,10 @@ const ViewProject = () => {
 					/>
 					{tab === 1 &&
 						<div className="mt-10 sm:mt-20 h-full">
+						{console.log("project idd", project)}
 							<OverView
 								project={project}
+								setTab={setTab}
 							/>
 						</div>
 					}
@@ -79,6 +79,7 @@ const ViewProject = () => {
 						<div className="mt-10 sm:mt-20 h-full">
 							<Review
 								project={project}
+								// setCommentOption={setCommentOption}
 							/>
 						</div>
 					}

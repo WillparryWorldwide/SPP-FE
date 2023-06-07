@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { AdminDashboardLayout } from "./pages/administrator/layout";
-import { Login, ViewAllProject, ADashboard, RegisterProject, Profile, ListSPPUser, ProjectDetails, ViewProject, Discover, RegisterAdmin, RegisterContractor, RegisterSector, RegisterMDA } from "./pages";
+import { Login, ViewAllProject, ADashboard, RegisterProject, Profile, ListSPPUser, ProjectDetails, ViewProject, Discover, RegisterAdmin, RegisterContractor, RegisterSector, RegisterMDA, EditProject } from "./pages";
 
 const Router = () => {
 	return (
@@ -29,8 +29,9 @@ const Router = () => {
 
 					<Route path="projects">
 						<Route index element={<ViewAllProject />} />
-						<Route path="view/:id" element={<ViewProject />} />
+						<Route path="view/:id" element={<ProjectDetails />} />
 						<Route path="register" element={<RegisterProject />} />
+						<Route path="edit/:id" element={<EditProject />} />
 					</Route>
 				</Route>
 			</Route>

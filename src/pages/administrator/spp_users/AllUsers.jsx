@@ -67,7 +67,6 @@ export default function AllUser() {
 
 	return <>
 		<div className="sticky top-0 z-50">
-			<SearchNav />
 			<Title headText="Users"
 				icon={
 					<span style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, position: 'relative', maxWidth: '100%' }}>

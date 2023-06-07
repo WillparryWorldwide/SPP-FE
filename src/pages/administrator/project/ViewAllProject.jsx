@@ -13,7 +13,7 @@ import moment from "moment";
 import { SearchNav, Title } from "../components";
 import IconSVG from "../../../Utils/svg";
 import { IconPlus } from "@tabler/icons-react";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Toolbar, Typography } from "@mui/material";
 
 const columns = [
 	{ id: "name", label: "Name", minWidth: 170, format: (val) => val },
@@ -22,7 +22,7 @@ const columns = [
 	{ id: "code", label: "Code", minWidth: 70, format: (val) => val },
 	{ id: "grand_total", label: "Grand Total", minWidth: 70, format: (val) => val },
 	{ id: "duration", label: "Duration", minWidth: 70, format: (val) => moment(val, "YYYYMMDD").fromNow() },
-	{ id: "open", label: "Status", minWidth: 70, format: (val) => val?.toString() }
+	{ id: "status", label: "Status", minWidth: 70, format: (val) => val }
 ];
 
 export default function AllProjects() {
@@ -51,7 +51,6 @@ export default function AllProjects() {
 
 	return <>
 		<div className="sticky top-0 z-50">
-			<SearchNav />
 			<Title headText="All Projects"
 				icon={
 					<span style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: 1, border: 0, margin: 0, padding: 0, position: 'relative', maxWidth: '100%' }}>
@@ -61,12 +60,7 @@ export default function AllProjects() {
 						<img alt="icon" src={IconSVG.categoryIcon} decoding="async" data-nimg="intrinsic" className="leftSideBar_nav-icon__7Dhay" style={{ position: 'absolute', inset: 0, boxSizing: 'border-box', padding: 0, border: 'none', margin: 'auto', display: 'block', width: 0, height: 0, minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} />
 						<noscript />
 					</span>
-				}>
-				<Link to="/spp/dashboard/projects/register" className="bg-grey-white cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex font-bold hover:bg-EB">
-					<IconPlus />
-					Add Project
-				</Link>
-			</Title>
+				} />
 		</div>
 		<div className="h-full  p-6">
 			<div>
@@ -74,6 +68,22 @@ export default function AllProjects() {
 					{
 						!loading ?
 							<Paper sx={{ width: "100%", overflow: "hidden" }}>
+								<Toolbar sx={{
+									backgroundColor: "#3878f4"
+								}}>
+									<Typography
+										sx={{ flex: '1 1 100%' }}
+										variant="h6"
+										color="white"
+										id="tableTitle"
+										component="div">
+										Projects
+									</Typography>
+									<Link to="/spp/dashboard/projects/register" className="mx-1 bg-grey-white cursor-pointer rounded-full w-fit items-center text-xs p-2 px-4 flex-shrink-0 border border-grey-stroke flex font-bold hover:bg-EB">
+										<IconPlus />
+										Add Project
+									</Link>
+								</Toolbar>
 								<TableContainer sx={{ maxHeight: 440 }}>
 									<Table stickyHeader aria-label="sticky table">
 										<TableHead>
@@ -83,9 +93,7 @@ export default function AllProjects() {
 														key={column.id}
 														style={{ minWidth: column.minWidth }}
 														sx={{
-															color: "white",
-															backgroundColor: "#3878f4",
-															border: ".3px solid white"
+															border: ".3px solid #e0e0e0"
 														}}>
 														{column.label}
 													</TableCell>

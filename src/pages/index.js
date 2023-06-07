@@ -6,6 +6,7 @@ export { default as Welcome } from "./general-public/LandingPage/Welcome";
 export { default as GeneralPublic } from "./general-public/generalpublic";
 export { default as ListSPPUser } from "./administrator/spp_users/AllUsers";
 export { default as ProjectDetails } from "./general-public/ProjectDetails";
+export { default as EditProject } from "./administrator/project/EditProject";
 export { default as ViewProject } from "./administrator/project/ViewProject";
 export { default as RegisterMDA } from "./administrator/spp_users/RegisterMDA";
 export { default as RegisterAdmin } from "./administrator/spp_users/RegisterAdmin";

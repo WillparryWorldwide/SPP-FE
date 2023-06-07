@@ -1,5 +1,5 @@
 import "../../assets/css/tailwind.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import "../../assets/css/3f1327110777dc38.css";
 import "../../assets/css/d35beeb833360611.css";
 import "../../assets/css/4c4867adecdc883a.css";
@@ -19,6 +19,8 @@ import SideBar from "../components/discovery/sidebar";
 
 const ProjectDetails = () => {
 	const { id } = useParams();
+	const location = useLocation();
+	const hideSideBar = location.pathname.search("/spp") === 0;
 	// const [project, setProject] = useState([])
 	const { fetchProject, data: project, loading: isLoading, hostUrl } = useGetProject()
 	// const [isLoading, setIsLoading] = useState(false)
@@ -44,7 +46,9 @@ const ProjectDetails = () => {
 	return (
 		<div className="appLayout_dash-contents__f3VlW">
 			<div>
-				<SideBar />	
+				{
+					!hideSideBar && <SideBar />
+				}
 			</div>
 			<div className="appLayout_mainContents__Fvfpc overflow-y-auto flex flex-col w-full pb-16 lg:pb-0 ">
 				<div className="projectPage_project-container__R1YM1 " id="project-cont">
@@ -57,7 +61,6 @@ const ProjectDetails = () => {
 					/>
 					{tab === 1 &&
 						<div className="mt-10 sm:mt-20 h-full">
-						{console.log("project idd", project)}
 							<OverView
 								project={project}
 								setTab={setTab}

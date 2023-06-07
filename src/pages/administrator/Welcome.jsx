@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { SearchNav, Title } from "./components";
+import { Title } from "./components";
 import IconSVG from "../../Utils/svg";
 import SiteImages from "../../Utils/images";
 import Paper from '@mui/material/Paper';
@@ -14,8 +14,11 @@ import useGetAllContractors from '../../Hooks/useGetAllContractors';
 import useAllSectors from '../../Hooks/useAllSectors';
 import { CircularProgress, Toolbar, Typography } from '@mui/material';
 import useAllMDA from "../../Hooks/useAllMDA";
+import useSearchProject from '../../Hooks/usesearchproject';
 import useAllUpdateHistory from "../../Hooks/useHistory";
 import moment from "moment/moment";
+import SearchBar from "../components/discovery/searchBar";
+import ItemList from "../components/muiComponent/list";
 
 const historyCol = [
 	{ id: 'changed_by', label: 'User', minWidth: 70, force: (val) => val?.firstname },
@@ -24,9 +27,12 @@ const historyCol = [
 ];
 
 const Welcome = () => {
+	const [option, setOption] = useState(null);
+
 	const [page, setPage] = React.useState(0);
 	const { sectors, fetchSectors } = useAllSectors();
 	const { mdas, fetchMdas } = useAllMDA();
+	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
 	const { updateHistory, fetchUpdateHistory, loadingUpdateHistory } = useAllUpdateHistory();
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const { data: allContractors, fetchContractors } = useGetAllContractors();
@@ -40,6 +46,11 @@ const Welcome = () => {
 		setPage(0);
 	};
 
+	const handleOption = (value) => {
+		console.log("option", value);
+		setOption(value)
+	};
+
 	useEffect(() => {
 		fetchUpdateHistory();
 		fetchContractors();
@@ -48,10 +59,31 @@ const Welcome = () => {
 		console.log("Rendering...");
 	}, []);
 
+	// Make All Project Fetch Request
+	useEffect(() => {
+		//  Make Search Request
+		const makeSearchFetch = async () => {
+			await searchProject(option);
+		}
+
+		//  Set project to Search Request Data
+		if (option) makeSearchFetch();
+
+		console.log("Rendering...");
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [option]);
+
 	return (
 		<>
 			<div className="sticky top-0 z-50">
-				<SearchNav />
+				<SearchBar handleOption={handleOption} />
+				<div style={{
+					position: "relative"
+				}}>
+					{
+						option && <ItemList dataArray={searchData} isLoading={searchLoading} />
+					}
+				</div>
 				<Title
 					headText="Welcome"
 					icon={

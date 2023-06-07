@@ -6,8 +6,6 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import EscalatorWarningIcon from '@mui/icons-material/EscalatorWarning';
-import ReviewsIcon from '@mui/icons-material/Reviews';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -15,24 +13,32 @@ import moment from 'moment';
 import SiteImages from '../../../Utils/images';
 import useProjectMilestone from '../../../Hooks/useProjectMilestone';
 import IconSVG from '../../../Utils/svg';
-
+import UpdateStatusMenu from '../muiComponent/dropDownMenu';
+import { useAuthUser } from 'react-auth-kit';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Button, ButtonGroup } from '@mui/material';
+import { Edit } from '@mui/icons-material';
 
 const OverView = ({ project, setTab }) => {
 	const options = { month: 'long', year: 'numeric', day: 'numeric' };
 	const [year, setYear] = useState(0);
 	const [month, setMonth] = useState(0);
+	const navigate = useNavigate();
 	const [day, setDay] = useState(0);
 	const [timeLine, setTimeLine] = useState('Year');
 	const [moneySpent, setMoneySpent] = useState(0);
+	const userData = useAuthUser()();
 	const [progress, setProgress] = useState(0);
 	const { pMilestone, fetchProjectMilestone } = useProjectMilestone();
-console.log(pMilestone)
+	const location = useLocation();
+	const showUpdateStatusMenu = ((userData?.role?.toLowerCase() === "admin") && (location.pathname.search("/spp") === 0));
 
-	useEffect(()=>{
-		if(project){
+	useEffect(() => {
+		if (project._id) {
 			fetchProjectMilestone(project._id);
 		}
-	}, [project])
+		console.log("Rendering...");
+	}, [project._id]);
 
 	useEffect(() => {
 
@@ -69,14 +75,20 @@ console.log(pMilestone)
 		} else {
 			setTimeLine(`${day} Days`)
 		}
-	}, [year, month])
+	}, [year, month]);
 
-
-	console.log("pM", pMilestone);
 	return (
-		<>
+		project._id ?
 			<div className="flex-shrink-0">
-				<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">{project.name}</p>
+				<div className="flex justify-between">
+					<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">{project.name}</p>
+					{
+						showUpdateStatusMenu && <div className="flex justify-between items-center mr-5">
+							<UpdateStatusMenu id={project._id} name={project.status} />
+							<Button className="ml-5" color="error" onClick={navigate("/spp/dashboard/projects/edit/" + project._id)}><Edit /> Edit</Button>
+						</div>
+					}
+				</div>
 				<div className="flex items-start flex-wrap lg:flex-nowrap justify-between mb-7 px-6 mt-5">
 					<div className="w-full lg:w-9/12">
 						<div className="">
@@ -96,33 +108,11 @@ console.log(pMilestone)
 						<div className="projectPage_project-location-card__f7FjG">
 							<div className="flex items-center text-xs space-x-1">
 								<p className="text-dark-grey medium">
-									<span className=""><span className="capitalize">{(project.state)?.toUpperCase()}</span><span className="text-light-grey-2"></span></span></p>
+									<span className=""><span className="capitalize">{(project.local_goverment)?.toUpperCase()}</span><span className="text-light-grey-2"></span></span>
+								</p>
 							</div>
 							<div className="flex items-center justify-between mt-4 text-2-xs">
-								<p className="uppercase medium text-input-border">STATES</p>
-								{/* <div className="relative group-seeall" data-testid="project-geo_location_see_all">
-									<button
-										className="flex items-center space-x-1 cursor-pointer focus:outline-none">
-										<p className="text-dark-grey medium mr-1">See All</p><span
-											style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
-											<span style={{ boxSizing: 'border-box', display: 'block', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', maxWidth: '100%' }}>
-												<img style={{ display: 'block', maxWidth: '100%', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0' }} alt="" aria-hidden="true" src="" />
-											</span>
-											<img alt="" src="" className="" style={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', boxSizing: 'border-box', padding: '0', border: 'none', margin: 'auto', display: 'block', width: '0', height: '0', minWidth: '100%', maxWidth: '100%', minHeight: '100%', maxHeight: '100%' }} /></span>
-									</button>
-									<div className="w-40 lg:w-52 p-4 right-2 top-5 absolute rounded-lg bg-white z-40 hidden"
-										style={{ boxShadow: '0px 9px 45px rgba(61, 132, 172, 0.2)' }}>
-										<p className="text-sm medium text-accepted mb-5">All States</p>
-										<div className="flex items-center space-x-3">
-											<p className="text-accepted medium">•</p>
-											<p className="medium text-dark-grey text-sm mb-1">Municipal Area Council, FCT-ABUJA</p>
-										</div>
-										<div className="flex items-center space-x-3">
-											<p className="text-accepted medium">•</p>
-											<p className="medium text-dark-grey text-sm mb-1">Igabi, KADUNA</p>
-										</div>
-									</div>
-								</div> */}
+								<p className="uppercase medium text-input-border">LOCAL GOVERMENT AREA</p>
 							</div>
 						</div>
 					</div>
@@ -132,13 +122,13 @@ console.log(pMilestone)
 						<p className="text-accepted">•</p>
 						<div>
 							<p className="text-xs uppercase">{project.code}</p>
-							<p className="text-input-border text-2-xs uppercase">project CODE</p>
+							<p className="text-input-border text-2-xs uppercase">PROJECT CODE</p>
 						</div>
 					</div>
 					<div className="flex items-center space-x-3 py-5 border-b border-grey-stroke">
 						<p className="text-accepted">•</p>
 						<div>
-							<p className="text-xs">{(project.category)?.toUpperCase()}</p>
+							<p className="text-xs">{(project.sector_code?.name)?.toUpperCase()}</p>
 							<p className="text-input-border text-2-xs uppercase">SECTOR</p>
 						</div>
 					</div>
@@ -146,7 +136,7 @@ console.log(pMilestone)
 						<p className="text-accepted">•</p>
 						<div>
 							<p className="text-xs">{(project.location)?.toUpperCase()}</p>
-							<p className="text-input-border text-2-xs uppercase">Local Government Area</p>
+							<p className="text-input-border text-2-xs uppercase">LOCATION</p>
 						</div>
 					</div>
 				</div>
@@ -155,13 +145,12 @@ console.log(pMilestone)
 						<div className="bg-white rounded-lg p-4 mb-2 flex justify-between items-center w-full lg:w-6/12">
 							<div className="flex flex-col justify-between w-5/12">
 								<div>
-									<p className="text-2xl capitalize medium">{(project.status)?.toLowerCase()}</p>
+									<p className="text-2xl capitalize medium">{(project.status)?.toUpperCase()}</p>
 									<p className="projectPage_project-info-card-title__qwoK4">PROJECT STATUS</p>
 								</div>
 							</div>
 							<div className="w-6/12 h-full flex flex-col justify-center">
 								<Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', height: '100%' }}>
-									{console.log("progress", progress)};
 									<CircularProgress size={'100%'} color="primary" variant="determinate" value={progress} />
 									<Box
 										sx={{
@@ -362,7 +351,7 @@ console.log(pMilestone)
 						<div className="projectPage_project-overview-card__6pxG4">
 							<div className="flex justify-between">
 								<p className="medium">Project Reviews </p>
-								<div onClick={()=> setTab(4)} className="projectPage_see-all__FjyO9 text-primary" >view all</div>
+								<div onClick={() => setTab(4)} className="projectPage_see-all__FjyO9 text-primary" >view all</div>
 							</div>
 							<div className="mt-8 flex flex-col lg:flex-row lg:items-center">
 								{/* NOTE: Make a calculaiton for this part, not important */}
@@ -423,7 +412,7 @@ console.log(pMilestone)
 					<div className="projectPage_project-update-list__ChjQW"></div>
 				</div>
 			</div>
-		</>
+			: <CircularProgress />
 	)
 }
 
