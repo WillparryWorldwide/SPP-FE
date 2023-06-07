@@ -20,28 +20,19 @@ import SideBar from "../components/discovery/sidebar";
 const ProjectDetails = () => {
 	const { id } = useParams();
 	const location = useLocation();
+	const [hasMenuChange, setHasMenuChange] = useState(0);
 	const hideSideBar = location.pathname.search("/spp") === 0;
+
 	// const [project, setProject] = useState([])
 	const { fetchProject, data: project, loading: isLoading, hostUrl } = useGetProject()
 	// const [isLoading, setIsLoading] = useState(false)
 	const [tab, setTab] = useState(1)
-	const { commentOption, setCommentOption, CommentPopUp, data: commentData } = CommentModal()
-
-	// const fetchProject = async () => {
-	//     try {
-	//         const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/project/only/${id}`);
-	//         console.log(data)
-	//         setProject(data.data.result)
-	//         setIsLoading(true);
-	//     } catch (error) {
-	//         console.log(error);
-	//     }
-	// }
+	const { commentOption, setCommentOption, CommentPopUp, data: commentData } = CommentModal();
 
 	useEffect(() => {
-		fetchProject(id)
+		fetchProject(id);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [commentData])
+	}, [commentData, hasMenuChange]);
 
 	return (
 		<div className="appLayout_dash-contents__f3VlW">
@@ -63,6 +54,7 @@ const ProjectDetails = () => {
 						<div className="mt-10 sm:mt-20 h-full">
 							<OverView
 								project={project}
+								onEdit={setHasMenuChange}
 								setTab={setTab}
 							/>
 						</div>

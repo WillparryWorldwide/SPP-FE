@@ -34,12 +34,14 @@ const Activity = ({ project, hostUrl }) => {
 				<div className="">
 					<p className="text-2-xs text-light-grey-2"></p>
 					<div className="mt-1">
-						<div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer">
+						<div className="flex items-center space-x-2 flex-shrink-0 mt-1 cursor-pointer ml-5">
 							<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
 								<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={SiteImages.federal} />
 							</div>
-							<p className="text-2-xs uppercase text-input-border">{project.status}</p>
-							<p className="text-sm lg:text-lg medium" data-testid="project-display_name">Milestones to be achived</p>
+							<div>
+								<p className="text-2-xs uppercase text-input-border">{project.status}</p>
+								<p className="text-sm lg:text-lg medium" data-testid="project-display_name">Milestones to be achived</p>
+							</div>
 						</div>
 					</div>
 				</div>

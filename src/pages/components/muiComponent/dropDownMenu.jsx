@@ -49,10 +49,10 @@ const StyledMenu = styled((props) => (
 	},
 }));
 
-export default function CustomizedMenus({ id, name }) {
+export default function CustomizedMenus({ id, name, onChanged }) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
-	const {data, loading, upDAteProject} = useUpdateProject();
+	const {upDAteProject} = useUpdateProject();
 
 
 	const handleClick = (event) => {
@@ -69,6 +69,7 @@ export default function CustomizedMenus({ id, name }) {
 
 	const handleClose = (val) => {
 		upDAteProject(id, {status: val});
+		onChanged(prev => prev + 1);
 		setAnchorEl(null);
 	};
 

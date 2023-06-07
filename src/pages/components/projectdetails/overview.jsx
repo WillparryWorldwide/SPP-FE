@@ -15,15 +15,16 @@ import useProjectMilestone from '../../../Hooks/useProjectMilestone';
 import IconSVG from '../../../Utils/svg';
 import UpdateStatusMenu from '../muiComponent/dropDownMenu';
 import { useAuthUser } from 'react-auth-kit';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, ButtonGroup } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { useLocation } from 'react-router-dom';
+import { Button, TextField } from '@mui/material';
+import { IconPlus } from "@tabler/icons-react";
+import CustomModal from '../../general-public/modal/customModal';
+import useUpdateProject from '../../../Hooks/useupdateproject';
 
-const OverView = ({ project, setTab }) => {
+const OverView = ({ project, setTab, onEdit }) => {
 	const options = { month: 'long', year: 'numeric', day: 'numeric' };
 	const [year, setYear] = useState(0);
 	const [month, setMonth] = useState(0);
-	const navigate = useNavigate();
 	const [day, setDay] = useState(0);
 	const [timeLine, setTimeLine] = useState('Year');
 	const [moneySpent, setMoneySpent] = useState(0);
@@ -32,6 +33,51 @@ const OverView = ({ project, setTab }) => {
 	const { pMilestone, fetchProjectMilestone } = useProjectMilestone();
 	const location = useLocation();
 	const showUpdateStatusMenu = ((userData?.role?.toLowerCase() === "admin") && (location.pathname.search("/spp") === 0));
+	// For update project
+	const {upDAteProject, loading: updatingProject, data: updatedData } = useUpdateProject();
+	// For modal
+	const [openFundingModal, setOpenFundingModal] = useState(false);
+	// for input
+	const initialInput = {
+		grand_total: { name: "grand_total", focus: () => { }, value: 0 },
+		local_goverment: { name: "local_goverment", focus: () => { }, value: '' },
+		mda_code: { name: "mda_code", focus: () => { }, value: '' },
+		funding_amount: { name: "funding_amount", focus: () => { }, value: '' },
+		name: { name: "name", focus: () => { }, value: '' },
+		state: { name: "state", focus: () => { }, value: '' },
+		sector_code: { name: "sector_code", focus: () => { }, value: '' },
+		location: { name: "location", focus: () => { }, value: '' },
+		category: { name: "category", focus: () => { }, value: '' },
+		duration: { name: "duration", focus: () => { }, value: null },
+		date_awarded: { name: "date_awarded", focus: () => { }, value: null },
+		description: { name: "description", focus: () => { }, value: '' },
+		spp_code: { name: "spp_code", focus: () => { }, value: '' }
+	}
+	const [inputDetails, setInputDetails] = useState(initialInput);
+
+	const handleAddFunding = () => {
+		upDAteProject(project._id, {funding_amount_int: inputDetails.funding_amount.value});
+	}
+
+	// function
+	const handelInputChange = (e, dateName) => {
+		let data = e.target;
+
+		if (!data) data = { name: dateName, value: e, focus: null };
+
+		let { name, value, focus } = data;
+
+		let innerHtml = '';
+
+		if (e?.target?.TagName === "SELECT") innerHtml = e?.target?.selectedOptions[0]?.innerHTML;
+
+		setInputDetails(prev => {
+			return {
+				...prev,
+				[name]: { name, focus, value, innerHtml }
+			}
+		});
+	}
 
 	useEffect(() => {
 		if (project._id) {
@@ -46,8 +92,6 @@ const OverView = ({ project, setTab }) => {
 		var compMilstone = 0;
 
 		if (pMilestone.length > 0) {
-			console.log("pM", pMilestone);
-
 			pMilestone.forEach(element => {
 				if (element.completed) {
 					compMilstone = compMilstone + 1;
@@ -59,33 +103,60 @@ const OverView = ({ project, setTab }) => {
 			setProgress(((compMilstone / ((pMilestone).length * 3)) * 100));
 			setDay(moment(project.duration).diff(project.date_awarded, 'days'));
 			setYear(moment(project.duration).diff(project.date_awarded, 'Years'));
-			setDay(moment(project.duration).diff(project.date_awarded, 'days'));
 			setMonth(moment(project.duration).diff(project.date_awarded, 'Months'));
 		}
 
 		console.log("Rendering...");
-	}, [pMilestone]);
-
+	}, [pMilestone.length, updatedData?.funding_amount?.length]);
 
 	useEffect(() => {
 		if (year > 0) {
-			setTimeLine(`${year} Years`)
+			setTimeLine(`${year} Years`);
 		} else if (month > 0) {
-			setTimeLine(`${month} Months`)
+			setTimeLine(`${month} Months`);
 		} else {
-			setTimeLine(`${day} Days`)
+			setTimeLine(`${day} Days`);
 		}
 	}, [year, month]);
 
 	return (
 		project._id ?
 			<div className="flex-shrink-0">
+				<CustomModal title="Add More Funding" confirm={{ confirmText: "confirm", cancelText: "Close", isLoading: updatingProject, handleConfirm: handleAddFunding }} open={{init: openFundingModal, set: setOpenFundingModal}}>
+					<div className="w-full flex-shrink-0 mt-4 lg:mt-0">
+						<div className="projectPage_project-location-card__f7FjG">
+							<div className="flex items-center justify-between mt-4 text-2-xs">
+								<p className="uppercase medium">Previous Funding</p>
+							</div>
+							<div className="flex items-center text-xs space-x-1">
+								<p className="medium">
+									{
+										project.funding_amount.map((amount, index) =>
+											<span key={index} className="text-light-grey-2 mx-3">
+												NGN	{amount}
+											</span>
+										)
+									}
+								</p>
+							</div>
+							<div>
+								<TextField
+									fullWidth type="number"
+									name={inputDetails.funding_amount.name}
+									value={inputDetails.funding_amount.value}
+									onChange={handelInputChange}
+									label="Funding"
+								/>
+							</div>
+						</div>
+					</div>
+				</CustomModal>
 				<div className="flex justify-between">
-					<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z" data-testid="project-name">{project.name}</p>
+					<p className="px-6 pb-10 hidden sm:block projectPage_project-name__LJ03Z w-auto" data-testid="project-name">{project.name}</p>
 					{
 						showUpdateStatusMenu && <div className="flex justify-between items-center mr-5">
-							<UpdateStatusMenu id={project._id} name={project.status} />
-							<Button className="ml-5" color="error" onClick={navigate("/spp/dashboard/projects/edit/" + project._id)}><Edit /> Edit</Button>
+							<UpdateStatusMenu id={project._id} name={project.status} onChanged={onEdit} />
+							<Button className="ml-5" color="inherit" onClick={() => setOpenFundingModal(pre => !pre)}><IconPlus /> Add Funding</Button>
 						</div>
 					}
 				</div>
@@ -99,7 +170,7 @@ const OverView = ({ project, setTab }) => {
 									<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
 										<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={SiteImages.federal} />
 									</div>
-									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF TRANSPORT </p>
+									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF {project.category.toUpperCase()} </p>
 								</div>
 							</div>
 						</div>
