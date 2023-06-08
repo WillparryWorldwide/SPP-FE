@@ -49,13 +49,10 @@ const CommentModal = () => {
 		}, [data]);
 
     useEffect(() => {
-    // Set the focus on the textarea after each re-render
-    // textareaRef.current.focus();
-    // Restore cursor position
-    if(reviewRef.current === document.activeElement){
-      reviewRef.current.setSelectionRange(cursorPositionRef.current, cursorPositionRef.current);
-    }
-  });
+		if(reviewRef.current === document.activeElement){
+		reviewRef.current.setSelectionRange(cursorPositionRef.current, cursorPositionRef.current);
+		}
+	});
 
   const handleReviewChange = (event) => {
     // Store the cursor position before updating the value

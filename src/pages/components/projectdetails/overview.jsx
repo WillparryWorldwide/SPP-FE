@@ -118,7 +118,7 @@ const OverView = ({ project, setTab, onEdit }) => {
 			setTimeLine(`${day} Days`);
 		}
 	}, [year, month]);
-
+console.log(pMilestone)
 	return (
 		project._id ?
 			<div className="flex-shrink-0">

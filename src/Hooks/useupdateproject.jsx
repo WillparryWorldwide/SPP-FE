@@ -16,6 +16,7 @@ const useUpdateProject = () => {
 			// handle error
 			console.log(error);
 			window.toastr.error(error?.response ? error.response.data.message : error.message);
+			setLoading(false);
 		});
 	}
 
