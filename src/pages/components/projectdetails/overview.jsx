@@ -340,32 +340,7 @@ const OverView = ({ project, setTab, onEdit }) => {
 								</div>
 							</div>
 						</div>
-						{/* <div className="flex mb-2 w-full lg:w-6/12 space-x-2">
-							<div className="w-6/12">
-								<div className="projectPage_project-info-card___Ix8v"><span
-									style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
-									<EscalatorWarningIcon />
-								</span>
-									<div>
-										<p className="projectPage_project-info-card-content__YOwSw"
-											data-testid="project-shildren_project">None</p>
-										<p className="projectPage_project-info-card-title__qwoK4">CHILDREN PROJECT</p>
-									</div>
-								</div>
-							</div>
-							<div className="w-6/12">
-								<div className="projectPage_project-info-card___Ix8v"><span
-									style={{ boxSizing: 'border-box', display: 'inline-block', overflow: 'hidden', width: 'initial', height: 'initial', background: 'none', opacity: '1', border: '0', margin: '0', padding: '0', position: 'relative', maxWidth: '100%' }}>
-									<ReviewsIcon />
-								</span>
-									<div>
-										<p className="projectPage_project-info-card-content__YOwSw" data-testid="project-page_views">
-											31.38K</p>
-										<p className="projectPage_project-info-card-title__qwoK4">PAGE VIEWS</p>
-									</div>
-								</div>
-							</div>
-						</div> */}
+						
 					</div>
 				</div>
 				<div className="px-6 text-dark-grey">
@@ -386,6 +361,25 @@ const OverView = ({ project, setTab, onEdit }) => {
 								<div className='bg-grey-white space-x-3 px-3 py-2 flex items-center rounded'>
 									<EngineeringIcon />
 									<p className="text-sm medium">{project.spp_code?.SPP_name}</p>
+								</div>
+								<div>
+									{/* <p><strong className="text-input-border text-sm">HOO</strong> {project.spp_code.hoo_fullname}</p> */}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div className="mt-4 px-6">
+					<div className="projectPage_project-overview-card__6pxG4">
+						<p className="medium">Sectors</p>
+						<p className="text-input-border text-sm">Below are the Sectors on this project.</p>
+						<div className="mt-6 flex items-center flex-wrap space-x-5 overflow-x-auto"
+							data-testid="project-contractors">
+
+							<div>
+								<div className='bg-grey-white space-x-3 px-3 py-2 flex items-center rounded'>
+									<EngineeringIcon />
+									<p className="text-sm medium">{project.sector_code?.name}</p>
 								</div>
 								<div>
 									{/* <p><strong className="text-input-border text-sm">HOO</strong> {project.spp_code.hoo_fullname}</p> */}

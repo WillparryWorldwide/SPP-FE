@@ -22,11 +22,11 @@ const Discover = () => {
 	const { commentOption, setCommentOption, CommentPopUp, data: commentmobileData } = CommentModal()
 	const [commentItem, setCommentItem] = useState()
 	const [projects, setProjects] = useState(null)
-	const [commentData, setCommentData] = useState({
-		description: "",
-		radioValue: "",
-		name: "",
-	});
+	// const [commentData, setCommentData] = useState({
+	// 	description: "",
+	// 	radioValue: "",
+	// 	name: "",
+	// });
 
 	// Make All Project Fetch Request
 	useEffect(() => {
@@ -106,6 +106,7 @@ const Discover = () => {
 	// 	setCommentOption(false)
 	// 	setCommentItem(null)
 	// }
+
 
 	return (
 		<>

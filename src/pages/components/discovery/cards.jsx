@@ -21,8 +21,8 @@ const ProjectCards = ({ project, hostUrl, format, displayComment }) => {
 							className="absolute hover:bg-primary hover:border-primary transition ease-in text-white p-2 right-2 rounded-full top-2 z-10">
 							<Comment />
 						</button>
-						<div className="absolute medium transform transition duration-300 ease-in-out bg-black text-white text-2-xs rounded-l-full bottom-4 px-3 py-1 right-0 uppercase z-10 text-ongoing"> {project.category}</div>
-						<div className="absolute medium transform transition duration-300 ease-in-out bg-black text-white text-2-xs rounded-r-full bottom-4 px-3 py-1 left-0 uppercase z-10 text-ongoing"> {project.status}</div>
+						<div className="absolute medium transform transition duration-300 ease-in-out bg-white text-black text-2-xs rounded-l-full bottom-4 px-3 py-1 right-0 uppercase z-10 text-ongoing"> {project.category}</div>
+						<div className={`absolute medium transform transition duration-300 ease-in-out bg-white text-2-xs rounded-r-full bottom-4 px-3 py-1 left-0 uppercase z-10 ${((project.status).toLowerCase() === 'ongoing') && 'text-primary'} ${((project.status).toLowerCase() === 'completed') && ' text-complete'}${((project.status).toLowerCase() === 'closed') && ' text-closed'} ${((project.status).toLowerCase() === 'not started') && ' text-notstarted'} ${((project.status).toLowerCase() === 'paused') && ' text-paused'}`}> {project.status}</div>
 						<div className="w-full h-full relative">
 							<img alt="" className="w-full h-full object-cover rounded-2xl" sizes="100vw" srcSet="" src={`${hostUrl}${project.images[0]?.path}`} style={{ position: 'absolute', height: '100%', width: '100%', inset: '0px', color: 'transparent' }} />
 						</div>

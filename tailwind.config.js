@@ -7,6 +7,10 @@ module.exports = {
     extend: {
       colors:{
         primary: '#007bff',
+        complete: '#02903C',
+        notstarted: '#A29898',
+        paused: '#EE8227',
+        closed: '#BB1B23',
       },
       fontFamily: {
         'filesonpro-regular': ['filesonpro-regular'],

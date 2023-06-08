@@ -33,7 +33,7 @@ const ProjectDetails = () => {
 		fetchProject(id);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [commentData, hasMenuChange]);
-
+console.log(project)
 	return (
 		<div className="appLayout_dash-contents__f3VlW">
 			<div>

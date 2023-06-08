@@ -18,7 +18,8 @@ const CommentModal = () => {
 		name: "",
 	});
 	const nameRef = useRef()
-	const reviewRef = useRef()
+	const reviewRef = useRef(null)
+  const cursorPositionRef = useRef(0);
 
 	const CommentPopUp = ({ project }) => {
 		// handle cancel delete function
@@ -47,6 +48,24 @@ const CommentModal = () => {
 			}
 		}, [data]);
 
+    useEffect(() => {
+    // Set the focus on the textarea after each re-render
+    // textareaRef.current.focus();
+    // Restore cursor position
+    if(reviewRef.current === document.activeElement){
+      reviewRef.current.setSelectionRange(cursorPositionRef.current, cursorPositionRef.current);
+    }
+  });
+
+  const handleReviewChange = (event) => {
+    // Store the cursor position before updating the value
+    const { selectionStart, selectionEnd } = event.target;
+    cursorPositionRef.current = selectionStart;
+
+    // setValue(event.target.value);
+    setCommentData((prev) => ({ ...prev, description: event.target.value }))
+  };
+
 		return (
 			<div onClick={HandleDeleteCancel} className='fixed p-2 md:p-5 top-0 left-0 w-full h-full bg-black/[.3] flex justify-center items-center z-[1000] '>
 				<div
@@ -66,7 +85,7 @@ const CommentModal = () => {
 								<input
 									ref={nameRef}
 									key='name'
-									// autoFocus={nameRef.current === document.activeElement}
+									autoFocus={nameRef.current === document.activeElement}
 									value={commentData.name}
 									onChange={(e) => setCommentData((prev) => ({ ...prev, name: e.target.value }))}
 									className="projectPage_text-input__cGTC_ focus:border-accepted w-full"
@@ -79,9 +98,9 @@ const CommentModal = () => {
 								<textarea
 									key='review'
 									ref={reviewRef}
-									// autoFocus={reviewRef.current === document.activeElement}
+									autoFocus={reviewRef.current === document.activeElement}
 									value={commentData.description}
-									onChange={(e) => setCommentData((prev) => ({ ...prev, description: e.target.value }))}
+									onChange={(e) => handleReviewChange(e)}
 									className="w-full h-32 projectPage_text-area__carzK focus:border-accepted"
 									required
 								/>
