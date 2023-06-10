@@ -477,7 +477,7 @@ console.log(pMilestone)
 					<div className="projectPage_project-update-list__ChjQW"></div>
 				</div>
 			</div>
-			: <CircularProgress />
+			: <div><CircularProgress /></div>
 	)
 }
 
