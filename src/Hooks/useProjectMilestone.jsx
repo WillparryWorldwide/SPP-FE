@@ -13,7 +13,7 @@ const useProjectMilestone = () => {
 	const fetchProjectMilestone = (id, query = '') => {
 		setLoading(true)
 		axios.get('milestone/project/' + id + query).then((res) => {
-			setData(res.data.data.result)
+			setData(res.data.result)
 			setLoading(false)
 		}).catch(error => {
 			// handle error

@@ -1,12 +1,12 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { AdminDashboardLayout } from "./pages/administrator/layout";
-import { Login, ViewAllProject, ADashboard, RegisterProject, Profile, ListSPPUser, ProjectDetails, ViewProject, Discover, RegisterAdmin, RegisterContractor, RegisterSector, RegisterMDA, EditProject } from "./pages";
+import { Login, ViewAllProject, Welcome, ADashboard, RegisterProject, Profile, ListSPPUser, ProjectDetails, ViewProject, Discover, RegisterAdmin, RegisterContractor, RegisterSector, RegisterMDA, EditProject } from "./pages";
 
 const Router = () => {
 	return (
 		<Routes>
-			<Route path="/" element={<Discover />} />
+			<Route path="/" element={<Welcome />} />
 			<Route path="projects" element={<Discover />} />
 			<Route path="project/:id" element={<ProjectDetails />} />
 

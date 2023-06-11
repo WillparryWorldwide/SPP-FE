@@ -6,7 +6,7 @@ import SiteImages from "../../../../Utils/images";
 const NavBar = () => {
 	return <nav className="relative flex justify-between items-center xl:px-32 sm:px-20 px-7 py-7  bg-white">
 
-		<div className="flex items-center lg:hidden cursor-pointer">
+		<div className="flex items-center w-16 lg:hidden cursor-pointer">
 			<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={SiteImages.logo} style={{ width: "100%", color: "transparent" }} />
 
 		</div>
@@ -18,7 +18,7 @@ const NavBar = () => {
 			<div className="flex flex-col lg:flex-row justify-between items-center w-full">
 
 				<Link to="/">
-					<div className="items-center hidden lg:flex cursor-pointer relative">
+					<div className="items-center hidden w-16 lg:flex cursor-pointer relative">
 						<img alt="logo" loading="lazy" width="118" height="28" decoding="async" data-nimg="1" src={SiteImages.logo} style={{ width: "100%", color: "transparent" }} />
 					</div>
 				</Link>
