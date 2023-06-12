@@ -3,9 +3,37 @@ import mdaImg from "../../../../assets/images/mda_m30ptu.webp";
 import citizen from "../../../../assets/images/citizen_edns1x.webp"
 import { useEffect, useState } from "react";
 import IconSVG from "../../../../Utils/svg";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
-ChartJS.register(ArcElement, Tooltip, Legend);
+import useAllUpdateHistory from "../../../../Hooks/useHistory";
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import { CircularProgress, Toolbar, Typography } from '@mui/material';
+import moment from "moment/moment";
+import { Chart as ChartJS,CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(CategoryScale,
+	LinearScale,
+	BarElement,
+	Title,
+	Tooltip,
+	Legend);
+
+const historyCol = [
+	{ id: 'changed_by', label: 'User', minWidth: 70, force: (val) => val?.firstname },
+	{ id: 'type', label: 'Updated', minWidth: 70 },
+	{ id: 'createdAt', label: 'Time', minWidth: 70, force: (val) => moment(val).startOf("days").fromNow() }
+];
 
 
 const sty = { color: "transparent", maxWwidth: "100%", height: "auto" };
@@ -16,204 +44,278 @@ const LandingSection = () => {
 	const [chartSubLabel, setChartSubLabel] = useState('# of project')
 	const [chartTitle, setChartTitle] = useState('Project Analysis In All Local Government')
 	const [buttonSwitch, setButtonSwitch] = useState('project')
-	const [data, setData] = useState({
-		labels: chartLabel,
+	// const [data, setData] = useState({
+	// 	labels: chartLabel,
+	// 	datasets: [
+	// 	  {
+	// 		label: chartSubLabel,
+	// 		data: chartData,
+	// 		backgroundColor: [
+	// 			'rgba(255, 99, 132, 0.2)',
+	// 			'rgba(54, 162, 235, 0.2)',
+	// 			'rgba(255, 206, 86, 0.2)',
+	// 			'rgba(75, 192, 192, 0.2)',
+	// 			'rgba(153, 102, 255, 0.2)',
+	// 			'rgba(255, 159, 64, 0.2)',
+	// 			'rgba(255, 99, 132, 0.2)',
+	// 			'rgba(54, 162, 235, 0.2)',
+	// 			'rgba(255, 206, 86, 0.2)',
+	// 			'rgba(75, 192, 192, 0.2)',
+	// 			'rgba(153, 102, 255, 0.2)',
+	// 			'rgba(255, 159, 64, 0.2)',
+	// 			'rgba(255, 99, 132, 0.2)',
+	// 			'rgba(54, 162, 235, 0.2)',
+	// 			'rgba(255, 206, 86, 0.2)',
+	// 			'rgba(75, 192, 192, 0.2)',
+	// 			'rgba(153, 102, 255, 0.2)',
+	// 			'rgba(255, 159, 64, 0.2)',
+	// 			'rgba(255, 99, 132, 0.2)',
+	// 			'rgba(54, 162, 235, 0.2)',
+	// 			'rgba(255, 206, 86, 0.2)',
+	// 			'rgba(75, 192, 192, 0.2)',
+	// 			'rgba(153, 102, 255, 0.2)',
+	// 			'rgba(255, 159, 64, 0.2)',
+	// 			'rgba(255, 99, 132, 0.2)'
+	// 		],
+	// 		borderColor: [
+	// 			'rgba(255, 99, 132, 1)',
+	// 			'rgba(54, 162, 235, 1)',
+	// 			'rgba(255, 206, 86, 1)',
+	// 			'rgba(75, 192, 192, 1)',
+	// 			'rgba(153, 102, 255, 1)',
+	// 			'rgba(255, 159, 64, 1)',
+	// 			'rgba(255, 99, 132, 1)',
+	// 			'rgba(54, 162, 235, 1)',
+	// 			'rgba(255, 206, 86, 1)',
+	// 			'rgba(75, 192, 192, 1)',
+	// 			'rgba(153, 102, 255, 1)',
+	// 			'rgba(255, 159, 64, 1)',
+	// 			'rgba(255, 99, 132, 1)',
+	// 			'rgba(54, 162, 235, 1)',
+	// 			'rgba(255, 206, 86, 1)',
+	// 			'rgba(75, 192, 192, 1)',
+	// 			'rgba(153, 102, 255, 1)',
+	// 			'rgba(255, 159, 64, 1)',
+	// 			'rgba(255, 99, 132, 1)',
+	// 			'rgba(54, 162, 235, 1)',
+	// 			'rgba(255, 206, 86, 1)',
+	// 			'rgba(75, 192, 192, 1)',
+	// 			'rgba(153, 102, 255, 1)',
+	// 			'rgba(255, 159, 64, 1)',
+	// 			'rgba(255, 99, 132, 1)'
+	// 		],
+	// 		borderWidth: 1,
+	// 	  },
+	// 	],
+	//   })
+	const data = {
+		labels: ['Oshimili' ,
+				'Aniocha' ,
+				'Aniocha South' ,
+				'Ika South' ,
+				'Ika North-East' ,
+				'Ndokwa West' ,
+				'Ndokwa East' ,
+				'Isoko south' ,
+				'Isoko North' ,
+				'Bomadi' ,
+				'Burutu' ,
+				'Ughelli South' ,
+				'Ughelli North' ,
+				'Ethiope West' ,
+				'Ethiope East' ,
+				'Sapele' ,
+				'Okpe' ,
+				'Warri North' ,
+				'Warri South' ,
+				'Uvwie' ,
+				'Udu' ,
+				'Warri Central' ,
+				'Ukwani' ,
+				'Oshimili North' ,
+				'Patani'],
 		datasets: [
 		  {
-			label: chartSubLabel,
-			data: chartData,
-			backgroundColor: [
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)'
-			],
-			borderColor: [
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)'
-			],
+			label: 'Completed project',
+			data: [10, 20, 30, 15, 25, 35,45,76,45,56,54,76,56,76,56,76,78,56,54,87,34,54,67,34,56],
+			backgroundColor: 'rgba(54, 162, 235, 0.5)',
+			borderColor: 'rgba(54, 162, 235, 1)',
+			borderWidth: 1,
+		  },
+		  {
+			label: 'Ongoing project',
+			data: [15,25,35,65,43,76,45,76,34,67,89,56,54,56,78,45,56,34,56,67,87,5,78,45,7],
+			backgroundColor: 'rgba(255, 99, 132, 0.5)',
+			borderColor: 'rgba(255, 99, 132, 1)',
+			borderWidth: 1,
+		  },
+		  {
+			label: 'Paused project',
+			data: [20,0,40,56,67,56,76,54,34,6,54,5,3,65,76,45,65,34,2,45,76,3,34,76,54,],
+			backgroundColor: 'rgba(255, 206, 86, 0.5)',
+			borderColor: 'rgba(255, 206, 86, 1)',
 			borderWidth: 1,
 		  },
 		],
-	  })
+	  };
  
 
-useEffect(()=>{
-	if(buttonSwitch.toLowerCase() === 'project'){
-		setChartData([
-			125000,
-			123000,
-			150000,
-			140000,
-			180000,
-			190000,
-			130000,
-			135000,
-			170000,
-			160000,
-			120000,
-			110000,
-			200000,
-			155000,
-			145000,
-			130000,
-			165000,
-			185000,
-			170000,
-			160000,
-			140000,
-			200000,
-			135000,
-			140000,
-			150000
-		  ])
-		setChartLabel(['Oshimili' ,
-		'Aniocha' ,
-		'Aniocha South' ,
-		'Ika South' ,
-		'Ika North-East' ,
-		'Ndokwa West' ,
-		'Ndokwa East' ,
-		'Isoko south' ,
-		'Isoko North' ,
-		'Bomadi' ,
-		'Burutu' ,
-		'Ughelli South' ,
-		'Ughelli North' ,
-		'Ethiope West' ,
-		'Ethiope East' ,
-		'Sapele' ,
-		'Okpe' ,
-		'Warri North' ,
-		'Warri South' ,
-		'Uvwie' ,
-		'Udu' ,
-		'Warri Central' ,
-		'Ukwani' ,
-		'Oshimili North' ,
-		'Patani'])
-		setChartSubLabel('# of project')
-		setChartTitle('Project Analysis In All Local Government')
-	}else if(buttonSwitch.toLowerCase() === 'sector'){
-		setChartData([180, 25, 73, 64])
-		setChartLabel(['Sector 1', 'Sector 2', 'Sector 3', 'Sector N'])
-		setChartSubLabel('# of Sector')
-		setChartTitle('Sector Analysis In Delta State')
-	}
-}, [buttonSwitch])
+// useEffect(()=>{
+// 	if(buttonSwitch.toLowerCase() === 'project'){
+// 		setChartData([
+// 			125000,
+// 			123000,
+// 			150000,
+// 			140000,
+// 			180000,
+// 			190000,
+// 			130000,
+// 			135000,
+// 			170000,
+// 			160000,
+// 			120000,
+// 			110000,
+// 			200000,
+// 			155000,
+// 			145000,
+// 			130000,
+// 			165000,
+// 			185000,
+// 			170000,
+// 			160000,
+// 			140000,
+// 			200000,
+// 			135000,
+// 			140000,
+// 			150000
+// 		  ])
+// 		setChartLabel(['Oshimili' ,
+// 		'Aniocha' ,
+// 		'Aniocha South' ,
+// 		'Ika South' ,
+// 		'Ika North-East' ,
+// 		'Ndokwa West' ,
+// 		'Ndokwa East' ,
+// 		'Isoko south' ,
+// 		'Isoko North' ,
+// 		'Bomadi' ,
+// 		'Burutu' ,
+// 		'Ughelli South' ,
+// 		'Ughelli North' ,
+// 		'Ethiope West' ,
+// 		'Ethiope East' ,
+// 		'Sapele' ,
+// 		'Okpe' ,
+// 		'Warri North' ,
+// 		'Warri South' ,
+// 		'Uvwie' ,
+// 		'Udu' ,
+// 		'Warri Central' ,
+// 		'Ukwani' ,
+// 		'Oshimili North' ,
+// 		'Patani'])
+// 		setChartSubLabel('# of project')
+// 		setChartTitle('Project Analysis In All Local Government')
+// 	}else if(buttonSwitch.toLowerCase() === 'sector'){
+// 		setChartData([180, 25, 73, 64])
+// 		setChartLabel(['Sector 1', 'Sector 2', 'Sector 3', 'Sector N'])
+// 		setChartSubLabel('# of Sector')
+// 		setChartTitle('Sector Analysis In Delta State')
+// 	}
+// }, [buttonSwitch])
 
-useEffect(()=>{
-	setData({
-		labels: chartLabel,
-		datasets: [
-		  {
-			label: chartSubLabel,
-			data: chartData,
-			backgroundColor: [
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(255, 206, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 99, 132, 0.2)'
-			],
-			borderColor: [
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)',
-				'rgba(54, 162, 235, 1)',
-				'rgba(255, 206, 86, 1)',
-				'rgba(75, 192, 192, 1)',
-				'rgba(153, 102, 255, 1)',
-				'rgba(255, 159, 64, 1)',
-				'rgba(255, 99, 132, 1)'
-			],
-			borderWidth: 1,
-		  },
-		],
-	  })
-}, [chartData, chartLabel, chartTitle, chartTitle])
+// useEffect(()=>{
+// 	setData({
+// 		labels: chartLabel,
+// 		datasets: [
+// 		  {
+// 			label: chartSubLabel,
+// 			data: chartData,
+// 			backgroundColor: [
+// 				'rgba(255, 99, 132, 0.2)',
+// 				'rgba(54, 162, 235, 0.2)',
+// 				'rgba(255, 206, 86, 0.2)',
+// 				'rgba(75, 192, 192, 0.2)',
+// 				'rgba(153, 102, 255, 0.2)',
+// 				'rgba(255, 159, 64, 0.2)',
+// 				'rgba(255, 99, 132, 0.2)',
+// 				'rgba(54, 162, 235, 0.2)',
+// 				'rgba(255, 206, 86, 0.2)',
+// 				'rgba(75, 192, 192, 0.2)',
+// 				'rgba(153, 102, 255, 0.2)',
+// 				'rgba(255, 159, 64, 0.2)',
+// 				'rgba(255, 99, 132, 0.2)',
+// 				'rgba(54, 162, 235, 0.2)',
+// 				'rgba(255, 206, 86, 0.2)',
+// 				'rgba(75, 192, 192, 0.2)',
+// 				'rgba(153, 102, 255, 0.2)',
+// 				'rgba(255, 159, 64, 0.2)',
+// 				'rgba(255, 99, 132, 0.2)',
+// 				'rgba(54, 162, 235, 0.2)',
+// 				'rgba(255, 206, 86, 0.2)',
+// 				'rgba(75, 192, 192, 0.2)',
+// 				'rgba(153, 102, 255, 0.2)',
+// 				'rgba(255, 159, 64, 0.2)',
+// 				'rgba(255, 99, 132, 0.2)'
+// 			],
+// 			borderColor: [
+// 				'rgba(255, 99, 132, 1)',
+// 				'rgba(54, 162, 235, 1)',
+// 				'rgba(255, 206, 86, 1)',
+// 				'rgba(75, 192, 192, 1)',
+// 				'rgba(153, 102, 255, 1)',
+// 				'rgba(255, 159, 64, 1)',
+// 				'rgba(255, 99, 132, 1)',
+// 				'rgba(54, 162, 235, 1)',
+// 				'rgba(255, 206, 86, 1)',
+// 				'rgba(75, 192, 192, 1)',
+// 				'rgba(153, 102, 255, 1)',
+// 				'rgba(255, 159, 64, 1)',
+// 				'rgba(255, 99, 132, 1)',
+// 				'rgba(54, 162, 235, 1)',
+// 				'rgba(255, 206, 86, 1)',
+// 				'rgba(75, 192, 192, 1)',
+// 				'rgba(153, 102, 255, 1)',
+// 				'rgba(255, 159, 64, 1)',
+// 				'rgba(255, 99, 132, 1)',
+// 				'rgba(54, 162, 235, 1)',
+// 				'rgba(255, 206, 86, 1)',
+// 				'rgba(75, 192, 192, 1)',
+// 				'rgba(153, 102, 255, 1)',
+// 				'rgba(255, 159, 64, 1)',
+// 				'rgba(255, 99, 132, 1)'
+// 			],
+// 			borderWidth: 1,
+// 		  },
+// 		],
+// 	  })
+// }, [chartData, chartLabel, chartTitle, chartTitle])
 
-console.log(chartData)
+const options={
+	onClick: (event, chartElements) => {
+		console.log(event)
+		if (chartElements && chartElements.length > 0) {
+		  const clickedBarIndex = chartElements[0].index;
+		  // Perform actions based on the clicked bar index
+		  console.log(`Clicked bar index: ${clickedBarIndex}`);
+		}
+	  },
+	plugins: {
+	  title: {
+		display: false,
+		text: 'Chart.js Bar Chart - Stacked',
+	  },
+	},
+	responsive: true,
+	scales: {
+	  x: {
+		stacked: true,
+	  },
+	  y: {
+		stacked: true,
+	  },
+	},
+  };
 
 	return <div className="home_landing-section__J_2Eo xl:py-36 py-24">
 				<div className="absolute w-full justify-center top-16 right-0 hidden lg:flex">
@@ -222,41 +324,17 @@ console.log(chartData)
 					</a>
 				</div> 
 				<div className="w-full p-4 bg-white">
-					<p className="w-full text-center mb-8 mt-4 font-bold text-lg">{chartTitle}</p>
-					<div className='flex p-2 w-full h-[80vh]' >
-						<div className='min-h-[400px] w-[20%] overflow-y-auto mr-5 p-2.5'>
-							{data?.labels?.map((label, index) => (
-							<div key={index} className="mb-4">
-								<span
-								className='w-3 h-3 inline-block mr-2.5'
-								style={{
-									backgroundColor: data?.datasets[0].backgroundColor[index]
-								}}
-								></span>
-								{label}
-							</div>
-							))}
+					<p className="w-full text-center mb-4 mt-4 font-bold text-lg">{chartTitle}</p>
+					<div className='p-2 w-full' >
+						<div className=' w-full mb-5 flex justify-center items-center p-2.5'>
+							<button onClick={()=>setButtonSwitch('project')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
+							<button onClick={()=>setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
 						</div>
-						<div className="w-[60%] p-5 justify-center items-center flex">
-							<Pie 
+						<div className="w-full max-h-[600px] p-5 justify-center items-center flex">
+							<Bar 
 								data={data} 
-								options= {{
-									plugins: {
-										legend: {
-											display: false,
-										
-										},  
-										tooltip: {
-										mode: 'index',
-										intersect: false
-										} 
-									}
-							}}
+								options={options}
 							/>
-						</div>
-						<div className='min-h-[400px] w-[20%] overflow-hidden mr-5 flex flex-col justify-center items-center p-2.5'>
-							<button onClick={()=>setButtonSwitch('project')} className="w-fit px-3 py-2 mb-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
-							<button onClick={()=>setButtonSwitch('sector')} className="w-fit px-3 py-2 mb-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
 						</div>
 					</div>
 				</div>
@@ -264,42 +342,97 @@ console.log(chartData)
 }
 
 const LandingSection2 = () => {
-	return <div className="home_landing-section__J_2Eo pb-16">
-		<div className="home_text-section__8_eBv">
-			<p className="home_text-head__oI2Wu medium text-pending">
-				citizens &amp;cso
-			</p>
-			<h1 className="home_text-title__Wm_fr medium">
-				Review and engage with users on projects
-			</h1>
-			<p className="home_text-subtitle__2Gieq">
-				You can post text and media reviews on projects and also view and engage with reviews from other citizens.
-			</p>
-			<a href="user-type.html">
-				<button className="hidden lg:block mt-10">
-					<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
-						<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
-							Sign up to Review Projects
-						</p>
-						<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
-					</div>
-				</button>
-			</a>
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const { updateHistory, fetchUpdateHistory, loadingUpdateHistory } = useAllUpdateHistory();
+
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (event) => {
+		setRowsPerPage(+event.target.value);
+		setPage(0);
+	};
+
+	return (
+	<div className="home_landing-section__J_2Eo pb-16">
+
+		
+		<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
+			<p className="w-full text-center mb-4 mt-4 font-extrabold text-4xl">Projects Report</p>
+			<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4">
+				<div>
+					{/* History */}
+					{
+						!loadingUpdateHistory ?
+							<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
+								<Toolbar sx={{
+									color: "white",
+									backgroundColor: "#3878f4"
+								}}>
+									<Typography
+										sx={{ flex: '1 1 100%' }}
+										variant="h6"
+										id="tableTitle"
+										component="div">
+										History
+									</Typography>
+								</Toolbar>
+								<TableContainer sx={{ maxHeight: 440 }}>
+									<Table stickyHeader aria-label="sticky table" title='llll'>
+										<TableHead>
+											<TableRow>
+													<TableCell>LGA</TableCell>
+													<TableCell>Completed</TableCell>
+													<TableCell>Ongoing</TableCell>
+													<TableCell>Paused</TableCell>
+													<TableCell>Abandon</TableCell>
+													<TableCell>Closed</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{updateHistory
+												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+												.map((row) => {
+													return (
+														<TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+															{historyCol.map((column) => {
+																let value = row[column.id];
+																if (column.force) value = column.force(value);
+
+																return (
+																	<TableCell key={column.id} align={column.align}
+																		sx={{
+																			border: ".3px solid #e0e0e0"
+																		}}>
+																		{value}
+																	</TableCell>
+																);
+															})}
+														</TableRow>
+													);
+												})}
+										</TableBody>
+									</Table>
+								</TableContainer>
+								<TablePagination
+									rowsPerPageOptions={[10, 25, 100]}
+									component="div"
+									count={updateHistory.length}
+									rowsPerPage={rowsPerPage}
+									page={page}
+									onPageChange={handleChangePage}
+									onRowsPerPageChange={handleChangeRowsPerPage}
+								/>
+							</Paper>
+							: <CircularProgress />
+					}
+
+				</div>
+			</div>
 		</div>
-		<div className="home_image-section__FkGkS flex flex-col items-center">
-		<img alt="citizens&amp;cso" loading="lazy" width="1150" height="1000" decoding="async" data-nimg="1" src={citizen} style={sty} />
-			<a href="user-type.html">
-				<button className="lg:hidden">
-					<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
-						<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
-							Sign up to Review Projects
-						</p>
-						<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
-					</div>
-				</button>
-			</a>
-		</div>
-	</div>
+	</div>)
 }
 
 const Sections = {

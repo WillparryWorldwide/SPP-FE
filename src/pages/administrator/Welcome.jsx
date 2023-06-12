@@ -45,7 +45,7 @@ const Welcome = () => {
 		setRowsPerPage(+event.target.value);
 		setPage(0);
 	};
-
+	
 	const handleOption = (value) => {
 		console.log("option", value);
 		setOption(value)
