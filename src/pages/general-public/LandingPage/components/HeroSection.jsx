@@ -5,7 +5,7 @@ const HeroSection = () => {
 	return <div className="home_landing-hero__u3Jsj">
 		<div className="lg:w-5/12 sm:w-7/12 mx-auto relative z-20">
 			<h1 className="xl:text-7xl sm:text-5xl text-4xl text-white text-center w-full font-bold">
-				The new way to track projects
+				Sherrif Project Progress App
 			</h1>
 			<p className="mt-6 text-sm xl:w-10/12 mx-auto w-full text-center text-lightGreen2">
 				SPP is the easiest way to discover and track government projects anytime, anywhere in Nigeria

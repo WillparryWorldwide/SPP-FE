@@ -39,11 +39,60 @@ const historyCol = [
 const sty = { color: "transparent", maxWwidth: "100%", height: "auto" };
 
 const LandingSection = () => {
-	const [chartData, setChartData] = useState([])
-	const [chartLabel, setChartLabel] = useState([])
-	const [chartSubLabel, setChartSubLabel] = useState('# of project')
-	const [chartTitle, setChartTitle] = useState('Project Analysis In All Local Government')
-	const [buttonSwitch, setButtonSwitch] = useState('project')
+	const [chartData, setChartData] = useState({
+		labels: ['Oshimili' ,
+				'Aniocha' ,
+				'Aniocha South' ,
+				'Ika South' ,
+				'Ika North-East' ,
+				'Ndokwa West' ,
+				'Ndokwa East' ,
+				'Isoko south' ,
+				'Isoko North' ,
+				'Bomadi' ,
+				'Burutu' ,
+				'Ughelli South' ,
+				'Ughelli North' ,
+				'Ethiope West' ,
+				'Ethiope East' ,
+				'Sapele' ,
+				'Okpe' ,
+				'Warri North' ,
+				'Warri South' ,
+				'Uvwie' ,
+				'Udu' ,
+				'Warri Central' ,
+				'Ukwani' ,
+				'Oshimili North' ,
+				'Patani'],
+		datasets: [
+		  {
+			label: 'Completed project',
+			data: [10, 20, 30, 15, 25, 35,45,76,45,56,54,76,56,76,56,76,78,56,54,87,34,54,67,34,56],
+			backgroundColor: 'rgba(54, 162, 235, 0.5)',
+			borderColor: 'rgba(54, 162, 235, 1)',
+			borderWidth: 1,
+		  },
+		  {
+			label: 'Ongoing project',
+			data: [15,25,35,65,43,76,45,76,34,67,89,56,54,56,78,45,56,34,56,67,87,5,78,45,7],
+			backgroundColor: 'rgba(255, 99, 132, 0.5)',
+			borderColor: 'rgba(255, 99, 132, 1)',
+			borderWidth: 1,
+		  },
+		  {
+			label: 'Paused project',
+			data: [20,0,40,56,67,56,76,54,34,6,54,5,3,65,76,45,65,34,2,45,76,3,34,76,54,],
+			backgroundColor: 'rgba(255, 206, 86, 0.5)',
+			borderColor: 'rgba(255, 206, 86, 1)',
+			borderWidth: 1,
+		  },
+		],
+	  })
+	// const [chartLabel, setChartLabel] = useState([])
+	// const [chartSubLabel, setChartSubLabel] = useState('')
+	const [chartTitle, setChartTitle] = useState('')
+	const [buttonSwitch, setButtonSwitch] = useState('projects')
 	// const [data, setData] = useState({
 	// 	labels: chartLabel,
 	// 	datasets: [
@@ -108,188 +157,100 @@ const LandingSection = () => {
 	// 	  },
 	// 	],
 	//   })
-	const data = {
-		labels: ['Oshimili' ,
-				'Aniocha' ,
-				'Aniocha South' ,
-				'Ika South' ,
-				'Ika North-East' ,
-				'Ndokwa West' ,
-				'Ndokwa East' ,
-				'Isoko south' ,
-				'Isoko North' ,
-				'Bomadi' ,
-				'Burutu' ,
-				'Ughelli South' ,
-				'Ughelli North' ,
-				'Ethiope West' ,
-				'Ethiope East' ,
-				'Sapele' ,
-				'Okpe' ,
-				'Warri North' ,
-				'Warri South' ,
-				'Uvwie' ,
-				'Udu' ,
-				'Warri Central' ,
-				'Ukwani' ,
-				'Oshimili North' ,
-				'Patani'],
-		datasets: [
-		  {
-			label: 'Completed project',
-			data: [10, 20, 30, 15, 25, 35,45,76,45,56,54,76,56,76,56,76,78,56,54,87,34,54,67,34,56],
-			backgroundColor: 'rgba(54, 162, 235, 0.5)',
-			borderColor: 'rgba(54, 162, 235, 1)',
-			borderWidth: 1,
-		  },
-		  {
-			label: 'Ongoing project',
-			data: [15,25,35,65,43,76,45,76,34,67,89,56,54,56,78,45,56,34,56,67,87,5,78,45,7],
-			backgroundColor: 'rgba(255, 99, 132, 0.5)',
-			borderColor: 'rgba(255, 99, 132, 1)',
-			borderWidth: 1,
-		  },
-		  {
-			label: 'Paused project',
-			data: [20,0,40,56,67,56,76,54,34,6,54,5,3,65,76,45,65,34,2,45,76,3,34,76,54,],
-			backgroundColor: 'rgba(255, 206, 86, 0.5)',
-			borderColor: 'rgba(255, 206, 86, 1)',
-			borderWidth: 1,
-		  },
-		],
-	  };
  
 
-// useEffect(()=>{
-// 	if(buttonSwitch.toLowerCase() === 'project'){
-// 		setChartData([
-// 			125000,
-// 			123000,
-// 			150000,
-// 			140000,
-// 			180000,
-// 			190000,
-// 			130000,
-// 			135000,
-// 			170000,
-// 			160000,
-// 			120000,
-// 			110000,
-// 			200000,
-// 			155000,
-// 			145000,
-// 			130000,
-// 			165000,
-// 			185000,
-// 			170000,
-// 			160000,
-// 			140000,
-// 			200000,
-// 			135000,
-// 			140000,
-// 			150000
-// 		  ])
-// 		setChartLabel(['Oshimili' ,
-// 		'Aniocha' ,
-// 		'Aniocha South' ,
-// 		'Ika South' ,
-// 		'Ika North-East' ,
-// 		'Ndokwa West' ,
-// 		'Ndokwa East' ,
-// 		'Isoko south' ,
-// 		'Isoko North' ,
-// 		'Bomadi' ,
-// 		'Burutu' ,
-// 		'Ughelli South' ,
-// 		'Ughelli North' ,
-// 		'Ethiope West' ,
-// 		'Ethiope East' ,
-// 		'Sapele' ,
-// 		'Okpe' ,
-// 		'Warri North' ,
-// 		'Warri South' ,
-// 		'Uvwie' ,
-// 		'Udu' ,
-// 		'Warri Central' ,
-// 		'Ukwani' ,
-// 		'Oshimili North' ,
-// 		'Patani'])
-// 		setChartSubLabel('# of project')
-// 		setChartTitle('Project Analysis In All Local Government')
-// 	}else if(buttonSwitch.toLowerCase() === 'sector'){
-// 		setChartData([180, 25, 73, 64])
-// 		setChartLabel(['Sector 1', 'Sector 2', 'Sector 3', 'Sector N'])
-// 		setChartSubLabel('# of Sector')
-// 		setChartTitle('Sector Analysis In Delta State')
-// 	}
-// }, [buttonSwitch])
+useEffect(()=>{
+	if(buttonSwitch.toLowerCase() === 'project'){
+		setChartData({
+			labels: ['Oshimili' ,
+					'Aniocha' ,
+					'Aniocha South' ,
+					'Ika South' ,
+					'Ika North-East' ,
+					'Ndokwa West' ,
+					'Ndokwa East' ,
+					'Isoko south' ,
+					'Isoko North' ,
+					'Bomadi' ,
+					'Burutu' ,
+					'Ughelli South' ,
+					'Ughelli North' ,
+					'Ethiope West' ,
+					'Ethiope East' ,
+					'Sapele' ,
+					'Okpe' ,
+					'Warri North' ,
+					'Warri South' ,
+					'Uvwie' ,
+					'Udu' ,
+					'Warri Central' ,
+					'Ukwani' ,
+					'Oshimili North' ,
+					'Patani'],
+			datasets: [
+			  {
+				label: 'Completed project',
+				data: [10, 20, 30, 15, 25, 35,45,76,45,56,54,76,56,76,56,76,78,56,54,87,34,54,67,34,56],
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+			  },
+			  {
+				label: 'Ongoing project',
+				data: [15,25,35,65,43,76,45,76,34,67,89,56,54,56,78,45,56,34,56,67,87,5,78,45,7],
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+			  },
+			  {
+				label: 'Paused project',
+				data: [20,0,40,56,67,56,76,54,34,6,54,5,3,65,76,45,65,34,2,45,76,3,34,76,54,],
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+			  },
+			],
+		  })
+		// setChartSubLabel('# of project')
+		setChartTitle('Project Analysis In All Local Government')
+	}else if(buttonSwitch.toLowerCase() === 'sector'){
+		setChartData({
+			labels: ['Sector 1' ,
+					'Sector2' ,
+					'sector 3' ,
+					'sector 4' ,
+					'sector 5' ,
+					],
+			datasets: [
+			  {
+				label: 'Completed project',
+				data: [10, 20, 30, 15, 25],
+				backgroundColor: 'rgba(54, 162, 235, 0.5)',
+				borderColor: 'rgba(54, 162, 235, 1)',
+				borderWidth: 1,
+			  },
+			  {
+				label: 'Ongoing project',
+				data: [15,25,35,65,43],
+				backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				borderColor: 'rgba(255, 99, 132, 1)',
+				borderWidth: 1,
+			  },
+			  {
+				label: 'Paused project',
+				data: [20,0,40,56,67],
+				backgroundColor: 'rgba(255, 206, 86, 0.5)',
+				borderColor: 'rgba(255, 206, 86, 1)',
+				borderWidth: 1,
+			  },
+			],
+		  })
+		// setChartLabel(['Sector 1', 'Sector 2', 'Sector 3', 'Sector N'])
+		// setChartSubLabel('# of Sector')
+		setChartTitle('Sector Analysis In Delta State')
+	}
+}, [buttonSwitch])
 
-// useEffect(()=>{
-// 	setData({
-// 		labels: chartLabel,
-// 		datasets: [
-// 		  {
-// 			label: chartSubLabel,
-// 			data: chartData,
-// 			backgroundColor: [
-// 				'rgba(255, 99, 132, 0.2)',
-// 				'rgba(54, 162, 235, 0.2)',
-// 				'rgba(255, 206, 86, 0.2)',
-// 				'rgba(75, 192, 192, 0.2)',
-// 				'rgba(153, 102, 255, 0.2)',
-// 				'rgba(255, 159, 64, 0.2)',
-// 				'rgba(255, 99, 132, 0.2)',
-// 				'rgba(54, 162, 235, 0.2)',
-// 				'rgba(255, 206, 86, 0.2)',
-// 				'rgba(75, 192, 192, 0.2)',
-// 				'rgba(153, 102, 255, 0.2)',
-// 				'rgba(255, 159, 64, 0.2)',
-// 				'rgba(255, 99, 132, 0.2)',
-// 				'rgba(54, 162, 235, 0.2)',
-// 				'rgba(255, 206, 86, 0.2)',
-// 				'rgba(75, 192, 192, 0.2)',
-// 				'rgba(153, 102, 255, 0.2)',
-// 				'rgba(255, 159, 64, 0.2)',
-// 				'rgba(255, 99, 132, 0.2)',
-// 				'rgba(54, 162, 235, 0.2)',
-// 				'rgba(255, 206, 86, 0.2)',
-// 				'rgba(75, 192, 192, 0.2)',
-// 				'rgba(153, 102, 255, 0.2)',
-// 				'rgba(255, 159, 64, 0.2)',
-// 				'rgba(255, 99, 132, 0.2)'
-// 			],
-// 			borderColor: [
-// 				'rgba(255, 99, 132, 1)',
-// 				'rgba(54, 162, 235, 1)',
-// 				'rgba(255, 206, 86, 1)',
-// 				'rgba(75, 192, 192, 1)',
-// 				'rgba(153, 102, 255, 1)',
-// 				'rgba(255, 159, 64, 1)',
-// 				'rgba(255, 99, 132, 1)',
-// 				'rgba(54, 162, 235, 1)',
-// 				'rgba(255, 206, 86, 1)',
-// 				'rgba(75, 192, 192, 1)',
-// 				'rgba(153, 102, 255, 1)',
-// 				'rgba(255, 159, 64, 1)',
-// 				'rgba(255, 99, 132, 1)',
-// 				'rgba(54, 162, 235, 1)',
-// 				'rgba(255, 206, 86, 1)',
-// 				'rgba(75, 192, 192, 1)',
-// 				'rgba(153, 102, 255, 1)',
-// 				'rgba(255, 159, 64, 1)',
-// 				'rgba(255, 99, 132, 1)',
-// 				'rgba(54, 162, 235, 1)',
-// 				'rgba(255, 206, 86, 1)',
-// 				'rgba(75, 192, 192, 1)',
-// 				'rgba(153, 102, 255, 1)',
-// 				'rgba(255, 159, 64, 1)',
-// 				'rgba(255, 99, 132, 1)'
-// 			],
-// 			borderWidth: 1,
-// 		  },
-// 		],
-// 	  })
-// }, [chartData, chartLabel, chartTitle, chartTitle])
 
 const options={
 	onClick: (event, chartElements) => {
@@ -297,7 +258,7 @@ const options={
 		if (chartElements && chartElements.length > 0) {
 		  const clickedBarIndex = chartElements[0].index;
 		  // Perform actions based on the clicked bar index
-		  console.log(`Clicked bar index: ${clickedBarIndex}`);
+		  console.log(`Clicked bar index: ${chartElements}`);
 		}
 	  },
 	plugins: {
@@ -332,7 +293,7 @@ const options={
 						</div>
 						<div className="w-full max-h-[600px] p-5 justify-center items-center flex">
 							<Bar 
-								data={data} 
+								data={chartData && chartData} 
 								options={options}
 							/>
 						</div>
