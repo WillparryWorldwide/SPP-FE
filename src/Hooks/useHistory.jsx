@@ -10,7 +10,7 @@ const useAllUpdateHistory = () => {
 	const fetchUpdateHistory = () => {
 		setLoading(true);
 		axios.get("/history/all").then((res) => {
-			setData(res.data.data.result);
+			setData(res.data.result);
 			setLoading(false);
 			return true;
 		}).catch(error => {

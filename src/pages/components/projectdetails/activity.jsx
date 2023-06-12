@@ -10,27 +10,31 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent';
-import moment from 'moment';
+import moment, { duration } from 'moment';
 import organiseMilestone from "../../functions/organiseMilestone";
 import { Done, Edit } from "@mui/icons-material";
 import CustomModal from "../../general-public/modal/customModal";
 import useUpdateMilestone from "../../../Hooks/useUpdateMilestone";
 import { useAuthUser } from "react-auth-kit";
 import { useLocation } from "react-router-dom";
+import MilestoneInput from "../../administrator/project/functions/milestoneInput";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 
 const Activity = ({ project, hostUrl }) => {
 	const location = useLocation();
 	const userData = useAuthUser()();
 	const { pMilestone, fetchProjectMilestone } = useProjectMilestone();
 	const organiseMilestones = organiseMilestone(pMilestone);
-	const [openUpdateMilestoneModal, setOpenMilestoneModal] = useState(false);
+	const [openMarkMilestoneAsCompletedModal, setOpenMarkMilestoneAsCompletedModal] = useState(false);
+	const [openUpdateMilestoneModal, setOpenUpdateMilestoneModal] = useState(false);
 	const [milestoneModalDetails, setOpenMilestoneModalDetails] = useState({});
 	const showUpdateMilestoneBtn = ((userData?.role?.toLowerCase() === "admin") && (location.pathname.search("/spp") === 0));
 
 
 	const { isUpdatingMilestoneLoading, updateMilestone, updatedMilestone } = useUpdateMilestone();
 
-	const handelUpdateMilestone = (milestoneId) => {
+	const handelMarkMilestoneAsCompleted = (milestoneId) => {
 		updateMilestone(milestoneId, { completed: true });
 	}
 
@@ -40,16 +44,40 @@ const Activity = ({ project, hostUrl }) => {
 		measured_work: "Measured Work"
 	}
 
+	// to store the edited milestione details
+	const [milestones, setMileStones] = useState({ typeOf: "preliminaries_sum", level: 0, rate: 0, amount: 0, duration: null, description: '', quantity: 0 });
+
+	// function
+	const handelMilestoneChange = (e, index, dateName) => {
+		let data = e?.target;
+
+		if (!data) data = { name: dateName, value: e };
+
+		let { name, value } = data;
+
+		setMileStones(prev => {
+			return {
+				...prev,
+				[name]: value
+			}
+		});
+	}
+
+	const handleUpdateMilestone = (milestoneId) => {
+		updateMilestone(milestoneId, milestones);
+	}
+
 	useEffect(() => {
 		if (project._id) {
 			fetchProjectMilestone(project._id);
 		}
-		if (updatedMilestone?.completed) setOpenMilestoneModal(false);
-		console.log("Rerending...");
-	}, [project._id, updatedMilestone?.completed]);
+		setOpenMarkMilestoneAsCompletedModal(false);
+		setOpenUpdateMilestoneModal(false);
+		console.log("Rerending...l");
+	}, [project._id, updatedMilestone]);
 
 	return (
-		<>
+		<LocalizationProvider dateAdapter={AdapterMoment}>
 			<div className="w-full lg:w-9/12">
 				<div className="">
 					<p className="text-2-xs text-light-grey-2"></p>
@@ -67,7 +95,7 @@ const Activity = ({ project, hostUrl }) => {
 				</div>
 			</div>
 			{/* mark milestone as completed */}
-			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handelUpdateMilestone }} open={{ init: openUpdateMilestoneModal, set: setOpenMilestoneModal }}>
+			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handelMarkMilestoneAsCompleted }} open={{ init: openMarkMilestoneAsCompletedModal, set: setOpenMarkMilestoneAsCompletedModal }}>
 				<div className="flex items-center space-x-2">
 					<p className="projectPage_posted__Sj_3G flex">
 						<span className="mr-1">MILESTONE</span> {milestoneModalDetails.level + 1}
@@ -80,16 +108,8 @@ const Activity = ({ project, hostUrl }) => {
 			</CustomModal>
 
 			{/* Edit milestione */}
-			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handelUpdateMilestone }} open={{ init: openUpdateMilestoneModal, set: setOpenMilestoneModal }}>
-				<div className="flex items-center space-x-2">
-					<p className="projectPage_posted__Sj_3G flex">
-						<span className="mr-1">MILESTONE</span> {milestoneModalDetails.level + 1}
-					</p>
-					<h4 className="projectPage_review-author-name__C_D_Y flex">
-						<span className="text-black font-filson-bold hover:underline cursor-pointer">{milestoneText[milestoneModalDetails.typeOf]}</span>
-					</h4>
-				</div>
-				<p>The above milestone will be marked as completed!</p>
+			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handleUpdateMilestone }} open={{ init: openUpdateMilestoneModal, set: setOpenUpdateMilestoneModal }}>
+				<MilestoneInput milestoneText={milestoneText} milestone={milestones} handelMilestoneChange={handelMilestoneChange} />
 			</CustomModal>
 			{
 				organiseMilestones().length ?
@@ -107,7 +127,7 @@ const Activity = ({ project, hostUrl }) => {
 											{
 												(showUpdateMilestoneBtn && !milestone.completed) &&
 												<Button color="success" size="small" sx={{ minWidth: "auto" }} onClick={() => {
-													setOpenMilestoneModal(true);
+													setOpenMarkMilestoneAsCompletedModal(true);
 													setOpenMilestoneModalDetails(milestone);
 												}} title="Mark as completed"><Done /></Button>
 											}
@@ -118,9 +138,13 @@ const Activity = ({ project, hostUrl }) => {
 										</TimelineSeparator>
 										<TimelineContent>
 											<div className="bg-white rounded-lg p-2 sm:p-4 md:p-6 w-full mx-auto position-relative editContainer" id="projectReviewNoReference">
-													{
-														showUpdateMilestoneBtn && <Button className="editBtn" sx={{position: "absolute", top: "1em", right: "1em"}} variant="outlined" color="error" size="small"><Edit /></Button>
-													}
+												{
+													showUpdateMilestoneBtn && <Button onClick={() => {
+														setMileStones({...milestone, duration: moment(milestone.duration)});
+														setOpenMilestoneModalDetails(milestone);
+														setOpenUpdateMilestoneModal(true);
+													}} className="editBtn" sx={{ position: "absolute", top: "1em", right: "1em" }} variant="contained" color="error" size="small"><Edit /></Button>
+												}
 												<div>
 													<div className="projectPage_author-details-group__DMKJG">
 														<Grid container spacing={1} className="projectPage_profile-and-date__tQ8jG">
@@ -245,7 +269,7 @@ const Activity = ({ project, hostUrl }) => {
           <TimelineContent>Repeat</TimelineContent>
         </TimelineItem>
       </Timeline> */}
-		</>
+		</LocalizationProvider>
 	)
 }
 

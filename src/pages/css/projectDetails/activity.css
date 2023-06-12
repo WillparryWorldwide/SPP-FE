@@ -3,6 +3,6 @@
 	transition: opacity .3s ease-in;
 }
 
-.editContainer :hover .editBtn {
+.editContainer:hover > .editBtn {
 	opacity: 1
 }

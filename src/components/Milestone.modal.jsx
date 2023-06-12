@@ -41,7 +41,7 @@ const MilestoneModal = ({ setStatus, modalProps }) => {
 
         const getMilestone = () => {
             axios.get("project/milestone/only/" + modalProps.item).then(({ data }) => {
-                setMilestone(data.data.result);
+                setMilestone(data.result);
                 setMilestone(pre => {
                     return {
                         ...pre,

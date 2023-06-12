@@ -28,7 +28,7 @@ const ViewProject = () => {
 	//     try {
 	//         const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/project/only/${id}`);
 	//         console.log(data)
-	//         setProject(data.data.result)
+	//         setProject(data.result)
 	//         setIsLoading(true);
 	//     } catch (error) {
 	//         console.log(error);

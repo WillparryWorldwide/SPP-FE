@@ -10,7 +10,7 @@ const useGetAllContractors = () => {
 	const fetchContractors = () => {
 		setLoading(true);
 		axios.get("/admin/all-spp/contractor").then((res) => {
-			setData(res.data.data.result);
+			setData(res.data.result);
 			setLoading(false);
 			return true;
 		}).catch(error => {

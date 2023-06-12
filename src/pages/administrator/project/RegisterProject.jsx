@@ -135,7 +135,7 @@ const RegisterProject = () => {
 
 		const fetchSectors = () => {
 			axios.get('/sector/all').then(({ data }) => {
-				setSectors(data.data.result)
+				setSectors(data.result);
 			}).catch(({ response }) => {
 				console.log(response.data.message);
 			})
@@ -143,7 +143,7 @@ const RegisterProject = () => {
 
 		const fetchMdas = () => {
 			axios.get('/mda/all').then(({ data }) => {
-				setMdas(data.data.result)
+				setMdas(data.result);
 			}).catch(({ response }) => {
 				console.log(response.data.message);
 			})
@@ -151,7 +151,7 @@ const RegisterProject = () => {
 
 		const fetchContractors = async () => {
 			await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
-				setContractors(data.data.result)
+				setContractors(data.result);
 			}).catch(({ response }) => {
 				console.log(response.data);
 			})

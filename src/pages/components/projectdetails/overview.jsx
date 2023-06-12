@@ -56,7 +56,9 @@ const OverView = ({ project, setTab, onEdit }) => {
 	const [inputDetails, setInputDetails] = useState(initialInput);
 
 	const handleAddFunding = () => {
-		upDAteProject(project._id, {funding_amount_int: inputDetails.funding_amount.value}).then(r => setOpenFundingModal(false));
+		upDAteProject(project._id, {funding_amount_int: inputDetails.funding_amount.value});
+		// TODO: Cause rerending not this
+		// setTimeout(()=> window.location.reload(), 1000);
 	}
 
 	// function
@@ -100,14 +102,16 @@ const OverView = ({ project, setTab, onEdit }) => {
 			});
 
 			setMoneySpent(spent);
-			setProgress(((compMilstone / ((pMilestone).length * 3)) * 100));
+			setProgress(((compMilstone / ((pMilestone).length)) * 100));
 			setDay(moment(project.duration).diff(project.date_awarded, 'days'));
 			setYear(moment(project.duration).diff(project.date_awarded, 'Years'));
 			setMonth(moment(project.duration).diff(project.date_awarded, 'Months'));
 		}
 
+		setOpenFundingModal(false);
+
 		console.log("Rendering...");
-	}, [pMilestone.length, updatedData?.funding_amount?.length]);
+	}, [pMilestone.length, updatedData]);
 
 	useEffect(() => {
 		if (year > 0) {

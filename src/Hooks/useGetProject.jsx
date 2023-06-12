@@ -14,7 +14,7 @@ const useGetProject = () => {
   const fetchProject = (id) => {
     setLoading(true)
     axios.get('/project/only-populated/'+ id,).then((res) => {
-      setData(res.data.data.result)
+      setData(res.data.result)
       setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
       setLoading(false)
       return true
