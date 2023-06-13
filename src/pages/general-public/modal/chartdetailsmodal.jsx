@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {  Toolbar, Typography } from '@mui/material';
+import { Toolbar, Typography } from '@mui/material';
 
 
 
@@ -18,17 +18,17 @@ import {  Toolbar, Typography } from '@mui/material';
 
 
 const ChartDetailsModal = () => {
-	const [projectDetailsOption, setProjectDetailsOption] = useState(false)
+	const [projectDetailsOption, setProjectDetailsOption] = useState(false);
 	// const { loading, data } = useUpdateProject();
 
 	const ProjectDetailsPopUp = ({ modalTitle, data, loading }) => {
 		// handle cancel delete function
 		const HandleModalCancel = () => {
-			setProjectDetailsOption(false)
+			setProjectDetailsOption(false);
 			console.log('i ran')
 		}
-  
-console.log(data)
+
+		console.log(data)
 		return (
 			<div onClick={HandleModalCancel} className='fixed p-2 md:p-5 top-0 left-0 w-full h-full bg-black/[.3] flex justify-center items-center z-[1000] '>
 				<div
@@ -59,12 +59,12 @@ console.log(data)
 								<Table stickyHeader aria-label="sticky table" title='llll'>
 									<TableHead>
 										<TableRow>
-												<TableCell>Name of Project</TableCell>
-												<TableCell>Completed</TableCell>
-												<TableCell>Ongoing</TableCell>
-												<TableCell>Paused</TableCell>
-												<TableCell>Abandon</TableCell>
-												<TableCell>Closed</TableCell>
+											<TableCell>Name of Project</TableCell>
+											<TableCell>Completed</TableCell>
+											<TableCell>Ongoing</TableCell>
+											<TableCell>Paused</TableCell>
+											<TableCell>Abandon</TableCell>
+											<TableCell>Closed</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
