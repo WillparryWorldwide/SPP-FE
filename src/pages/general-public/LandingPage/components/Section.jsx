@@ -28,21 +28,17 @@ import ChartDetailsModal from "../../modal/chartdetailsmodal";
 import useGetSelectedProject from '../../../../Hooks/usegetselectedproject'
 import useAllSectorsChartData from "../../../../Hooks/useSectorChart";
 import useAllLGAChartData from "../../../../Hooks/useLAGChart";
+import useGetAllProject from "../../../../Hooks/usegetallproject";
 
-ChartJS.register(CategoryScale,
+ChartJS.register(
+	CategoryScale,
 	LinearScale,
 	BarElement,
 	Title,
 	Tooltip,
-	Legend);
+	Legend
+);
 
-const historyCol = [
-	{ id: "local_goverment", label: 'LGA', minWidth: 70 },
-	{ id: "local_goverment", label: 'COMPLETED', minWidth: 70 },
-	{ id: "local_goverment", label: 'ONGOING', minWidth: 70 },
-	{ id: "local_goverment", label: 'WAITING PAYMENT', minWidth: 70 },
-	{ id: "local_goverment", label: 'MISSED MILESTONE', minWidth: 70 }
-];
 
 const sty = { color: "transparent", maxWwidth: "100%", height: "auto" };
 
@@ -185,7 +181,6 @@ const LandingSection = () => {
 							<button onClick={() => setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
 						</div>
 						<div className="canvas-container w-full max-h-[600px] p-5 justify-center items-center flex">
-							{console.log("data", chartData)}
 							{
 								!loadingLGAChartData || !loadingSectorsChartData ?
 									<Bar
@@ -202,11 +197,19 @@ const LandingSection = () => {
 	)
 }
 
+const historyCol = [
+	{ id: "local_goverment", label: 'LGA', minWidth: 70 },
+	{ id: "COMPLETED", label: 'COMPLETED', minWidth: 70, focus: (val) => val },
+	{ id: "COMPLETED", label: 'ONGOING', minWidth: 70, focus: (val) => val },
+	{ id: "NOT_STARTED", label: 'WAITING PAYMENT', minWidth: 70, focus: (val) => val },
+	{ id: "MILESTONE_MISSED", label: 'MISSED MILESTONE', minWidth: 70, focus: (val) => val }
+];
+
 const LandingSection2 = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const { updateHistory, fetchUpdateHistory, loadingUpdateHistory } = useAllUpdateHistory();
-
+	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
+	const { data: allProject, fetchProject, loading: loadingProject } = useGetAllProject();
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -216,16 +219,21 @@ const LandingSection2 = () => {
 		setPage(0);
 	};
 
+	useEffect(() => {
+		fetchProject();
+		fetchLGAChartData();
+		console.log("Rendering...5", LGAChartData);
+	}, []);
+
+
 	return (
 		<div className="home_landing-section__J_2Eo pb-16">
-
-
 			<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
 				<p className="w-full text-center mb-4 mt-4 font-extrabold text-4xl">Projects Report</p>
 				<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4">
 					<div>
 						{
-							!loadingUpdateHistory ?
+							!loadingProject ?
 								<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
 									<Toolbar sx={{
 										color: "white",
@@ -257,17 +265,25 @@ const LandingSection2 = () => {
 												</TableRow>
 											</TableHead>
 											<TableBody>
-												{updateHistory
+												{allProject
 													.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 													.map((row) => {
 														return (
 															<TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
 																{historyCol.map((column) => {
 																	let value = row[column.id];
-																	if (column.force) value = column.force(value);
+
+																	
+																	console.log("here", column.id, LGAChartData);
+																	column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
+																		if(k === row["local_goverment"]) value = LGAChartData[column.id][k];
+																		else value = 0;
+																	});
+
+																	if(column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
 
 																	return (
-																		<TableCell key={column.id} align={column.align}
+																		<TableCell key={column.id + column.label} align={column.align}
 																			sx={{
 																				border: ".3px solid #e0e0e0"
 																			}}>
@@ -284,7 +300,7 @@ const LandingSection2 = () => {
 									<TablePagination
 										rowsPerPageOptions={[10, 25, 100]}
 										component="div"
-										count={updateHistory.length}
+										count={allProject.length}
 										rowsPerPage={rowsPerPage}
 										page={page}
 										onPageChange={handleChangePage}
