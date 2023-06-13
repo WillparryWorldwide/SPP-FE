@@ -54,7 +54,7 @@ export default function Footer() {
 			</div>
 		</div>
 		<div className="flex flex-col lg:flex-row w-full items-center justify-between mt-20 text-sub-text text-sm">
-			<p>SPP © 2021 All rights reserved.</p>
+			<p>Delta State Government © {new Date().getFullYear}. All Rights Reserved</p>
 			<div className="items-center justify-between space-x-5 hidden">
 				<button className="font-bold">English</button>
 				<button className="opacity-50">Igbo</button>

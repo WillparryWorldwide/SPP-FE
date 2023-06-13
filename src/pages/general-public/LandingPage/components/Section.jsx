@@ -208,7 +208,7 @@ const historyCol = [
 const LandingSection2 = () => {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
+	const { LGAChartData, fetchLGAChartData } = useAllLGAChartData();
 	const { data: allProject, fetchProject, loading: loadingProject } = useGetAllProject();
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -225,15 +225,13 @@ const LandingSection2 = () => {
 		console.log("Rendering...5", LGAChartData);
 	}, []);
 
-
 	return (
 		<div className="home_landing-section__J_2Eo pb-16">
 			<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
-				<p className="w-full text-center mb-4 mt-4 font-extrabold text-4xl">Projects Report</p>
 				<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4">
 					<div>
 						{
-							!loadingProject ?
+							(!loadingProject && LGAChartData?.COMPLETED) ?
 								<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
 									<Toolbar sx={{
 										color: "white",
@@ -244,7 +242,7 @@ const LandingSection2 = () => {
 											variant="h6"
 											id="tableTitle"
 											component="div">
-											History
+											Local Governments Project Report
 										</Typography>
 									</Toolbar>
 									<TableContainer sx={{ maxHeight: 440 }}>
