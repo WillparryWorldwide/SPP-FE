@@ -9,7 +9,7 @@ export const AppProvider = ({ children }) => {
 	const isLogin = window.localStorage.getItem("isLogin");
 
 	useEffect(() => {
-		if(!Boolean(isLogin) && !(location.pathname === '/' || location.pathname.search("/project") === 0)) navigate("/spp");
+		if(!JSON.parse(isLogin) && !location.pathname.search("/spp")) navigate("/spp");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

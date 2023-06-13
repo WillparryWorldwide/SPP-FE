@@ -32,7 +32,7 @@ export default function registerProject(inputDetails, setSubmitBtnStatus, axios,
 		}).then(({ data }) => {
 			// get project result
 			window.toastr.success(data.data.message);
-			return data.data.result;
+			return data.result;
 		}).then(res => {
 			// set project id to milestones
 			setMileStones(prev => {

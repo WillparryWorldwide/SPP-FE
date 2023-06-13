@@ -150,7 +150,7 @@ const EditProject = () => {
 
 		const fetchSectors = () => {
 			axios.get('/sector/all').then(({ data }) => {
-				setSectors(data.data.result)
+				setSectors(data.result)
 			}).catch(({ response }) => {
 				console.log(response.data.message);
 			})
@@ -158,7 +158,7 @@ const EditProject = () => {
 
 		const fetchMdas = () => {
 			axios.get('/mda/all').then(({ data }) => {
-				setMdas(data.data.result)
+				setMdas(data.result)
 			}).catch(({ response }) => {
 				console.log(response.data.message);
 			})
@@ -166,7 +166,7 @@ const EditProject = () => {
 
 		const fetchContractors = async () => {
 			await axios.get('/admin/all-spp/q?role=contractor').then(({ data }) => {
-				setContractors(data.data.result)
+				setContractors(data.result)
 			}).catch(({ response }) => {
 				console.log(response.data);
 			})
@@ -219,7 +219,7 @@ const EditProject = () => {
 		}).then(({ data }) => {
 			// get project result
 			window.toastr.success(data.data.message);
-			return data.data.result;
+			return data.result;
 		}).then(res => {
 			// set project id to milestones
 			setMileStones(prev => {

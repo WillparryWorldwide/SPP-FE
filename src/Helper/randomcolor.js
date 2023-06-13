@@ -1,71 +1,73 @@
 export const randomColor = () => {
-    const colors = (e) => {
-    if (e.charAt(0).toLowerCase() === 'a'){
-       return '#BB86FC'
-    }else if (e.charAt(0).toLowerCase() === 'b'){
-        return '#43A7D3'
-    }else if (e.charAt(0).toLowerCase() === 'c'){
-        return '#73819E'
-    }else if (e.charAt(0).toLowerCase() === 'd'){
-        return '#03DAC5'
-    }else if (e.charAt(0).toLowerCase() === 'e'){
-        return '#60CC8A'
-    }else if (e.charAt(0).toLowerCase() === 'f'){
-        return '#036b64'
-    }else if (e.charAt(0).toLowerCase() === 'g'){
-        return '#505e2d'
-    }else if (e.charAt(0).toLowerCase() === 'h'){
-        return '#e30909'
-    }else if (e.charAt(0).toLowerCase() === 'i'){
-        return '#b05e0c'
-    }else if (e.charAt(0).toLowerCase() === 'j'){
-        return '#DB5B5B'
-    }else if (e.charAt(0).toLowerCase() === 'k'){
-        return '#ed5a12'
-    }else if (e.charAt(0).toLowerCase() === 'l'){
-        return '#900b37'
-    }else if (e.charAt(0).toLowerCase() === 'm'){
-        return '#ee8109'
-    }else if (e.charAt(0).toLowerCase() === 'n'){
-        return '#54f0b2'
-    }else if (e.charAt(0).toLowerCase() === 'o'){
-        return '#03298d'
-    }else if (e.charAt(0).toLowerCase() === 'p'){
-        return '#89de0a'
-    }else if (e.charAt(0).toLowerCase() === 'q'){
-        return '#033a01'
-    }else if (e.charAt(0).toLowerCase() === 'r'){
-        return '#9da6ac'
-    }else if (e.charAt(0).toLowerCase() === 's'){
-        return '#b39f08'
-    }else if (e.charAt(0).toLowerCase() === 't'){
-        return '#1b83ed'
-    }else if (e.charAt(0).toLowerCase() === 'u'){
-        return '#fbbabd'
-    }else if (e.charAt(0).toLowerCase() === 'v'){
-        return '#f666c7'
-    }else if (e.charAt(0).toLowerCase() === 'w'){
-        return '#aa8741'
-    }else if (e.charAt(0).toLowerCase() === 'x'){
-        return '#0eeec8'
-    }else if (e.charAt(0).toLowerCase() === 'y'){
-        return '#365cf7'
-    }else if (e.charAt(0).toLowerCase() === 'z'){
-        return '#7bf142'
-    }else{
-        return '#03DAC5'
-    }
-    }
-    const handleColor = (event) => {
-        if(event.toLowerCase() === "fully paid"){
-            return '#0BB14B'
-        }else if(event.toLowerCase() === "partially paid"){
-            return '#FF8900'
-        }else if(event.toLowerCase() === "overdue"){
-            return '#F80000'
-        }else{
-            return '#7B7B7B'
-        }
-    }
-    return {colors, handleColor};  
+	const colors = (e) => {
+		switch (e.charAt(0).toLowerCase()) {
+			case 'a':
+				return '#BB86FC';
+			case 'b':
+				return '#43A7D3';
+			case 'c':
+				return '#73819E';
+			case 'd':
+				return '#03DAC5';
+			case 'e':
+				return '#60CC8A';
+			case 'f':
+				return '#036b64';
+			case 'g':
+				return '#505e2d';
+			case 'h':
+				return '#e30909';
+			case 'i':
+				return '#b05e0c';
+			case 'j':
+				return '#DB5B5B';
+			case 'k':
+				return '#ed5a12';
+			case 'l':
+				return '#900b37';
+			case 'm':
+				return '#ee8109';
+			case 'n':
+				return '#54f0b2';
+			case 'o':
+				return '#03298d';
+			case 'p':
+				return '#89de0a';
+			case 'q':
+				return '#033a01';
+			case 'r':
+				return '#9da6ac';
+			case 's':
+				return '#b39f08';
+			case 't':
+				return '#1b83ed';
+			case 'u':
+				return '#fbbabd';
+			case 'v':
+				return '#f666c7';
+			case 'w':
+				return '#aa8741';
+			case 'x':
+				return '#0eeec8';
+			case 'y':
+				return '#365cf7';
+			case 'z':
+				return '#7bf142';
+			default:
+				return '#03DAC5';
+		}
+	}
+	const handleColor = (event) => {
+		switch (event.toLowerCase()) {
+			case "fully paid":
+				return '#0BB14B'
+			case "partially paid":
+				return '#FF8900'
+			case "overdue":
+				return '#F80000'
+			default:
+				return '#7B7B7B'
+		}
+	}
+	return { colors, handleColor };
 }

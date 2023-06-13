@@ -7,7 +7,7 @@ const SearchBar = ({handleOption}) => {
 	const searchRef = useRef();
 	const signOut = useSignOut();
 	const isAuthenticated = useIsAuthenticated();
-	
+
 	const handelLogout = () => {
 		window.localStorage.clear();
 		signOut();

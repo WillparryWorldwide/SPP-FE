@@ -10,7 +10,7 @@ const useAllSectors = () => {
 	const fetchSectors = () => {
 		setLoading(true);
 		axios.get("/sector/all").then((res) => {
-			setData(res.data.data.result);
+			setData(res.data.result);
 			setLoading(false);
 			return true;
 		}).catch(error => {

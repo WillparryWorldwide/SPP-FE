@@ -9,9 +9,9 @@ const useUpdateProject = () => {
 	const upDAteProject = async (_id, data) => {
 		setLoading(true);
 		axios.patch('/project/update/' + _id, data).then(async (res) => {
-			setData(res.data.data.result);
+			setData(res.data.result);
 			setLoading(false);
-			window.toastr.success(res.data.data.message);
+			window.toastr.success(res.data.message);
 		}).catch(error => {
 			// handle error
 			console.log(error);

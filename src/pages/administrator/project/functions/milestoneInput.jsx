@@ -50,6 +50,7 @@ export default function MilestoneInput({milestoneText, milestone, handelMileston
 				</Grid>
 				<Grid item xs={12} md={6} lg={3}>
 					<DatePicker
+						className="w-full"
 						label="Duration"
 						value={milestone.duration}
 						onChange={(e) => handelMilestoneChange(e, milestone.id, "duration")} />

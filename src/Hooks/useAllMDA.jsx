@@ -10,7 +10,7 @@ const useAllMDA = () => {
 	const fetchMdas = () => {
 		setLoading(true);
 		axios.get("/mda/all").then((res) => {
-			setData(res.data.data.result);
+			setData(res.data.result);
 			setLoading(false);
 			return true;
 		}).catch(error => {

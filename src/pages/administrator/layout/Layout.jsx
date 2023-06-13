@@ -2,8 +2,12 @@ import { Outlet } from "react-router-dom";
 import SideBar from "../../components/discovery/sidebar";
 import BottomNav from "../../components/discovery/bottomnav";
 import { AppProvider } from "../../../context/AppContext";
+import { useIsAuthenticated } from "react-auth-kit";
 
 const DashboardLayout = () => {
+	const isAuthenticated = useIsAuthenticated();
+	window.localStorage.setItem("isLogin", isAuthenticated());
+
 	return (
 		<AppProvider>
 			<div className="Toastify"></div>

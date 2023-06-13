@@ -14,8 +14,8 @@ const useSearchProject = () => {
 	const searchProject = (filter) => {
 		setLoading(true)
 		axios.get('/resource/search?q=' + filter, {timeout: 7000}).then((res) => {
-			console.log(res.data.data.result)
-			setData(res.data.data.result.project.items);
+			console.log(res.data.result)
+			setData(res.data.result.project.items);
 			setHostUrl(res.config.baseURL.slice(0, res.config.baseURL.search("api/")));
 			setLoading(false)
 			return true

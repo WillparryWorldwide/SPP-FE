@@ -1,10 +1,8 @@
-import { useAuthUser } from "react-auth-kit";
 import { randomColor } from "../../../Helper/randomcolor";
 import IconSVG from "../../../Utils/svg";
 
 const Review = ({ project, setCommentOption }) => {
 	const { colors } = randomColor();
-	const userData = useAuthUser()();
 	
 	return (
 		<>
