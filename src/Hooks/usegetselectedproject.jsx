@@ -13,7 +13,9 @@ const useGetSelectedProject = () => {
 
   const fetchSelectedProject = (filterproperty, filter) => {
     setLoading(true)
+    console.log(`/project/all?${filterproperty}=${filter}`)
     axios.get(`/project/all?${filterproperty}=${filter}`).then((res) => {
+      console.log(res)
       setData(res.data.result)
       setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
       setLoading(false)

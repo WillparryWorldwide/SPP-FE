@@ -93,11 +93,11 @@ const LandingSection = () => {
 	  })
 	const [chartTitle, setChartTitle] = useState('')
 	const [buttonSwitch, setButtonSwitch] = useState('projects')
-	const { projectDetailsOption, setprojectDetailsOption, ProjectDetailsPopUp } = ChartDetailsModal()
+	const { projectDetailsOption, setProjectDetailsOption, ProjectDetailsPopUp } = ChartDetailsModal()
 
 	const { fetchSelectedProject, data, loading } = useGetSelectedProject()
 	const [filter, setFilter] = useState('')
-	const [filterOption, setFilterOption] = useState('')
+	const [filterOption, setFilterOption] = useState('local_goverment')
 	
  
 
@@ -193,9 +193,14 @@ useEffect(()=>{
 }, [buttonSwitch])
 
 useEffect(()=>{
-	if(filter !== ''){
-		fetchSelectedProject(filterOption, filter)
+	const fetchAsyncData = async ()=>{
+		await fetchSelectedProject(filterOption, filter)
 	}
+	if(filter !== ''){
+		console.log('i ruun async:', filter)
+		fetchAsyncData()
+	}
+
 }, [filter])
 
 const options={
@@ -205,7 +210,7 @@ const options={
 		  const clickedBarIndex = chartElements[0].index;
 		  // Perform actions based on the clicked bar index
 		  setFilter(event.chart.data.labels[chartElements[0].index])
-		  setprojectDetailsOption(true)
+		  setProjectDetailsOption(true)
 		//   console.log(`Clicked bar index: ${event.chart.data.labels[chartElements[0].index]}`);
 		  console.log(`Clicked bar index: ${chartElements[0].index}`);
 		}
