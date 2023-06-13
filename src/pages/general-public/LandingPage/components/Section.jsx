@@ -21,6 +21,8 @@ import { Chart as ChartJS,CategoryScale,
 	Tooltip,
 	Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import ChartDetailsModal from "../../modal/chartdetailsmodal";
+import useGetSelectedProject from '../../../../Hooks/usegetselectedproject'
 
 ChartJS.register(CategoryScale,
 	LinearScale,
@@ -89,74 +91,14 @@ const LandingSection = () => {
 		  },
 		],
 	  })
-	// const [chartLabel, setChartLabel] = useState([])
-	// const [chartSubLabel, setChartSubLabel] = useState('')
 	const [chartTitle, setChartTitle] = useState('')
 	const [buttonSwitch, setButtonSwitch] = useState('projects')
-	// const [data, setData] = useState({
-	// 	labels: chartLabel,
-	// 	datasets: [
-	// 	  {
-	// 		label: chartSubLabel,
-	// 		data: chartData,
-	// 		backgroundColor: [
-	// 			'rgba(255, 99, 132, 0.2)',
-	// 			'rgba(54, 162, 235, 0.2)',
-	// 			'rgba(255, 206, 86, 0.2)',
-	// 			'rgba(75, 192, 192, 0.2)',
-	// 			'rgba(153, 102, 255, 0.2)',
-	// 			'rgba(255, 159, 64, 0.2)',
-	// 			'rgba(255, 99, 132, 0.2)',
-	// 			'rgba(54, 162, 235, 0.2)',
-	// 			'rgba(255, 206, 86, 0.2)',
-	// 			'rgba(75, 192, 192, 0.2)',
-	// 			'rgba(153, 102, 255, 0.2)',
-	// 			'rgba(255, 159, 64, 0.2)',
-	// 			'rgba(255, 99, 132, 0.2)',
-	// 			'rgba(54, 162, 235, 0.2)',
-	// 			'rgba(255, 206, 86, 0.2)',
-	// 			'rgba(75, 192, 192, 0.2)',
-	// 			'rgba(153, 102, 255, 0.2)',
-	// 			'rgba(255, 159, 64, 0.2)',
-	// 			'rgba(255, 99, 132, 0.2)',
-	// 			'rgba(54, 162, 235, 0.2)',
-	// 			'rgba(255, 206, 86, 0.2)',
-	// 			'rgba(75, 192, 192, 0.2)',
-	// 			'rgba(153, 102, 255, 0.2)',
-	// 			'rgba(255, 159, 64, 0.2)',
-	// 			'rgba(255, 99, 132, 0.2)'
-	// 		],
-	// 		borderColor: [
-	// 			'rgba(255, 99, 132, 1)',
-	// 			'rgba(54, 162, 235, 1)',
-	// 			'rgba(255, 206, 86, 1)',
-	// 			'rgba(75, 192, 192, 1)',
-	// 			'rgba(153, 102, 255, 1)',
-	// 			'rgba(255, 159, 64, 1)',
-	// 			'rgba(255, 99, 132, 1)',
-	// 			'rgba(54, 162, 235, 1)',
-	// 			'rgba(255, 206, 86, 1)',
-	// 			'rgba(75, 192, 192, 1)',
-	// 			'rgba(153, 102, 255, 1)',
-	// 			'rgba(255, 159, 64, 1)',
-	// 			'rgba(255, 99, 132, 1)',
-	// 			'rgba(54, 162, 235, 1)',
-	// 			'rgba(255, 206, 86, 1)',
-	// 			'rgba(75, 192, 192, 1)',
-	// 			'rgba(153, 102, 255, 1)',
-	// 			'rgba(255, 159, 64, 1)',
-	// 			'rgba(255, 99, 132, 1)',
-	// 			'rgba(54, 162, 235, 1)',
-	// 			'rgba(255, 206, 86, 1)',
-	// 			'rgba(75, 192, 192, 1)',
-	// 			'rgba(153, 102, 255, 1)',
-	// 			'rgba(255, 159, 64, 1)',
-	// 			'rgba(255, 99, 132, 1)'
-	// 		],
-	// 		borderWidth: 1,
-	// 	  },
-	// 	],
-	//   })
+	const { projectDetailsOption, setprojectDetailsOption, ProjectDetailsPopUp } = ChartDetailsModal()
+
+	const { fetchSelectedProject, data, loading } = useGetSelectedProject()
+	const [filter, setFilter] = useState('')
+	const [filterOption, setFilterOption] = useState('')
+	
  
 
 useEffect(()=>{
@@ -211,8 +153,8 @@ useEffect(()=>{
 			  },
 			],
 		  })
-		// setChartSubLabel('# of project')
 		setChartTitle('Project Analysis In All Local Government')
+		setFilterOption('local_goverment')
 	}else if(buttonSwitch.toLowerCase() === 'sector'){
 		setChartData({
 			labels: ['Sector 1' ,
@@ -245,12 +187,16 @@ useEffect(()=>{
 			  },
 			],
 		  })
-		// setChartLabel(['Sector 1', 'Sector 2', 'Sector 3', 'Sector N'])
-		// setChartSubLabel('# of Sector')
 		setChartTitle('Sector Analysis In Delta State')
+		setFilterOption('sector')
 	}
 }, [buttonSwitch])
 
+useEffect(()=>{
+	if(filter !== ''){
+		fetchSelectedProject(filterOption, filter)
+	}
+}, [filter])
 
 const options={
 	onClick: (event, chartElements) => {
@@ -258,7 +204,10 @@ const options={
 		if (chartElements && chartElements.length > 0) {
 		  const clickedBarIndex = chartElements[0].index;
 		  // Perform actions based on the clicked bar index
-		  console.log(`Clicked bar index: ${chartElements}`);
+		  setFilter(event.chart.data.labels[chartElements[0].index])
+		  setprojectDetailsOption(true)
+		//   console.log(`Clicked bar index: ${event.chart.data.labels[chartElements[0].index]}`);
+		  console.log(`Clicked bar index: ${chartElements[0].index}`);
 		}
 	  },
 	plugins: {
@@ -278,7 +227,9 @@ const options={
 	},
   };
 
-	return <div className="home_landing-section__J_2Eo xl:py-36 py-24">
+	return (
+		<>
+			<div className="home_landing-section__J_2Eo xl:py-36 py-24">
 				<div className="absolute w-full justify-center top-16 right-0 hidden lg:flex">
 					<a className="cursor-pointer" href="#x">
 						<img alt="scroll down" loading="lazy" width="24" height="26" decoding="async" data-nimg="1" src={IconSVG.scrollDown} style={sty} />
@@ -291,7 +242,7 @@ const options={
 							<button onClick={()=>setButtonSwitch('project')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
 							<button onClick={()=>setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
 						</div>
-						<div className="w-full max-h-[600px] p-5 justify-center items-center flex">
+						<div className="canvas-container w-full max-h-[600px] p-5 justify-center items-center flex">
 							<Bar 
 								data={chartData && chartData} 
 								options={options}
@@ -300,6 +251,9 @@ const options={
 					</div>
 				</div>
 			</div>
+			{projectDetailsOption && <ProjectDetailsPopUp modalTitle={filter} data={data} loading={loading} />}
+		</>
+		)
 }
 
 const LandingSection2 = () => {
