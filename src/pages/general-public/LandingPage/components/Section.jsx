@@ -95,7 +95,8 @@ const LandingSection = () => {
 
 	const { fetchSelectedProject, data, loading } = useGetSelectedProject()
 	const [filter, setFilter] = useState('')
-	const [filterOption, setFilterOption] = useState('');
+	const [filterOption, setFilterOption] = useState('local_goverment')
+
 
 	useEffect(() => {
 		fetchLGAChartData();
@@ -122,6 +123,16 @@ const LandingSection = () => {
 	}, [buttonSwitch])
 
 	useEffect(() => {
+		const fetchAsyncData = async () => {
+			await fetchSelectedProject(filterOption, filter)
+		}
+		if (filter !== '') {
+			console.log('i ruun async:', filter)
+			fetchAsyncData()
+		}
+
+	}, [filter])
+	useEffect(() => {
 		if (filter !== '') {
 			fetchSelectedProject(filterOption, filter)
 		}
@@ -135,7 +146,7 @@ const LandingSection = () => {
 				const clickedBarIndex = chartElements[0].index;
 				// Perform actions based on the clicked bar index
 				setFilter(event.chart.data.labels[chartElements[0].index])
-				setProjectDetailsOption(true);
+				setProjectDetailsOption(true)
 				//   console.log(`Clicked bar index: ${event.chart.data.labels[chartElements[0].index]}`);
 				console.log(`Clicked bar index: ${chartElements[0].index}`);
 			}
@@ -156,6 +167,7 @@ const LandingSection = () => {
 			},
 		},
 	};
+
 
 	return (
 		<>
