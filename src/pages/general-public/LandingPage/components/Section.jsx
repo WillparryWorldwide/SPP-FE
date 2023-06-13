@@ -222,7 +222,9 @@ const LandingSection2 = () => {
 	useEffect(() => {
 		fetchProject();
 		fetchLGAChartData();
+		console.log("Rendering...5", LGAChartData);
 	}, []);
+
 
 	return (
 		<div className="home_landing-section__J_2Eo pb-16">
@@ -270,10 +272,12 @@ const LandingSection2 = () => {
 															<TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
 																{historyCol.map((column) => {
 																	let value = row[column.id];
+
 																	
+																	console.log("here", column.id, LGAChartData);
 																	column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
 																		if(k === row["local_goverment"]) value = LGAChartData[column.id][k];
-																		else value = 0
+																		else value = 0;
 																	});
 
 																	if(column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
