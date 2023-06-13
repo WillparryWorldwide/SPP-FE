@@ -1,3 +1,4 @@
+import _ from "lodash";
 import IconSVG from "../../../Utils/svg";
 import { SearchNav, Title } from "../components";
 import React, { useEffect, useState } from "react";
@@ -40,9 +41,8 @@ const RegisterProject = () => {
 	const [inputDetails, setInputDetails] = useState(initialInput);
 
 	const [contractors, setContractors] = useState([]);
-	const tagsExample = [
-		"Legacy", "childcare", "maternal motality", "mega project", "road", "technology", "school"
-	]
+	const tagsExample = _.sortBy(['LEGACY', 'CHILDCARE', 'MATERNAL MOTALITY', 'MEGA PROJECT', 'ROAD', 'TECHNOLOGY', 'SCHOOL']);
+	const local_goverment_arr = _.sortBy(['OSHIMILI', 'ANIOCHA', 'ANIOCHA SOUTH', 'IKA SOUTH', 'IKA NORTH-EAST', 'NDOKWA WEST', 'NDOKWA EAST', 'ISOKO SOUTH', 'ISOKO NORTH', 'BOMADI', 'BURUTU', 'UGHELLI SOUTH', 'UGHELLI NORTH', 'ETHIOPE WEST', 'ETHIOPE EAST', 'SAPELE', 'OKPE', 'WARRI NORTH', 'WARRI SOUTH', 'UVWIE', 'UDU', 'WARRI CENTRAL', 'UKWANI', 'OSHIMILI NORTH', 'PATANI']);
 
 	const milestoneText = {
 		preliminaries_sum: "Preliminary Sum",
@@ -201,7 +201,7 @@ const RegisterProject = () => {
 									noValidate
 									autoComplete="off">
 									{/* input fields */}
-									<ProjectInputField inputDetails={inputDetails} handelInputChange={handelInputChange} contractors={contractors} sectors={sectors} mdas={mdas} tagsExample={tagsExample} setImageText={setImageText} imageText={imageText} />
+									<ProjectInputField inputDetails={inputDetails} handelInputChange={handelInputChange} contractors={contractors} sectors={sectors} mdas={mdas} tagsExample={tagsExample} local_goverment_arr={local_goverment_arr} setImageText={setImageText} imageText={imageText} />
 									{/* Milestone */}
 									<Grid container spacing={1} sx={{ marginTop: "3em" }}>
 										{organiseMilestone().map((sortedM) => (

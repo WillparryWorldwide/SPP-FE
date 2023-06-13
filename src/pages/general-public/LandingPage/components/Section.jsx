@@ -4,7 +4,6 @@ import mdaImg from "../../../../assets/images/mda_m30ptu.webp";
 import citizen from "../../../../assets/images/citizen_edns1x.webp"
 import { useEffect, useState } from "react";
 import IconSVG from "../../../../Utils/svg";
-import useAllUpdateHistory from "../../../../Hooks/useHistory";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,7 +13,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { CircularProgress, Toolbar, Typography } from '@mui/material';
-import moment from "moment/moment";
 import {
 	Chart as ChartJS, CategoryScale,
 	LinearScale,
@@ -29,6 +27,7 @@ import useGetSelectedProject from '../../../../Hooks/usegetselectedproject'
 import useAllSectorsChartData from "../../../../Hooks/useSectorChart";
 import useAllLGAChartData from "../../../../Hooks/useLAGChart";
 import useGetAllProject from "../../../../Hooks/usegetallproject";
+import SiteImages from "../../../../Utils/images";
 
 ChartJS.register(
 	CategoryScale,
@@ -167,32 +166,65 @@ const LandingSection = () => {
 	};
 	return (
 		<>
-			<div className="home_landing-section__J_2Eo xl:py-36 py-24">
-				<div className="absolute w-full justify-center top-16 right-0 hidden lg:flex">
-					<a className="cursor-pointer" href="#x">
-						<img alt="scroll down" loading="lazy" width="24" height="26" decoding="async" data-nimg="1" src={IconSVG.scrollDown} style={sty} />
-					</a>
+			<div className="my-[99px] xl:py-36">
+				<div className="home_landing-section__J_2Eo">
+					<div className="absolute w-full justify-center top-16 right-0 hidden lg:flex">
+						<a className="cursor-pointer" href="#x">
+							<img alt="scroll down" loading="lazy" width="24" height="26" decoding="async" data-nimg="1" src={IconSVG.scrollDown} style={sty} />
+						</a>
+					</div>
+					<div className="home_image-section__FkGkS flex flex-col items-center order-2 lg:order-1" id="first-section">
+						<img alt="ministries&amp;contractors" loading="lazy" width="1000" height="1000" decoding="async" data-nimg="1" src={SiteImages.mda} style={sty} />
+						<a className="lg:hidden inline-block" href="/projects">
+							<div className="home_explore-projects-green__fe_1K">
+								<p className="medium home_green-explore-projects-button__B_r9D mr-5">
+									Explore all projects
+								</p>
+								<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" className="ml-5" src={IconSVG.greenGradientCaret} style={sty} />
+							</div>
+						</a>
+					</div>
+					<div className="home_text-section__8_eBv order-1 lg:order-2">
+						<p className="home_text-head__oI2Wu text-accepted medium">
+							Ministries &amp; Contractors
+						</p>
+						<h1 className="home_text-title__Wm_fr medium">Explore MDA Projects</h1>
+						<p className="home_text-subtitle__2Gieq">
+							Do you want to know what's happening with specific Ministries,
+							Departments, Agencies or contractor projects? Be one of the first to get all the updates you need straight
+							from MDAs and Contractors.
+						</p>
+						<a className="hidden lg:inline-block mt-10" href="discover.html">
+							<div className="home_explore-projects-green__fe_1K transform hover:-translate-y-1 transition duration-1000 ease-in-out">
+								<p className="medium home_green-explore-projects-button__B_r9D mr-5">
+									Explore all projects
+								</p>
+								<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.greenGradientCaret} />
+							</div>
+						</a>
+					</div>
 				</div>
-				<div className="w-full p-4 bg-white">
+				<div className="w-full p-4 bg-white hidden md:block">
 					<p className="w-full text-center mb-4 mt-4 font-bold text-lg">{chartTitle}</p>
-					<div className='p-2 w-full' >
-						<div className=' w-full mb-5 flex justify-center items-center p-2.5'>
-							<button onClick={() => setButtonSwitch('project')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
-							<button onClick={() => setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
-						</div>
-						<div className="canvas-container w-full max-h-[600px] p-5 justify-center items-center flex">
-							{
-								!loadingLGAChartData || !loadingSectorsChartData ?
+					{
+						!loadingLGAChartData || !loadingSectorsChartData ?
+							<div className='p-2 w-full'>
+								<div className=' w-full mb-5 flex justify-center items-center p-2.5'>
+									<button onClick={() => setButtonSwitch('project')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
+									<button onClick={() => setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
+								</div>
+								<div className="canvas-container w-full max-h-[600px] p-5 justify-center items-center flex">
 									<Bar
 										data={chartData && chartData}
 										options={options}
-									/> : <CircularProgress />
-							}
-						</div>
-					</div>
+									/>
+								</div>
+							</div>
+							: <CircularProgress />
+					}
 				</div>
+				{projectDetailsOption && <ProjectDetailsPopUp modalTitle={filter} data={data} loading={loading} />}
 			</div>
-			{projectDetailsOption && <ProjectDetailsPopUp modalTitle={filter} data={data} loading={loading} />}
 		</>
 	)
 }
@@ -228,7 +260,44 @@ const LandingSection2 = () => {
 	return (
 		<div className="home_landing-section__J_2Eo pb-16">
 			<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
-				<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4">
+				<div className="home_landing-section__J_2Eo pb-16">
+					<div className="home_text-section__8_eBv">
+						<p className="home_text-head__oI2Wu medium text-pending">
+							citizens &amp;cso
+						</p>
+						<h1 className="home_text-title__Wm_fr medium">
+							Review and engage with users on projects
+						</h1>
+						<p className="home_text-subtitle__2Gieq">
+							You can post text reviews on projects and also view and engage with reviews from other citizens.
+						</p>
+						<a href="/projects">
+							<button className="hidden lg:block mt-10">
+								<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
+									<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
+										Start Reviewing Projects
+									</p>
+									<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
+								</div>
+							</button>
+						</a>
+					</div>
+					<div className="home_image-section__FkGkS flex flex-col items-center">
+						<img alt="citizens&amp;cso" loading="lazy" width="1150" height="1000" decoding="async" data-nimg="1" src={SiteImages.landingPageImg} style={sty} />
+						<a href="/projects">
+							<button className="lg:hidden">
+								<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
+									<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
+										Sign up to Review Projects
+									</p>
+									<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
+								</div>
+							</button>
+						</a>
+					</div>
+				</div>
+				<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4 hidden md:block">
+					<p>Local Government Project Analysis</p>
 					<div>
 						{
 							(!loadingProject && LGAChartData?.COMPLETED) ?
@@ -271,14 +340,14 @@ const LandingSection2 = () => {
 																{historyCol.map((column) => {
 																	let value = row[column.id];
 
-																	
+
 																	console.log("here", column.id, LGAChartData);
 																	column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
-																		if(k === row["local_goverment"]) value = LGAChartData[column.id][k];
+																		if (k === row["local_goverment"]) value = LGAChartData[column.id][k];
 																		else value = 0;
 																	});
 
-																	if(column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
+																	if (column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
 
 																	return (
 																		<TableCell key={column.id + column.label} align={column.align}

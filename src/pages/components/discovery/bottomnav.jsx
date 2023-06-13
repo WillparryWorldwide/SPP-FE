@@ -1,16 +1,22 @@
-
 import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import PersonIcon from '@mui/icons-material/Person';
+import { useIsAuthenticated, useSignOut } from 'react-auth-kit';
 import SettingsIcon from '@mui/icons-material/Settings';
+import Logout from '@mui/icons-material/Logout';
+import Login from '@mui/icons-material/Login';
+import PersonIcon from '@mui/icons-material/Person';
 import { Link } from 'react-router-dom';
-import { useIsAuthenticated } from 'react-auth-kit';
 import IconSVG from '../../../Utils/svg';
 
-
 const BottomNav = () => {
+	const signOut = useSignOut();
 	const isAuthenticated = useIsAuthenticated();
+
+	const handelLogout = () => {
+		window.localStorage.clear();
+		signOut();
+		window.toastr.success("GoodBye!");
+	}
 
 	return (
 		<>
@@ -56,9 +62,12 @@ const BottomNav = () => {
 						</Link>
 					</>
 				}
+				<div className="md:flex bg-grey-white cursor-pointer  hidden items-center font-bold text-xs py-2 px-4 mr-2 flex-shrink-0 border-grey-stroke border rounded-full ">
+					{!isAuthenticated() ? <Link to="/spp"><Login sx={{ width: 20 }} /></Link>: <Logout onClick={handelLogout} sx={{ width: 20 }} /> }
+				</div>
 			</div>
 		</>
 	)
 }
 
-export default BottomNav
+export default BottomNav;

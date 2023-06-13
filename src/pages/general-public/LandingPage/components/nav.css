@@ -1,0 +1,20 @@
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1022px) {
+	.mobileNav {
+		position: absolute;
+		display: flex !important;
+		right: -11em;
+		top: 4em;
+		padding: 1em;
+		z-index: 9999999;
+		background-color: rgb(245 244 240);
+	}
+}

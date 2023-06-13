@@ -2,7 +2,7 @@ import { Grid, MenuItem, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
-export default function ProjectInputField({inputDetails, handelInputChange, contractors, sectors, mdas, tagsExample, setImageText, imageText}) {
+export default function ProjectInputField({ inputDetails, handelInputChange, contractors, sectors, mdas, tagsExample, local_goverment_arr, setImageText, imageText }) {
 	return <Grid container spacing={1}>
 		<Grid item xs={12}>
 			<TextField
@@ -54,12 +54,18 @@ export default function ProjectInputField({inputDetails, handelInputChange, cont
 		<Grid item xs={12} md={6} lg={4}>
 			<TextField
 				fullWidth
-				type="text"
+				select
+				defaultValue={local_goverment_arr[0]}
 				name={inputDetails.local_goverment.name}
 				value={inputDetails.local_goverment.value}
 				onChange={handelInputChange}
-				label="LGA"
-				placeholder="Local Government Area" />
+				label="LGA">
+				{local_goverment_arr.map((option) => (
+					<MenuItem key={option} className="uppercase" value={option}>
+						{option}
+					</MenuItem>
+				))}
+			</TextField>
 		</Grid>
 		<Grid item xs={12} md={6} lg={4}>
 			<TextField

@@ -12,7 +12,9 @@ import BottomNav from '../components/discovery/bottomnav';
 import CommentModal from './modal/commentmodal'
 
 const Discover = () => {
-	const [option, setOption] = useState(null)
+	const init = window.localStorage.getItem("query");
+	const [option, setOption] = useState(init || null);
+	window.localStorage.clear();
 	// const [nameOfProject, setNameOfProject] = useState("");
 	// const [idOfProject, setIdOfProject] = useState("");
 	// const [viewComment, setViewComment] = useState(false);

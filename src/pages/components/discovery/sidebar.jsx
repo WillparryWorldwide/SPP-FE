@@ -22,7 +22,7 @@ const SideBar = () => {
 							<a href="/">
 								<span className="relative">
 									<span>
-										<img alt="logo" className={`rounded-full ${size ? 'w-28' : 'w-56'}`} src={SiteImages.logo4} />
+										<img alt="logo" className={`rounded-full ${size ? 'w-28' : 'w-56'}`} src={SiteImages.logo} />
 									</span>
 								</span>
 							</a>
