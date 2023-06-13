@@ -97,13 +97,13 @@ const LandingSection = () => {
 	useEffect(() => {
 		fetchLGAChartData();
 		fetchSectorsChartData();
-		console.log("Rendering...");
 	}, []);
 
 	useEffect(() => {
 		setChartData(initChatData(LGAChartData));
-		console.log("Rendering...3");
 	}, [LGAChartData]);
+
+
 
 	useEffect(() => {
 		if (buttonSwitch.toLowerCase() === 'project') {
@@ -115,25 +115,27 @@ const LandingSection = () => {
 			setChartTitle('Sector Analysis In Delta State');
 			setFilterOption('sector');
 		}
-		console.log("Rendering...1");
-	}, [buttonSwitch])
+	}, [buttonSwitch, projectDetailsOption, data])
+
+
 
 	useEffect(() => {
 		const fetchAsyncData = async () => {
 			await fetchSelectedProject(filterOption, filter)
 		}
 		if (filter !== '') {
-			console.log('i ruun async:', filter)
 			fetchAsyncData()
 		}
 
 	}, [filter])
-	useEffect(() => {
-		if (filter !== '') {
-			fetchSelectedProject(filterOption, filter)
-		}
-		console.log("Rendering...2");
-	}, [filter])
+
+
+	// useEffect(() => {
+	// 	if (filter !== '') {
+	// 		fetchSelectedProject(filterOption, filter)
+	// 	}
+	// 	console.log("Rendering...2");
+	// }, [filter])
 
 	const options = {
 		onClick: (event, chartElements) => {
@@ -163,8 +165,6 @@ const LandingSection = () => {
 			},
 		},
 	};
-
-
 	return (
 		<>
 			<div className="home_landing-section__J_2Eo xl:py-36 py-24">
