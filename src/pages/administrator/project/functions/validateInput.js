@@ -1,7 +1,16 @@
 export default function validateInput({ submit, inputDetails }) {
-	if (inputDetails.spp_code.value === "Select SPP") {
+	console.log("spp", inputDetails);
+	if (inputDetails.spp_code.value === '') {
 		inputDetails.spp_code.focus();
-		window.toastr.error("SPP Code is required");
+		window.toastr.error("SPP is required");
+		submit = !submit
+	} else if (inputDetails.mda_code.value === '') {
+		inputDetails.mda_code.focus();
+		window.toastr.error("MDA code is required");
+		submit = !submit
+	} else if (inputDetails.sector_code.value === '') {
+		inputDetails.sector_code.focus();
+		window.toastr.error("Sector code is required");
 		submit = !submit
 	} else if (inputDetails.name.value === '') {
 		inputDetails.name.focus();

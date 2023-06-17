@@ -12,7 +12,6 @@ import MilestoneInput from "./functions/milestoneInput";
 import ProjectInputField from "./functions/projectInputFields";
 import registerProject from "./functions/registrProject";
 
-
 const RegisterProject = () => {
 	const axios = AxiosClient();
 	const [imageText, setImageText] = useState(null);
@@ -29,7 +28,7 @@ const RegisterProject = () => {
 		mda_code: { name: "mda_code", focus: () => { }, value: '' },
 		funding_amount: { name: "funding_amount", focus: () => { }, value: '' },
 		name: { name: "name", focus: () => { }, value: '' },
-		state: { name: "state", focus: () => { }, value: '' },
+		state: { name: "state", focus: () => { }, value: "DELTA" },
 		sector_code: { name: "sector_code", focus: () => { }, value: '' },
 		location: { name: "location", focus: () => { }, value: '' },
 		category: { name: "category", focus: () => { }, value: '' },
@@ -174,7 +173,7 @@ const RegisterProject = () => {
 		}
 	}
 
-	const create = registerProject(inputDetails, setSubmitBtnStatus, axios, setMileStones, setEditedMilestone, milestones);
+	const create = registerProject(inputDetails, setSubmitBtnStatus, axios, milestones);
 
 	return (
 		<LocalizationProvider dateAdapter={AdapterMoment}>
@@ -196,6 +195,7 @@ const RegisterProject = () => {
 						<div className="card w-full">
 							<div className='container'>
 								<Box
+									id="project"
 									component="form"
 									encType="multipart/form-data"
 									noValidate

@@ -34,7 +34,6 @@ export default function ProjectInputField({ inputDetails, handelInputChange, con
 		<Grid item xs={12} md={6} lg={4}>
 			<DemoContainer components={["TextField"]}>
 				<TextField
-
 					fullWidth type="number"
 					name={inputDetails.funding_amount.name}
 					value={inputDetails.funding_amount.value}
@@ -44,6 +43,9 @@ export default function ProjectInputField({ inputDetails, handelInputChange, con
 		</Grid>
 		<Grid item xs={12} md={6} lg={4}>
 			<TextField
+				inputProps={{
+					readOnly: true
+				}}
 				fullWidth
 				type="text"
 				name={inputDetails.state.name}

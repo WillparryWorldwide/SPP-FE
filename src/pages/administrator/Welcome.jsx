@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Title } from "./components";
 import IconSVG from "../../Utils/svg";
-import SiteImages from "../../Utils/images";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,16 +9,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import useGetAllContractors from '../../Hooks/useGetAllContractors';
-import useAllSectors from '../../Hooks/useAllSectors';
 import { CircularProgress, Grid, Toolbar, Typography } from '@mui/material';
-import useAllMDA from "../../Hooks/useAllMDA";
 import useSearchProject from '../../Hooks/usesearchproject';
 import useAllUpdateHistory from "../../Hooks/useHistory";
 import moment from "moment/moment";
 import SearchBar from "../components/discovery/searchBar";
 import ItemList from "../components/muiComponent/list";
 import { BarChart, LineChart, PieChart } from "../components/charts";
+import useAllSectorsChartData from "../../Hooks/useSectorChart";
+import _ from "lodash";
+import useAllLGAChartData from "../../Hooks/useLAGChart";
 
 const historyCol = [
 	{ id: 'changed_by', label: 'User', minWidth: 70, force: (val) => val?.firstname },
@@ -29,47 +28,52 @@ const historyCol = [
 
 const Welcome = () => {
 	const [option, setOption] = useState(null);
-	const data = [
-		{
-			id: 1,
-			year: 2017,
-			completed: 320,
-			ongoing: 293
-		},
-		{
-			id: 2,
-			year: 2018,
-			completed: 230,
-			ongoing: 245
-		},
-		{
-			id: 3,
-			year: 2019,
-			completed: 220,
-			ongoing: 193
-		},
-		{
-			id: 4,
-			year: 2020,
-			completed: 320,
-			ongoing: 293
+
+	const initChatData = (data) => {
+		return {
+			labels: _.sortBy(data.LABELS)?.map(l => l.toUpperCase()),
+			datasets: [
+				{
+					label: 'Completed project',
+					data: _.sortBy(data.LABELS)?.map(l => data.COMPLETED[l] ? data.COMPLETED[l] : 0),
+					backgroundColor: 'rgb(54 235 86 / 50%)',
+					borderColor: 'rgb(54 235 86)',
+					borderWidth: 1
+				},
+				{
+					label: 'Ongoing project',
+					data: _.sortBy(data.LABELS)?.map(l => data.ONGOING[l] ? data.ONGOING[l] : 0),
+					backgroundColor: 'rgba(54, 162, 235, 0.5)',
+					borderColor: 'rgba(54, 162, 235, 1)',
+					borderWidth: 1
+				},
+				{
+					label: 'Waiting Pay',
+					data: _.sortBy(data.LABELS)?.map(l => data.NOT_STARTED[l] ? data.NOT_STARTED[l] : 0),
+					backgroundColor: 'rgba(255, 206, 86, 0.5)',
+					borderColor: 'rgba(255, 206, 86, 1)',
+					borderWidth: 1
+				},
+				{
+					label: 'Missed Milestone',
+					data: _.sortBy(data.LABELS)?.map(l => data.MILESTONE_MISSED[l] ? data.MILESTONE_MISSED[l] : 0),
+					backgroundColor: 'rgba(255, 99, 132, 0.5)',
+					borderColor: 'rgba(255, 99, 132, 1)',
+					borderWidth: 1
+				}
+			]
 		}
-	]
-	const [chartData, setChartData] = useState({
-		labels: data.map(y => y.year),
-		datasets: [{
-			label: "Project Status",
-			data: data.map(c => c.completed)
-		}]
-	});
+	}
+	
+	const { fetchSectorsChartData, loadingSectorsChartData, sectorsChartData } = useAllSectorsChartData();
+	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
+	const [sectorChart, setSectorChartData] = useState(initChatData(sectorsChartData));
+	const [lgaChart, setLgaChart] = useState(initChatData(LGAChartData));
 
 	const [page, setPage] = useState(0);
-	const { sectors, fetchSectors } = useAllSectors();
-	const { mdas, fetchMdas } = useAllMDA();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
 	const { updateHistory, fetchUpdateHistory, loadingUpdateHistory } = useAllUpdateHistory();
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const { data: allContractors, fetchContractors } = useGetAllContractors();
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -79,19 +83,23 @@ const Welcome = () => {
 		setRowsPerPage(+event.target.value);
 		setPage(0);
 	};
-	
+
 	const handleOption = (value) => {
 		console.log("option", value);
 		setOption(value)
 	};
 
 	useEffect(() => {
+		fetchSectorsChartData();
 		fetchUpdateHistory();
-		fetchContractors();
-		fetchSectors();
-		fetchMdas();
+		fetchLGAChartData();
 		console.log("Rendering...");
 	}, []);
+
+	useEffect(() => {
+		setLgaChart(initChatData(LGAChartData));
+		setSectorChartData(initChatData(sectorsChartData));
+	}, [LGAChartData, sectorsChartData]);
 
 	// Make All Project Fetch Request
 	useEffect(() => {
@@ -142,23 +150,26 @@ const Welcome = () => {
 			</div>
 			<div className="h-full  p-6">
 				<Grid container>
-					<Grid item xs>
-						<Paper sx={{ width: "min-content", marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
-							<BarChart chartData={chartData} />
-						</Paper>
-					</Grid>
-					<Grid item xs>
-						<Paper sx={{ width: "min-content", marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
-							<PieChart chartData={chartData} />
-						</Paper>
-					</Grid>
-					<Grid item xs>
-						<Paper sx={{ width: "min-content", marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
-							<LineChart chartData={chartData} />
-						</Paper>
-					</Grid>
+				{console.log("d", sectorChart, lgaChart)}
+					{
+						!loadingSectorsChartData ?
+							<Grid item xs={12} md={6}>
+								<Paper sx={{ marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
+									<LineChart chartData={sectorChart} />
+								</Paper>
+							</Grid>
+							: <CircularProgress />
+					}
+					{
+						!loadingLGAChartData ?
+							<Grid item xs={12} md={6}>
+								<Paper sx={{ maxWidth: "50em", marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
+									<BarChart chartData={lgaChart} />
+								</Paper>
+							</Grid>
+							: <CircularProgress />
+					}
 				</Grid>
-
 				{/* History */}
 				{
 					!loadingUpdateHistory ?
