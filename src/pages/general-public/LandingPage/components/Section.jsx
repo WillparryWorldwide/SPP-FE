@@ -46,7 +46,8 @@ const LandingSection = () => {
 
 	const { fetchSectorsChartData, loadingSectorsChartData, sectorsChartData } = useAllSectorsChartData();
 	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
-
+	const [labelFontSize, setLabelFontSize] = useState();
+console.log(labelFontSize)
 	const initChatData = (data) => {
 		return {
 			labels: _.sortBy(data.LABELS)?.map(l => l.toUpperCase()),
@@ -117,7 +118,6 @@ const LandingSection = () => {
 	}, [buttonSwitch, projectDetailsOption, data])
 
 
-
 	useEffect(() => {
 		const fetchAsyncData = async () => {
 			await fetchSelectedProject(filterOption, filter)
@@ -128,13 +128,53 @@ const LandingSection = () => {
 
 	}, [filter])
 
+	// Set Fontsize When windows size changes
+	useEffect(() => {
+		const handleResize = () => {
+		  if (window.innerWidth < 768) {
+			setLabelFontSize(4); // Set the desired font size for small screens
+		  } else {
+			setLabelFontSize(14); // Set the desired font size for larger screens
+		  }
+		};
+	
+		window.addEventListener('resize', handleResize);
+	
+		return () => {
+		  window.removeEventListener('resize', handleResize);
+		};
+	  }, [labelFontSize]);
+	  
+	  // Set font size on page load
+	useEffect(()=>{
+		const handleResize = () => {
+			if (window.innerWidth < 768) {
+			setLabelFontSize(5); // Set the desired font size for small screens
+			} else {
+			setLabelFontSize(14); // Set the desired font size for larger screens
+			}
+		};
+		handleResize()
+	}, [])
 
-	// useEffect(() => {
-	// 	if (filter !== '') {
-	// 		fetchSelectedProject(filterOption, filter)
-	// 	}
-	// 	console.log("Rendering...2");
-	// }, [filter])
+	  // get max bar height 
+	  const getMaximumHeight = (data) => {
+		let maxSum = 0;
+	  
+		for (let i = 0; i < data.labels.length; i++) {
+		  let sum = 0;
+	  
+		  for (let j = 0; j < data.datasets.length; j++) {
+			sum += data.datasets[j].data[i];
+		  }
+	  
+		  if (sum > maxSum) {
+			maxSum = sum;
+		  }
+		}
+	  
+		return maxSum;
+	  };
 
 	const options = {
 		onClick: (event, chartElements) => {
@@ -151,16 +191,24 @@ const LandingSection = () => {
 		plugins: {
 			title: {
 				display: false,
-				text: 'Chart.js Bar Chart - Stacked',
 			},
 		},
 		responsive: true,
+		maintainAspectRatio: true, // Enable maintaining aspect ratio
+		aspectRatio: 1, 
 		scales: {
 			x: {
 				stacked: true,
+				ticks: {
+				  font: {
+					size: labelFontSize, // Set the font size based on the state value
+				  },
+				},
 			},
 			y: {
 				stacked: true,
+				beginAtZero: true, // Set the minimum value for the y-axis
+				max: getMaximumHeight(chartData) + 3, // Set the maximum value for the y-axis
 			},
 		},
 	};
@@ -204,16 +252,16 @@ const LandingSection = () => {
 						</a>
 					</div>
 				</div>
-				<div className="w-full p-4 bg-white hidden md:block">
+				<div className="w-full p-4 bg-white ">
 					<p className="w-full text-center mb-4 mt-4 font-bold text-lg">{chartTitle}</p>
 					{
 						!loadingLGAChartData || !loadingSectorsChartData ?
 							<div className='p-2 w-full'>
-								<div className=' w-full mb-5 flex justify-center items-center p-2.5'>
-									<button onClick={() => setButtonSwitch('project')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Project Analysis</button>
-									<button onClick={() => setButtonSwitch('sector')} className="w-fit px-3 py-2 mr-5 border-primary bg-primary rounded-lg text-white">Sector Analysis</button>
+								<div className=' w-full mb-5 flex justify-center items-center  md:p-2.5'>
+									<button onClick={() => setButtonSwitch('project')} className="w-fit px-1 md:px-3 py-2 mr-5 border-primary text-xs md:text-base bg-primary rounded-lg text-white">Project Analysis</button>
+									<button onClick={() => setButtonSwitch('sector')} className="w-fit px-1 md:px-3 py-2 mr-5 border-primary text-xs md:text-base bg-primary rounded-lg text-white">Sector Analysis</button>
 								</div>
-								<div className="canvas-container w-full max-h-[600px] p-5 justify-center items-center flex">
+								<div className="canvas-container w-full md:p-5 justify-center items-center flex">
 									<Bar
 										data={chartData && chartData}
 										options={options}
