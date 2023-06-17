@@ -47,6 +47,7 @@ const LandingSection = () => {
 	const { fetchSectorsChartData, loadingSectorsChartData, sectorsChartData } = useAllSectorsChartData();
 	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
 	const [labelFontSize, setLabelFontSize] = useState();
+	const [maintainAspectRatio, setMaintainAspectRatio] = useState();
 console.log(labelFontSize)
 	const initChatData = (data) => {
 		return {
@@ -132,9 +133,11 @@ console.log(labelFontSize)
 	useEffect(() => {
 		const handleResize = () => {
 		  if (window.innerWidth < 768) {
-			setLabelFontSize(4); // Set the desired font size for small screens
+			setLabelFontSize(6); // Set the desired font size for small screens
+			setMaintainAspectRatio(true)
 		  } else {
 			setLabelFontSize(14); // Set the desired font size for larger screens
+			setMaintainAspectRatio(false)
 		  }
 		};
 	
@@ -143,15 +146,17 @@ console.log(labelFontSize)
 		return () => {
 		  window.removeEventListener('resize', handleResize);
 		};
-	  }, [labelFontSize]);
+	  }, []);
 	  
 	  // Set font size on page load
 	useEffect(()=>{
 		const handleResize = () => {
 			if (window.innerWidth < 768) {
-			setLabelFontSize(5); // Set the desired font size for small screens
+			setLabelFontSize(6); // Set the desired font size for small screens
+			setMaintainAspectRatio(true)
 			} else {
 			setLabelFontSize(14); // Set the desired font size for larger screens
+			setMaintainAspectRatio(false)
 			}
 		};
 		handleResize()
@@ -194,7 +199,7 @@ console.log(labelFontSize)
 			},
 		},
 		responsive: true,
-		maintainAspectRatio: true, // Enable maintaining aspect ratio
+		maintainAspectRatio: maintainAspectRatio, // Enable maintaining aspect ratio
 		aspectRatio: 1, 
 		scales: {
 			x: {
@@ -208,7 +213,7 @@ console.log(labelFontSize)
 			y: {
 				stacked: true,
 				beginAtZero: true, // Set the minimum value for the y-axis
-				max: getMaximumHeight(chartData) + 3, // Set the maximum value for the y-axis
+				max: getMaximumHeight(chartData) + 1, // Set the maximum value for the y-axis
 			},
 		},
 	};
@@ -261,14 +266,16 @@ console.log(labelFontSize)
 									<button onClick={() => setButtonSwitch('project')} className="w-fit px-1 md:px-3 py-2 mr-5 border-primary text-xs md:text-base bg-primary rounded-lg text-white">Project Analysis</button>
 									<button onClick={() => setButtonSwitch('sector')} className="w-fit px-1 md:px-3 py-2 mr-5 border-primary text-xs md:text-base bg-primary rounded-lg text-white">Sector Analysis</button>
 								</div>
-								<div className="canvas-container w-full md:p-5 justify-center items-center flex">
+								<div className="canvas-container w-full md:p-5 md:h-[600px] justify-center items-center flex">
 									<Bar
 										data={chartData && chartData}
 										options={options}
 									/>
 								</div>
 							</div>
-							: <CircularProgress />
+							: <div className="w-full h-40 flex justify-center items-center">
+								<CircularProgress /> 
+							</div>
 					}
 				</div>
 				{projectDetailsOption && <ProjectDetailsPopUp modalTitle={filter} data={data} loading={loading} />}
@@ -422,7 +429,9 @@ const LandingSection2 = () => {
 										onRowsPerPageChange={handleChangeRowsPerPage}
 									/>
 								</Paper>
-								: <CircularProgress />
+								: <div className="w-full h-40 flex justify-center items-center">
+									<CircularProgress /> 
+								</div>
 						}
 					</div>
 				</div>
