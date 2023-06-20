@@ -122,7 +122,8 @@ const OverView = ({ project, setTab, onEdit }) => {
 			setTimeLine(`${day} Days`);
 		}
 	}, [year, month]);
-console.log(pMilestone)
+
+	
 	return (
 		project._id ?
 			<div className="flex-shrink-0">
@@ -174,7 +175,7 @@ console.log(pMilestone)
 									<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
 										<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={SiteImages.federal} />
 									</div>
-									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">FEDERAL MINISTRY OF {project.category.toUpperCase()} </p>
+									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">{project.mda_code.name.toUpperCase()} </p>
 								</div>
 							</div>
 						</div>
