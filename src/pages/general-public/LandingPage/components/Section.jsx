@@ -183,14 +183,16 @@ const LandingSection = () => {
 
 	const options = {
 		onClick: (event, chartElements) => {
+			console.log(chartData)
 			console.log(event)
+			console.log(chartElements)
 			if (chartElements && chartElements.length > 0) {
 				const clickedBarIndex = chartElements[0].index;
 				// Perform actions based on the clicked bar index
 				setFilter(event.chart.data.labels[chartElements[0].index])
 				setProjectDetailsOption(true)
 				//   console.log(`Clicked bar index: ${event.chart.data.labels[chartElements[0].index]}`);
-				console.log(`Clicked bar index: ${chartElements[0].index}`);
+				// console.log(`Clicked bar index: ${chartElements[0].index}`);
 			}
 		},
 		plugins: {
