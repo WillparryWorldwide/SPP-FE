@@ -48,7 +48,6 @@ const LandingSection = () => {
 	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
 	const [labelFontSize, setLabelFontSize] = useState();
 	const [maintainAspectRatio, setMaintainAspectRatio] = useState();
-console.log(labelFontSize)
 	const initChatData = (data) => {
 		return {
 			labels: _.sortBy(data.LABELS)?.map(l => l.toUpperCase()),
@@ -183,14 +182,16 @@ console.log(labelFontSize)
 
 	const options = {
 		onClick: (event, chartElements) => {
+			console.log(chartData)
 			console.log(event)
+			console.log(chartElements)
 			if (chartElements && chartElements.length > 0) {
 				const clickedBarIndex = chartElements[0].index;
 				// Perform actions based on the clicked bar index
 				setFilter(event.chart.data.labels[chartElements[0].index])
 				setProjectDetailsOption(true)
 				//   console.log(`Clicked bar index: ${event.chart.data.labels[chartElements[0].index]}`);
-				console.log(`Clicked bar index: ${chartElements[0].index}`);
+				// console.log(`Clicked bar index: ${chartElements[0].index}`);
 			}
 		},
 		plugins: {
