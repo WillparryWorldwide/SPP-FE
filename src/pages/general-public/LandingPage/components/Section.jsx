@@ -1,5 +1,6 @@
 // section
 import _ from "lodash";
+import "../../../css/chart.css";
 import mdaImg from "../../../../assets/images/mda_m30ptu.webp";
 import citizen from "../../../../assets/images/citizen_edns1x.webp"
 import { useEffect, useState } from "react";
@@ -22,12 +23,13 @@ import {
 	Legend
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import ChartDetailsModal from "../../modal/chartdetailsmodal";
+import ChartDetailsModal from "../../../components/modal/chartdetailsmodal";
 import useGetSelectedProject from '../../../../Hooks/usegetselectedproject'
 import useAllSectorsChartData from "../../../../Hooks/useSectorChart";
 import useAllLGAChartData from "../../../../Hooks/useLAGChart";
 import useGetAllProject from "../../../../Hooks/usegetallproject";
 import SiteImages from "../../../../Utils/images";
+import { useNavigate } from "react-router-dom";
 
 ChartJS.register(
 	CategoryScale,
@@ -43,12 +45,10 @@ const sty = { color: "transparent", maxWwidth: "100%", height: "auto" };
 
 
 const LandingSection = () => {
-
 	const { fetchSectorsChartData, loadingSectorsChartData, sectorsChartData } = useAllSectorsChartData();
 	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
 	const [labelFontSize, setLabelFontSize] = useState();
 	const [maintainAspectRatio, setMaintainAspectRatio] = useState();
-console.log(labelFontSize)
 	const initChatData = (data) => {
 		return {
 			labels: _.sortBy(data.LABELS)?.map(l => l.toUpperCase()),
@@ -132,54 +132,54 @@ console.log(labelFontSize)
 	// Set Fontsize When windows size changes
 	useEffect(() => {
 		const handleResize = () => {
-		  if (window.innerWidth < 768) {
-			setLabelFontSize(6); // Set the desired font size for small screens
-			setMaintainAspectRatio(true)
-		  } else {
-			setLabelFontSize(14); // Set the desired font size for larger screens
-			setMaintainAspectRatio(false)
-		  }
+			if (window.innerWidth < 768) {
+				setLabelFontSize(6); // Set the desired font size for small screens
+				setMaintainAspectRatio(true)
+			} else {
+				setLabelFontSize(14); // Set the desired font size for larger screens
+				setMaintainAspectRatio(false)
+			}
 		};
-	
+
 		window.addEventListener('resize', handleResize);
-	
+
 		return () => {
-		  window.removeEventListener('resize', handleResize);
+			window.removeEventListener('resize', handleResize);
 		};
-	  }, []);
-	  
-	  // Set font size on page load
-	useEffect(()=>{
+	}, []);
+
+	// Set font size on page load
+	useEffect(() => {
 		const handleResize = () => {
 			if (window.innerWidth < 768) {
-			setLabelFontSize(6); // Set the desired font size for small screens
-			setMaintainAspectRatio(true)
+				setLabelFontSize(6); // Set the desired font size for small screens
+				setMaintainAspectRatio(true)
 			} else {
-			setLabelFontSize(14); // Set the desired font size for larger screens
-			setMaintainAspectRatio(false)
+				setLabelFontSize(14); // Set the desired font size for larger screens
+				setMaintainAspectRatio(false)
 			}
 		};
 		handleResize()
 	}, [])
 
-	  // get max bar height 
-	  const getMaximumHeight = (data) => {
+	// get max bar height 
+	const getMaximumHeight = (data) => {
 		let maxSum = 0;
-	  
+
 		for (let i = 0; i < data.labels.length; i++) {
-		  let sum = 0;
-	  
-		  for (let j = 0; j < data.datasets.length; j++) {
-			sum += data.datasets[j].data[i];
-		  }
-	  
-		  if (sum > maxSum) {
-			maxSum = sum;
-		  }
+			let sum = 0;
+
+			for (let j = 0; j < data.datasets.length; j++) {
+				sum += data.datasets[j].data[i];
+			}
+
+			if (sum > maxSum) {
+				maxSum = sum;
+			}
 		}
-	  
+
 		return maxSum;
-	  };
+	};
 
 	const options = {
 		onClick: (event, chartElements) => {
@@ -200,14 +200,14 @@ console.log(labelFontSize)
 		},
 		responsive: true,
 		maintainAspectRatio: maintainAspectRatio, // Enable maintaining aspect ratio
-		aspectRatio: 1, 
+		aspectRatio: 1,
 		scales: {
 			x: {
 				stacked: true,
 				ticks: {
-				  font: {
-					size: labelFontSize, // Set the font size based on the state value
-				  },
+					font: {
+						size: labelFontSize, // Set the font size based on the state value
+					},
 				},
 			},
 			y: {
@@ -274,7 +274,7 @@ console.log(labelFontSize)
 								</div>
 							</div>
 							: <div className="w-full h-40 flex justify-center items-center">
-								<CircularProgress /> 
+								<CircularProgress />
 							</div>
 					}
 				</div>
@@ -284,7 +284,7 @@ console.log(labelFontSize)
 	)
 }
 
-const historyCol = [
+const lgaColumn = [
 	{ id: "local_goverment", label: 'LGA', minWidth: 70 },
 	{ id: "COMPLETED", label: 'COMPLETED', minWidth: 70, focus: (val) => val },
 	{ id: "COMPLETED", label: 'ONGOING', minWidth: 70, focus: (val) => val },
@@ -293,6 +293,7 @@ const historyCol = [
 ];
 
 const LandingSection2 = () => {
+	const navigate = useNavigate();
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const { LGAChartData, fetchLGAChartData } = useAllLGAChartData();
@@ -313,130 +314,135 @@ const LandingSection2 = () => {
 	}, []);
 
 	return (
-		<div className="home_landing-section__J_2Eo pb-16">
-			<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
-				<div className="home_landing-section__J_2Eo pb-16">
-					<div className="home_text-section__8_eBv">
-						<p className="home_text-head__oI2Wu medium text-pending">
-							citizens &amp;cso
-						</p>
-						<h1 className="home_text-title__Wm_fr medium">
-							Review and engage with users on projects
-						</h1>
-						<p className="home_text-subtitle__2Gieq">
-							You can post text reviews on projects and also view and engage with reviews from other citizens.
-						</p>
-						<a href="/projects">
-							<button className="hidden lg:block mt-10">
-								<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
-									<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
-										Start Reviewing Projects
-									</p>
-									<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
-								</div>
-							</button>
-						</a>
-					</div>
-					<div className="home_image-section__FkGkS flex flex-col items-center">
-						<img alt="citizens&amp;cso" loading="lazy" width="1150" height="1000" decoding="async" data-nimg="1" src={SiteImages.landingPageImg} style={sty} />
-						<a href="/projects">
-							<button className="lg:hidden">
-								<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
-									<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
-										Sign up to Review Projects
-									</p>
-									<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
-								</div>
-							</button>
-						</a>
-					</div>
-				</div>
-				<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4 hidden md:block">
-					<p>Local Government Project Analysis</p>
-					<div>
-						{
-							(!loadingProject && LGAChartData?.COMPLETED) ?
-								<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
-									<Toolbar sx={{
-										color: "white",
-										backgroundColor: "#3878f4"
-									}}>
-										<Typography
-											sx={{ flex: '1 1 100%' }}
-											variant="h6"
-											id="tableTitle"
-											component="div">
-											Local Governments Project Report
-										</Typography>
-									</Toolbar>
-									<TableContainer sx={{ maxHeight: 440 }}>
-										<Table stickyHeader aria-label="sticky table">
-											<TableHead>
-												<TableRow>
-													{historyCol.map((column, i) => (
-														<TableCell
-															key={column.id + i}
-															align={column.align}
-															style={{ minWidth: column.minWidth }}
-															sx={{
-																border: ".3px solid #e0e0e0"
-															}}>
-															{column.label}
-														</TableCell>
-													))}
-												</TableRow>
-											</TableHead>
-											<TableBody>
-												{allProject
-													.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-													.map((row) => {
-														return (
-															<TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
-																{historyCol.map((column) => {
-																	let value = row[column.id];
-
-
-																	console.log("here", column.id, LGAChartData);
-																	column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
-																		if (k === row["local_goverment"]) value = LGAChartData[column.id][k];
-																		else value = 0;
-																	});
-
-																	if (column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
-
-																	return (
-																		<TableCell key={column.id + column.label} align={column.align}
-																			sx={{
-																				border: ".3px solid #e0e0e0"
-																			}}>
-																			{value}
-																		</TableCell>
-																	);
-																})}
-															</TableRow>
-														);
-													})}
-											</TableBody>
-										</Table>
-									</TableContainer>
-									<TablePagination
-										rowsPerPageOptions={[10, 25, 100]}
-										component="div"
-										count={allProject.length}
-										rowsPerPage={rowsPerPage}
-										page={page}
-										onPageChange={handleChangePage}
-										onRowsPerPageChange={handleChangeRowsPerPage}
-									/>
-								</Paper>
-								: <div className="w-full h-40 flex justify-center items-center">
-									<CircularProgress /> 
-								</div>
-						}
+		<>
+			<div className="home_landing-section__J_2Eo pb-16">
+				<div className="flex flex-col justify-start gap-8 bg-grey-white w-full">
+					<div className="home_landing-section__J_2Eo pb-16">
+						<div className="home_text-section__8_eBv">
+							<p className="home_text-head__oI2Wu medium text-pending">
+								citizens &amp;cso
+							</p>
+							<h1 className="home_text-title__Wm_fr medium">
+								Review and engage with users on projects
+							</h1>
+							<p className="home_text-subtitle__2Gieq">
+								You can post text reviews on projects and also view and engage with reviews from other citizens.
+							</p>
+							<a href="/projects">
+								<button className="hidden lg:block mt-10">
+									<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
+										<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
+											Start Reviewing Projects
+										</p>
+										<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
+									</div>
+								</button>
+							</a>
+						</div>
+						<div className="home_image-section__FkGkS flex flex-col items-center">
+							<img alt="citizens&amp;cso" loading="lazy" width="1150" height="1000" decoding="async" data-nimg="1" src={SiteImages.landingPageImg} style={sty} />
+							<a href="/projects">
+								<button className="lg:hidden">
+									<div className="home_explore-projects-gold__HUoJN transform hover:-translate-y-1 transition duration-1000 ease-in-out">
+										<p className="medium home_gold-explore-projects-button__9NQxt mr-5">
+											Sign up to Review Projects
+										</p>
+										<img alt="right-icon" loading="lazy" width="7" height="13" decoding="async" data-nimg="1" style={sty} src={IconSVG.goldGradientCaret} />
+									</div>
+								</button>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>)
+
+			<div data-testid="Sectors-card" className="w-full bg-white rounded-lg cursor-pointer overflow-hidden p-4  md:px-16">
+				<p>Local Government Project Analysis</p>
+				<div>
+					{
+						(!loadingProject && LGAChartData?.COMPLETED) ?
+							<Paper sx={{ width: '100%', marginBottom: "2em", overflow: 'hidden' }}>
+								<Toolbar sx={{
+									color: "white",
+									backgroundColor: "#3878f4"
+								}}>
+									<Typography
+										sx={{ flex: '1 1 100%' }}
+										variant="h6"
+										id="tableTitle"
+										component="div">
+										Local Governments Project Report
+									</Typography>
+								</Toolbar>
+								<TableContainer sx={{ maxHeight: 440 }}>
+									<Table stickyHeader aria-label="sticky table">
+										<TableHead>
+											<TableRow>
+												{lgaColumn.map((column, i) => (
+													<TableCell
+														key={column.id + i}
+														align={column.align}
+														style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
+														sx={{
+															border: ".3px solid var(--tw-ring-color)"
+														}}>
+														{column.label}
+													</TableCell>
+												))}
+											</TableRow>
+										</TableHead>
+										<TableBody>
+											{allProject
+												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+												.map((row) => {
+													return (
+														<TableRow hover role="checkbox" tabIndex={-1} key={row._id} onClick={() => {
+															window.localStorage.setItem("query", row.local_goverment);
+															navigate("/projects");
+														}}>
+															{lgaColumn.map((column) => {
+																let value = row[column.id];
+
+																column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
+																	if (k === row["local_goverment"]) value = LGAChartData[column.id][k];
+																	else value = 0;
+																});
+
+																if (column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
+
+																return (
+																	<TableCell key={column.id + column.label} align={column.align}
+																		sx={{
+																			border: ".3px solid var(--tw-ring-color)"
+																		}}>
+																		{value}
+																	</TableCell>
+																);
+															})}
+														</TableRow>
+													);
+												})}
+										</TableBody>
+									</Table>
+								</TableContainer>
+								<TablePagination
+									rowsPerPageOptions={[10, 25, 100]}
+									component="div"
+									count={allProject.length}
+									rowsPerPage={rowsPerPage}
+									page={page}
+									onPageChange={handleChangePage}
+									onRowsPerPageChange={handleChangeRowsPerPage}
+								/>
+							</Paper>
+							: <div className="w-full h-40 flex justify-center items-center">
+								<CircularProgress />
+							</div>
+					}
+				</div>
+			</div>
+		</>
+	)
 }
 
 const Sections = {

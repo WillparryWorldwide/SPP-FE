@@ -13,11 +13,11 @@ const HeroSection = () => {
 
 	return <div className="home_landing-hero__u3Jsj">
 		<div className="lg:w-5/12 sm:w-7/12 mx-auto relative z-20">
-			<h1 className="xl:text-7xl sm:text-5xl text-4xl text-white text-center w-full font-bold">
-				More Project Progress App
+			<h1 className="xl:text-7xl sm:text-5xl text-4xl text-white text-center w-full font-bold uppercase">
+				M.O.R.E Project Progress App
 			</h1>
 			<p className="mt-6 text-sm xl:w-10/12 mx-auto w-full text-center text-lightGreen2">
-				SPP is the easiest way to discover and track government projects anytime, anywhere in Nigeria
+				M.O.R.E  PROJECT PROGRESS APP (MPPA) is the easiest way to discover and track government projects anytime, anywhere in Nigeria
 			</p>
 			<div className="flex justify-center w-full lg:absolute -bottom-24">
 				<div className="home_explore-input__BUzQA">
@@ -28,11 +28,8 @@ const HeroSection = () => {
 				</div>
 			</div>
 			<div className="mt-16 lg:mt-12">
-				<p className="uppercase text-sm text-center medium text-white">
-					our partners:
-				</p>
 				<div className="xl:w-9/12 lg:w-11/12 mx-auto mt-6 flex items-center justify-center">
-					<span className="home_partners__bh3Bi home_partner1__LGjvq"></span>
+					<span className="home_partners__bh3Bi home_partner1__LGjvq rounded-full"></span>
 				</div>
 			</div>
 		</div>

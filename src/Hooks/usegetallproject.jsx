@@ -11,14 +11,15 @@ const useGetAllProject = () => {
   const [hostUrl, setHostUrl] = useState('');
   const axios = AxiosClient();
 
-  const fetchProject = (filter) => {
+  const fetchProject = (filter = '') => {
     setLoading(true)
-    axios.get('/project/all').then((res) => {
+    axios.get('/project/all' + filter).then((res) => {
       setData(res.data.result)
       setHostUrl(res.config.baseURL.slice(0,res.config.baseURL.search("api/")));
-      setLoading(false)
+      setLoading(false);
       return true
     }).catch(error => {
+		setLoading(false);
       // handle error
       console.log(error);
     });

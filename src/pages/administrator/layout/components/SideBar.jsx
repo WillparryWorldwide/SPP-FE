@@ -66,7 +66,7 @@ const SideBar = () => {
 				<Link to="/spp/dashboard/users" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">
 					<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
 						<PersonIcon className="mr-1" />
-						{size && <p>SPP</p>}
+						{size && <p>M.O.R.E  PROJECT PROGRESS APP (MPPA)</p>}
 					</div>
 				</Link>
 				<Link to="/spp/dashboard" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">

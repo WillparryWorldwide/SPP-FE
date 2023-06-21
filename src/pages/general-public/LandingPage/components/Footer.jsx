@@ -1,18 +1,10 @@
-
-
-
-
-
-
-
-
 export default function Footer() {
 	return <footer className="xl:px-32 sm:px-20 px-7 xl:pb-32 py-12">
 		<div className="flex flex-col lg:flex-row justify-between">
 			<div className="lg:w-3/12 sm:w-6/12">
 				<img alt="" src="" />
 				<p className="mt-8 text-sm text-light-grey">
-					SPP is the easiest way to discover and track government projects anytime, anywhere in Nigeria
+					M.O.R.E  PROJECT PROGRESS APP (MPPA) is the easiest way to discover and track government projects anytime, anywhere in Delta State
 				</p>
 			</div>
 			<div className="xl:w-7/12 lg:w-8/12 flex flex-col sm:flex-row justify-between mt-10 lg:mt-0 space-y-10 sm:space-y-0">

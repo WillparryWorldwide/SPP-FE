@@ -18,7 +18,7 @@ import { useAuthUser } from 'react-auth-kit';
 import { useLocation } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 import { IconPlus } from "@tabler/icons-react";
-import CustomModal from '../../general-public/modal/customModal';
+import CustomModal from '../modal/customModal';
 import useUpdateProject from '../../../Hooks/useupdateproject';
 
 const OverView = ({ project, setTab, onEdit }) => {

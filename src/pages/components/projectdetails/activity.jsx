@@ -13,7 +13,7 @@ import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/la
 import moment, { duration } from 'moment';
 import organiseMilestone from "../../functions/organiseMilestone";
 import { Done, Edit } from "@mui/icons-material";
-import CustomModal from "../../general-public/modal/customModal";
+import CustomModal from "../modal/customModal";
 import useUpdateMilestone from "../../../Hooks/useUpdateMilestone";
 import { useAuthUser } from "react-auth-kit";
 import { useLocation } from "react-router-dom";
@@ -220,7 +220,7 @@ const Activity = ({ project, hostUrl }) => {
 								<img src={SiteImages.developer} alt='window wipe' className='w-96' />
 							</div>
 							<p className="mt-5 medium text-center text-2xl">Sorry! We don't have any updates available</p>
-							<p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly SPP and check back with us in the near future.</p>
+							<p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly M.O.R.E  PROJECT PROGRESS APP (MPPA) and check back with us in the near future.</p>
 							<div className="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Overview</div>
 						</div>
 

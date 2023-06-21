@@ -39,7 +39,7 @@ const SideBar = () => {
 										<span>{userData()? userData().role.toUpperCase(): "Menu"}</span>
 									</div>
 								</span>
-								<span className="font-filson-mediums font-medium text-sm truncate hidden" data-testid="active-tenant">SPP</span>
+								<span className="font-filson-mediums font-medium text-sm truncate hidden" data-testid="active-tenant">M.O.R.E  PROJECT PROGRESS APP (MPPA)</span>
 							</div>
 						</div>
 					</div>
@@ -63,7 +63,7 @@ const SideBar = () => {
 								<Link to="/spp/dashboard/users" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">
 									<div className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer ">
 										<PersonIcon className="mr-1" />
-										{size && <p>SPP</p>}
+										{size && <p>M.O.R.E  PROJECT PROGRESS APP (MPPA)</p>}
 									</div>
 								</Link>
 								<Link to="/spp/dashboard" className="leftSideBar_left-nav__H2cv9 text-light-grey-2 cursor-pointer w-full">

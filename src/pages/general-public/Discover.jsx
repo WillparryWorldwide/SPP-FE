@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 import '../../assets/css/9120b63ab911b239.css'
 import DiscoveryNavBar from '../components/discovery/nav';
@@ -9,15 +10,14 @@ import Comment from '../../components/generalpublic/comment';
 import useGetAllProject from "../../Hooks/usegetallproject";
 import useSearchProject from '../../Hooks/usesearchproject';
 import BottomNav from '../components/discovery/bottomnav';
-import CommentModal from './modal/commentmodal'
+import CommentModal from '../components/modal/commentmodal'
 
 const Discover = () => {
-	const init = window.localStorage.getItem("query");
-	const [option, setOption] = useState(init || null);
-	window.localStorage.clear();
-	// const [nameOfProject, setNameOfProject] = useState("");
+	const query = window.localStorage.getItem("query");
+	const [option, setOption] = useState(null);
 	// const [idOfProject, setIdOfProject] = useState("");
 	// const [viewComment, setViewComment] = useState(false);
+	// const [nameOfProject, setNameOfProject] = useState("");
 	const { upDAteProject, loading: upDateLoading } = useUpdateProject();
 	const { fetchProject, data, hostUrl, loading } = useGetAllProject();
 	const { searchProject, data: searchData, loading: searchLoading } = useSearchProject()
@@ -33,13 +33,11 @@ const Discover = () => {
 	// Make All Project Fetch Request
 	useEffect(() => {
 		const makeFetch = async () => {
-			console.log('here1')
-			await fetchProject()
+			await fetchProject(query ? "?local_goverment=" + query : '');
 		}
-		
+
 		//  Make Search Request
 		const makeSearchFetch = async () => {
-			console.log('here2')
 			await searchProject(option)
 		}
 
@@ -56,11 +54,10 @@ const Discover = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.length, option]);
 
-	useEffect(()=>{
-		if(searchData.length > 0){
+	useEffect(() => {
+		if (searchData.length > 0) {
 			setProjects(searchData);
 		}
-
 	}, [searchData])
 
 	const format = (amount) => {
@@ -124,7 +121,7 @@ const Discover = () => {
 						<div className="h-full flex  p-6">
 							<div className='w-full'>
 								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
-									{projects?.map((project, index) => (
+									{projects?.length ? projects?.map((project, index) => (
 										<ProjectCards
 											project={project}
 											hostUrl={hostUrl}
@@ -132,7 +129,16 @@ const Discover = () => {
 											displayComment={displayComment}
 											key={project._id}
 										/>
-									))}
+									)) :
+										(
+											<div className='flex h-full flex-col items-center justify-center'>
+												<p className="mt-5 medium text-center text-2xl">Sorry! We couldn't find it</p>
+												<p className="text-sm text-center text-input-border mt-3 w-10/12 lg:w-7/12 mx-auto">Unfortunately, we have not posted any update on this project. Kindly contact M.O.R.E PROJECT PROGRESS APP (MPPA) and check back with us in the near future.</p>
+												<Link to='/' className="bg-white cursor-pointer text-primary hover:bg-primary hover:text-white transition ease-in-out duration-300 rounded-md px-4 py-1 mt-6">Back To Home</Link>
+											</div>
+
+										)
+									}
 								</div>
 							</div>
 							{/* {viewComment && (

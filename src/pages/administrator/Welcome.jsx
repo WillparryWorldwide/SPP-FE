@@ -5,17 +5,17 @@ import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import TableHead from '@mui/material/TableHead';
+import { BarChart, LineChart  } from "../components/charts/index";
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
 import { CircularProgress, Grid, Toolbar, Typography } from '@mui/material';
 import useSearchProject from '../../Hooks/usesearchproject';
 import useAllUpdateHistory from "../../Hooks/useHistory";
 import moment from "moment/moment";
 import SearchBar from "../components/discovery/searchBar";
 import ItemList from "../components/muiComponent/list";
-import { BarChart, LineChart, PieChart } from "../components/charts";
 import useAllSectorsChartData from "../../Hooks/useSectorChart";
 import _ from "lodash";
 import useAllLGAChartData from "../../Hooks/useLAGChart";
@@ -64,7 +64,7 @@ const Welcome = () => {
 			]
 		}
 	}
-	
+
 	const { fetchSectorsChartData, loadingSectorsChartData, sectorsChartData } = useAllSectorsChartData();
 	const { LGAChartData, fetchLGAChartData, loadingLGAChartData } = useAllLGAChartData();
 	const [sectorChart, setSectorChartData] = useState(initChatData(sectorsChartData));
@@ -105,7 +105,7 @@ const Welcome = () => {
 	useEffect(() => {
 		//  Make Search Request
 		const makeSearchFetch = async () => {
-			await searchProject(option);
+			searchProject(option);
 		}
 
 		//  Set project to Search Request Data
@@ -150,25 +150,21 @@ const Welcome = () => {
 			</div>
 			<div className="h-full  p-6">
 				<Grid container>
-				{console.log("d", sectorChart, lgaChart)}
-					{
-						!loadingSectorsChartData ?
-							<Grid item xs={12} md={6}>
-								<Paper sx={{ marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
-									<LineChart chartData={sectorChart} />
-								</Paper>
-							</Grid>
-							: <CircularProgress />
-					}
-					{
-						!loadingLGAChartData ?
-							<Grid item xs={12} md={6}>
-								<Paper sx={{ maxWidth: "50em", marginBottom: "2em", padding: "2em", overflow: 'hidden' }}>
-									<BarChart chartData={lgaChart} />
-								</Paper>
-							</Grid>
-							: <CircularProgress />
-					}
+					<Grid item xs={12} md={6}>
+						<Paper sx={{ maxWidth: "50em", marginBottom: "2em", padding: ".3em", overflow: 'hidden' }}>
+							<LineChart chartData={lgaChart} chartTitle="LGA Project" filterOption="local_goverment" isLoading={loadingLGAChartData} />
+						</Paper>
+					</Grid>
+					<Grid item xs={12} md={6}>
+						<Paper sx={{ maxWidth: "50em", marginBottom: "2em", padding: ".3em", overflow: 'hidden' }}>
+							<BarChart chartData={sectorChart} chartTitle="Sector Project" filterOption="sector" isLoading={loadingSectorsChartData} />
+						</Paper>
+					</Grid>
+					<Grid item xs={12}>
+						<Paper sx={{ maxWidth: "100%", marginBottom: "2em", padding: ".3em", overflow: 'hidden' }}>
+							<BarChart chartData={lgaChart} chartTitle="All LGA" filterOption="local_goverment" isLoading={loadingLGAChartData} />
+						</Paper>
+					</Grid>
 				</Grid>
 				{/* History */}
 				{

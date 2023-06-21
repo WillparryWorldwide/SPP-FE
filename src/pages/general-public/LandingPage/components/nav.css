@@ -1,16 +1,3 @@
-
-.canvas-container > canvas{
-	@apply md:w-[80%] w-full h-full !important
-	/* height: 100% !important; */
-
-}
-
-
-
-
-
-
-
 @media screen and (max-width: 1022px) {
 	.mobileNav {
 		position: absolute;

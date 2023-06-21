@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 import "../../assets/css/3f1327110777dc38.css";
 import "../../assets/css/d35beeb833360611.css";
 import "../../assets/css/4c4867adecdc883a.css";
-import CommentModal from "./modal/commentmodal";
+import CommentModal from "../components/modal/commentmodal";
 import "../css/projectDetails/projectdetails.css";
 import Tab from "../components/projectdetails/tab";
 import React, { useEffect, useState } from "react";

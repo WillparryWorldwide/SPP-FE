@@ -43,7 +43,7 @@ const NavBar = () => {
 					</div>
 
 					<div className="lg:ml-8 flex flex-col lg:flex-row w-full lg:w-auto space-y-3 lg:space-y-0 lg:space-x-8 border-b lg:border-none py-4 lg:py-0 border-grey-stroke">
-						<Link className="text-light-grey text-base lg:text-sm" to="/projects">
+						<Link className="text-light-grey text-base lg:text-sm" to="/projects" onClick={() => window.localStorage.setItem("query", '')}>
 							<p className="medium">Projects</p>
 						</Link>
 						<Link className="text-light-grey text-base lg:text-sm" to="/">
