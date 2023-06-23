@@ -97,8 +97,8 @@ const Activity = ({ project, hostUrl }) => {
 		});
 	}
 
-	const handleUpdateMilestone = (milestoneId) => {
-		updateMilestone(milestoneId, milestones);
+	const handleUpdateMilestone = (data) => {
+		updateMilestone(data._id, milestones);
 	}
 
 	useEffect(() => {
@@ -176,7 +176,7 @@ const Activity = ({ project, hostUrl }) => {
 			</CustomModal>
 
 			{/* Edit milestione */}
-			<CustomModal title="Mark this milestone as completed" confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handleUpdateMilestone, parameter: { _id: milestoneModalDetails?._id } }} open={{ init: openUpdateMilestoneModal, set: setOpenUpdateMilestoneModal }}>
+			<CustomModal title="Mark this milestone as completed" confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handleUpdateMilestone, parameter: milestoneModalDetails }} open={{ init: openUpdateMilestoneModal, set: setOpenUpdateMilestoneModal }}>
 				<MilestoneInput milestoneText={milestoneText} milestone={milestones} handelMilestoneChange={handelMilestoneChange} />
 			</CustomModal>
 			{
