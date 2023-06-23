@@ -68,8 +68,15 @@ const LandingSection = () => {
 					borderWidth: 1
 				},
 				{
-					label: 'Waiting Pay',
+					label: 'Not Started',
 					data: _.sortBy(data.LABELS)?.map(l => data.NOT_STARTED[l] ? data.NOT_STARTED[l] : 0),
+					backgroundColor: 'rgba(162 152 152, 0.5)',
+					borderColor: 'rgb(162 152 152)',
+					borderWidth: 1
+				},
+				{
+					label: 'Waiting Pay',
+					data: _.sortBy(data.LABELS)?.map(l => data.WAITING_PAY[l] ? data.WAITING_PAY[l] : 0),
 					backgroundColor: 'rgba(255, 206, 86, 0.5)',
 					borderColor: 'rgba(255, 206, 86, 1)',
 					borderWidth: 1
@@ -289,8 +296,9 @@ const LandingSection = () => {
 const lgaColumn = [
 	{ id: "local_goverment", label: 'LGA', minWidth: 70 },
 	{ id: "COMPLETED", label: 'COMPLETED', minWidth: 70, focus: (val) => val },
-	{ id: "COMPLETED", label: 'ONGOING', minWidth: 70, focus: (val) => val },
-	{ id: "NOT_STARTED", label: 'WAITING PAYMENT', minWidth: 70, focus: (val) => val },
+	{ id: "ONGOING", label: 'ONGOING', minWidth: 70, focus: (val) => val },
+	{ id: "NOT_STARTED", label: 'NOT STARTED', minWidth: 70, focus: (val) => val },
+	{ id: "WAITING_PAY", label: 'WAITING PAYMENT', minWidth: 70, focus: (val) => val },
 	{ id: "MILESTONE_MISSED", label: 'MISSED MILESTONE', minWidth: 70, focus: (val) => val }
 ];
 
@@ -394,7 +402,7 @@ const LandingSection2 = () => {
 											</TableRow>
 										</TableHead>
 										<TableBody>
-											{allProject
+											{_.uniqBy(allProject, "local_goverment")
 												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 												.map((row) => {
 													return (
@@ -405,10 +413,7 @@ const LandingSection2 = () => {
 															{lgaColumn.map((column) => {
 																let value = row[column.id];
 
-																column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => {
-																	if (k === row["local_goverment"]) value = LGAChartData[column.id][k];
-																	else value = 0;
-																});
+																column.id !== "local_goverment" && Object.keys(LGAChartData[column.id]).forEach(k => (k === row["local_goverment"]) ? value = LGAChartData[column.id][k]: null);
 
 																if (column.id !== "local_goverment" && !Object.keys(LGAChartData[column.id]).length) value = 0;
 
@@ -417,7 +422,8 @@ const LandingSection2 = () => {
 																		sx={{
 																			border: ".3px solid var(--tw-ring-color)"
 																		}}>
-																		{value}
+																		{console.log("value", value)}
+																		{value ? value: 0}
 																	</TableCell>
 																);
 															})}
@@ -430,7 +436,7 @@ const LandingSection2 = () => {
 								<TablePagination
 									rowsPerPageOptions={[10, 25, 100]}
 									component="div"
-									count={allProject.length}
+									count={_.uniqBy(allProject, "local_goverment").length}
 									rowsPerPage={rowsPerPage}
 									page={page}
 									onPageChange={handleChangePage}

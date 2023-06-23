@@ -4,7 +4,7 @@ import useUpdateProject from "../../../Hooks/useupdateproject";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Close } from "@mui/icons-material";
 
-const CustomModal = ({ title, open, children, confirm, modalData }) => {
+const CustomModal = ({ title, open, children, confirm }) => {
 	// handle cancel delete function
 	const handleDeleteCancel = () => {
 		open.set(false);
@@ -31,7 +31,7 @@ const CustomModal = ({ title, open, children, confirm, modalData }) => {
 							<button onClick={() => handleDeleteCancel()} className="py-2 px-5 hover:bg-sky-700 rounded-full text-white medium">
 								<p>{confirm.cancelText}</p>
 							</button>
-							<button onClick={() => confirm.handleConfirm(modalData?._id)} className="py-2 px-5 rounded-full medium text-white bg-features-brown">
+							<button onClick={() => confirm.handleConfirm(confirm.parameter)} className="py-2 px-5 rounded-full medium text-white bg-features-brown">
 								{confirm.isLoading ? <CircularProgress size={10} sx={{ color: 'white' }} /> : <p>{confirm.confirmText}</p>}
 							</button>
 						</div>

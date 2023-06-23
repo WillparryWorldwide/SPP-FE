@@ -48,8 +48,15 @@ const Welcome = () => {
 					borderWidth: 1
 				},
 				{
-					label: 'Waiting Pay',
+					label: 'Not Started',
 					data: _.sortBy(data.LABELS)?.map(l => data.NOT_STARTED[l] ? data.NOT_STARTED[l] : 0),
+					backgroundColor: 'rgba(162 152 152, 0.5)',
+					borderColor: 'rgb(162 152 152)',
+					borderWidth: 1
+				},
+				{
+					label: 'Waiting Pay',
+					data: _.sortBy(data.LABELS)?.map(l => data.WAITING_PAY[l] ? data.WAITING_PAY[l] : 0),
 					backgroundColor: 'rgba(255, 206, 86, 0.5)',
 					borderColor: 'rgba(255, 206, 86, 1)',
 					borderWidth: 1
@@ -61,7 +68,7 @@ const Welcome = () => {
 					borderColor: 'rgba(255, 99, 132, 1)',
 					borderWidth: 1
 				}
-			]
+			],
 		}
 	}
 
@@ -190,10 +197,10 @@ const Welcome = () => {
 												<TableCell
 													key={column.id}
 													align={column.align}
-													style={{ minWidth: column.minWidth }}
-													sx={{
-														border: ".3px solid #e0e0e0"
-													}}>
+													style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
+														sx={{
+															border: ".3px solid var(--tw-ring-color)"
+														}}>
 													{column.label}
 												</TableCell>
 											))}

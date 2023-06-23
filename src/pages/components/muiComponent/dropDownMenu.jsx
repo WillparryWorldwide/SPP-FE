@@ -63,7 +63,7 @@ export default function CustomizedMenus({ id, name, onChanged }) {
 		{ name: "ONGOING", icon: <ElectricBoltRounded /> },
 		{ name: "COMPLETED", icon: <DoneAllRounded /> },
 		{ name: "NOT STARTED", icon: <Store /> },
-		{ name: "PAUSED", icon: <PauseCircle /> },
+		{ name: "WAITING PAY", icon: <PauseCircle /> },
 		{ name: "CLOSED", icon: <StopCircleIcon /> }
 	];
 

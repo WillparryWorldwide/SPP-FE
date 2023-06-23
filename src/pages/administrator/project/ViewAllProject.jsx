@@ -91,9 +91,9 @@ export default function AllProjects() {
 												{columns.map((column) => (
 													<TableCell
 														key={column.id}
-														style={{ minWidth: column.minWidth }}
+														style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
 														sx={{
-															border: ".3px solid #e0e0e0"
+															border: ".3px solid var(--tw-ring-color)"
 														}}>
 														{column.label}
 													</TableCell>
@@ -113,7 +113,7 @@ export default function AllProjects() {
 																	return <TableCell
 																		key={column.id}
 																		sx={{
-																			border: ".3px solid #e0e0e0"
+																			border: ".3px solid var(--tw-ring-color)"
 																		}}>
 																		{column.format(value)}
 																	</TableCell>

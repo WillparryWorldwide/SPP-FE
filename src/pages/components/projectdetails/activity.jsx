@@ -1,5 +1,5 @@
 import "../../css/projectDetails/activity.css";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import SiteImages from "../../../Utils/images";
 import useProjectMilestone from '../../../Hooks/useProjectMilestone';
 import { Fragment, useEffect, useState } from "react";
@@ -10,7 +10,7 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 import TimelineOppositeContent, { timelineOppositeContentClasses } from '@mui/lab/TimelineOppositeContent';
-import moment, { duration } from 'moment';
+import moment from 'moment';
 import organiseMilestone from "../../functions/organiseMilestone";
 import { Done, Edit } from "@mui/icons-material";
 import CustomModal from "../modal/customModal";
@@ -20,6 +20,8 @@ import { useLocation } from "react-router-dom";
 import MilestoneInput from "../../administrator/project/functions/milestoneInput";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import canMilestoneBeCompleted from "./functions/canMilestoneBeCompleted";
+import useUpdateProject from "../../../Hooks/useupdateproject";
 
 const Activity = ({ project, hostUrl }) => {
 	const location = useLocation();
@@ -30,12 +32,44 @@ const Activity = ({ project, hostUrl }) => {
 	const [openUpdateMilestoneModal, setOpenUpdateMilestoneModal] = useState(false);
 	const [milestoneModalDetails, setOpenMilestoneModalDetails] = useState({});
 	const showUpdateMilestoneBtn = ((userData?.role?.toLowerCase() === "admin") && (location.pathname.search("/spp") === 0));
+	canMilestoneBeCompleted(organiseMilestones());
+	const initialInput = {
+		funding: { name: "funding", focus: () => { }, value: '' },
+		change: { name: "change", focus: () => { }, value: '' },
+		nextFunding: { name: "nextFunding", focus: () => { }, value: '' }
+	}
+	const [inputDetails, setInputDetails] = useState(initialInput);
 
+	// function
+	const handelInputChange = (e, dateName) => {
+		let data = e.target;
+
+		if (!data) data = { name: dateName, value: e, focus: null };
+
+		let { name, value, focus } = data;
+
+		let innerHtml = '';
+
+		if (e?.target?.TagName === "SELECT") innerHtml = e?.target?.selectedOptions[0]?.innerHTML;
+
+		setInputDetails(prev => {
+			return {
+				...prev,
+				[name]: { name, focus, value, innerHtml }
+			}
+		});
+	}
 
 	const { isUpdatingMilestoneLoading, updateMilestone, updatedMilestone } = useUpdateMilestone();
+	const { upDAteProject } = useUpdateProject();
 
-	const handelMarkMilestoneAsCompleted = (milestoneId) => {
-		updateMilestone(milestoneId, { completed: true });
+	const handelMarkMilestoneAsCompleted = (data) => {
+		// update current milestione
+		// updateMilestone(data._id, {completed: data.completed, funding: data.funding.value, change: data.change.value});
+		// // update next milestone
+		// if(data.next) updateMilestone(data.next, {funding: data.nextFunding.value});
+		// update project
+		if(data.nextFunding.value === '') upDAteProject(project._id, {status: "WAITING PAY"});
 	}
 
 	const milestoneText = {
@@ -95,7 +129,7 @@ const Activity = ({ project, hostUrl }) => {
 				</div>
 			</div>
 			{/* mark milestone as completed */}
-			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handelMarkMilestoneAsCompleted }} open={{ init: openMarkMilestoneAsCompletedModal, set: setOpenMarkMilestoneAsCompletedModal }}>
+			<CustomModal title="Mark this milestone as completed" confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handelMarkMilestoneAsCompleted, parameter: { _id: milestoneModalDetails?._id, completed: true, ...inputDetails, next: milestoneModalDetails?.next } }} open={{ init: openMarkMilestoneAsCompletedModal, set: setOpenMarkMilestoneAsCompletedModal }}>
 				<div className="flex items-center space-x-2">
 					<p className="projectPage_posted__Sj_3G flex">
 						<span className="mr-1">MILESTONE</span> {milestoneModalDetails.level + 1}
@@ -104,16 +138,50 @@ const Activity = ({ project, hostUrl }) => {
 						<span className="text-black font-filson-bold hover:underline cursor-pointer">{milestoneText[milestoneModalDetails.typeOf]}</span>
 					</h4>
 				</div>
-				<p>The above milestone will be marked as completed!</p>
+				<div className="items-center space-x-2">
+					<Grid container spacing={1}>
+						<Grid item xs>
+							<p className="text-xs medium truncate">Did you receive pay for this milestione?</p>
+							<TextField
+								fullWidth type="number"
+								name={inputDetails.funding.name}
+								value={inputDetails.funding.value}
+								onChange={handelInputChange}
+								label="How much"
+							/>
+						</Grid>
+						<Grid item xs>
+							<p className="text-xs medium truncate">Have you receive pay for the next milestione?</p>
+							<TextField
+								fullWidth type="number"
+								name={inputDetails.nextFunding.name}
+								value={inputDetails.nextFunding.value}
+								onChange={handelInputChange}
+								label="How much"
+							/>
+						</Grid>
+						<Grid item xs>
+							<p className="text-xs medium truncate">How much is left after milestione completion?</p>
+							<TextField
+								fullWidth type="number"
+								name={inputDetails.change.name}
+								value={inputDetails.change.value}
+								onChange={handelInputChange}
+								label="How much change?"
+							/>
+						</Grid>
+					</Grid>
+				</div>
+				<p className="text-[#CF5F56]">Clicking "Confirm" will confirm that the above milestone has been completed!</p>
 			</CustomModal>
 
 			{/* Edit milestione */}
-			<CustomModal title="Mark this milestone as completed" modalData={milestoneModalDetails} confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handleUpdateMilestone }} open={{ init: openUpdateMilestoneModal, set: setOpenUpdateMilestoneModal }}>
+			<CustomModal title="Mark this milestone as completed" confirm={{ confirmText: "Confirm", cancelText: "Close", isLoading: isUpdatingMilestoneLoading, handleConfirm: handleUpdateMilestone, parameter: { _id: milestoneModalDetails?._id } }} open={{ init: openUpdateMilestoneModal, set: setOpenUpdateMilestoneModal }}>
 				<MilestoneInput milestoneText={milestoneText} milestone={milestones} handelMilestoneChange={handelMilestoneChange} />
 			</CustomModal>
 			{
 				organiseMilestones().length ?
-					organiseMilestones().map(orgMs => orgMs.map((milestone, index) => {
+					organiseMilestones().map((orgMs, i) => orgMs.map((milestone, index, arr) => {
 						return (
 							<Fragment key={index}>
 								<Timeline key={index} position="alternate" sx={{
@@ -125,7 +193,7 @@ const Activity = ({ project, hostUrl }) => {
 										<TimelineOppositeContent color="text.secondary">
 											<p className="text-[8px] md:text-xs">{moment(milestone.start_date).format("MMM Do YYYY")}</p>
 											{
-												(showUpdateMilestoneBtn && !milestone.completed) &&
+												((showUpdateMilestoneBtn && milestone.showButton && !milestone.completed)) &&
 												<Button color="success" size="small" sx={{ minWidth: "auto" }} onClick={() => {
 													setOpenMarkMilestoneAsCompletedModal(true);
 													setOpenMilestoneModalDetails(milestone);
@@ -140,7 +208,7 @@ const Activity = ({ project, hostUrl }) => {
 											<div className="bg-white rounded-lg p-2 sm:p-4 md:p-6 w-full mx-auto position-relative editContainer" id="projectReviewNoReference">
 												{
 													showUpdateMilestoneBtn && <Button onClick={() => {
-														setMileStones({...milestone, duration: moment(milestone.duration)});
+														setMileStones({ ...milestone, duration: moment(milestone.duration) });
 														setOpenMilestoneModalDetails(milestone);
 														setOpenUpdateMilestoneModal(true);
 													}} className="editBtn" sx={{ position: "absolute", top: "1em", right: "1em" }} variant="contained" color="error" size="small"><Edit /></Button>

@@ -38,6 +38,7 @@ const OverView = ({ project, setTab, onEdit }) => {
 	// For modal
 	const [openFundingModal, setOpenFundingModal] = useState(false);
 	// for input
+	// delete all execpt funding_amount
 	const initialInput = {
 		grand_total: { name: "grand_total", focus: () => { }, value: 0 },
 		local_goverment: { name: "local_goverment", focus: () => { }, value: '' },
@@ -175,7 +176,7 @@ const OverView = ({ project, setTab, onEdit }) => {
 									<div className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover">
 										<img alt="Nigerian Railway Mordernization (Idu to Kaduna)" width="100" height="100" decoding="async" data-nimg="1" className="h-6 w-6 sm:h-10 sm:w-10 rounded-full object-cover" style={{ color: 'transparent', backgroundSize: 'cover', backgroundPosition: '50% 50%', backgroundRepeat: 'no-repeat', backgroundImage: 'url()' }} src={SiteImages.federal} />
 									</div>
-									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">{project.mda_code.name.toUpperCase()} </p>
+									<p className="text-sm lg:text-lg medium" data-testid="project-display_name">{project.mda_code?.name?.toUpperCase()} </p>
 								</div>
 							</div>
 						</div>

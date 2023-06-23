@@ -114,9 +114,9 @@ export default function AllUser() {
 													<TableCell
 														key={column.id}
 														align={column.align}
-														style={{ minWidth: column.minWidth }}
+														style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
 														sx={{
-															border: ".3px solid #e0e0e0"
+															border: ".3px solid var(--tw-ring-color)"
 														}}>
 														{column.label}
 													</TableCell>
@@ -134,7 +134,7 @@ export default function AllUser() {
 																return (
 																	<TableCell key={column.id} align={column.align}
 																		sx={{
-																			border: ".3px solid #e0e0e0"
+																			border: ".3px solid var(--tw-ring-color)"
 																		}}>
 																		{value}
 																	</TableCell>
@@ -187,9 +187,9 @@ export default function AllUser() {
 													<TableCell
 														key={column.id}
 														align={column.align}
-														style={{ minWidth: column.minWidth }}
+														style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
 														sx={{
-															border: ".3px solid #e0e0e0"
+															border: ".3px solid var(--tw-ring-color)"
 														}}>
 														{column.label}
 													</TableCell>
@@ -206,7 +206,7 @@ export default function AllUser() {
 																const value = row[column.id]
 																return (
 																	<TableCell key={column.id} align={column.align} sx={{
-																		border: ".3px solid #e0e0e0"
+																		border: ".3px solid var(--tw-ring-color)"
 																	}}>
 																		{value}
 																	</TableCell>
@@ -259,9 +259,9 @@ export default function AllUser() {
 													<TableCell
 														key={column.id}
 														align={column.align}
-														style={{ minWidth: column.minWidth }}
+														style={{ minWidth: column.minWidth, backgroundColor: "rgba(224, 224, 224, 1)" }}
 														sx={{
-															border: ".3px solid #e0e0e0"
+															border: ".3px solid var(--tw-ring-color)"
 														}}>
 														{column.label}
 													</TableCell>
@@ -279,7 +279,7 @@ export default function AllUser() {
 																return (
 																	<TableCell key={column.id} align={column.align}
 																		sx={{
-																			border: ".3px solid #e0e0e0"
+																			border: ".3px solid var(--tw-ring-color)"
 																		}}>
 																		{value}
 																	</TableCell>

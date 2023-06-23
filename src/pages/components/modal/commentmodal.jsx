@@ -1,7 +1,7 @@
 // Import Dependency
 import { useEffect, useRef, useState } from "react";
-import useUpdateProject from "../../../Hooks/useupdateproject";
 import CircularProgress from '@mui/material/CircularProgress';
+import useCommentOnProject from "../../../Hooks/useCommentOnProject";
 
 
 // Import Components
@@ -11,7 +11,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const CommentModal = () => {
 	const [commentOption, setCommentOption] = useState(false)
-	const { upDAteProject, loading, data } = useUpdateProject();
+	const { commentOnProject: upDAteProject, loadingCommentingOnProject: loading, commentedProject: data } = useCommentOnProject();
 	const [commentData, setCommentData] = useState({
 		description: "",
 		radioValue: "",
@@ -19,7 +19,7 @@ const CommentModal = () => {
 	});
 	const nameRef = useRef()
 	const reviewRef = useRef(null)
-  const cursorPositionRef = useRef(0);
+	const cursorPositionRef = useRef(0);
 
 	const CommentPopUp = ({ project }) => {
 		// handle cancel delete function
@@ -48,20 +48,20 @@ const CommentModal = () => {
 			}
 		}, [data]);
 
-    useEffect(() => {
-		if(reviewRef.current === document.activeElement){
-		reviewRef.current.setSelectionRange(cursorPositionRef.current, cursorPositionRef.current);
-		}
-	});
+		useEffect(() => {
+			if (reviewRef.current === document.activeElement) {
+				reviewRef.current.setSelectionRange(cursorPositionRef.current, cursorPositionRef.current);
+			}
+		});
 
-  const handleReviewChange = (event) => {
-    // Store the cursor position before updating the value
-    const { selectionStart, selectionEnd } = event.target;
-    cursorPositionRef.current = selectionStart;
+		const handleReviewChange = (event) => {
+			// Store the cursor position before updating the value
+			const { selectionStart, selectionEnd } = event.target;
+			cursorPositionRef.current = selectionStart;
 
-    // setValue(event.target.value);
-    setCommentData((prev) => ({ ...prev, description: event.target.value }))
-  };
+			// setValue(event.target.value);
+			setCommentData((prev) => ({ ...prev, description: event.target.value }))
+		};
 
 		return (
 			<div onClick={HandleDeleteCancel} className='fixed p-2 md:p-5 top-0 left-0 w-full h-full bg-black/[.3] flex justify-center items-center z-[1000] '>
