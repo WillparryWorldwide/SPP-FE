@@ -45,21 +45,23 @@ const Discover = () => {
 			//  Set project to Fetch Request Data
 			makeFetch();
 			setProjects(data);
+			// localStorage.removeItem('query')
+			console.log("Rendering...1");
 		} else {
 			//  Set project to Search Request Data
 			makeSearchFetch()
 		}
 
-		console.log("Rendering...");
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data.length, option]);
 
 	useEffect(() => {
 		if (searchData.length > 0) {
 			setProjects(searchData);
+			// localStorage.removeItem('query')
+			console.log("Rendering...22");
 		}
 	}, [searchData])
-
 	const format = (amount) => {
 		const formatted = parseFloat(amount).toLocaleString("en", {
 			style: "currency",
@@ -106,7 +108,9 @@ const Discover = () => {
 	// 	setCommentItem(null)
 	// }
 
-
+console.log((projects?.length === 0))
+console.log((projects?.length === null))
+console.log(projects?.length)
 	return (
 		<>
 			<div className="appLayout_dash-contents__f3VlW">
@@ -121,7 +125,7 @@ const Discover = () => {
 						<div className="h-full flex  p-6">
 							<div className='w-full'>
 								<div className="flex flex-wrap p-0 pb-28 sm:pb-0" data-testid="discover-projects">
-									{projects?.length ? projects?.map((project, index) => (
+									{(projects?.length !== 0) ? projects?.map((project, index) => (
 										<ProjectCards
 											project={project}
 											hostUrl={hostUrl}
