@@ -422,7 +422,6 @@ const LandingSection2 = () => {
 																		sx={{
 																			border: ".3px solid var(--tw-ring-color)"
 																		}}>
-																		{console.log("value", value)}
 																		{value ? value: 0}
 																	</TableCell>
 																);
